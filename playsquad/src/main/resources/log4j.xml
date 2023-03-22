@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.bit.play">
+	<logger name="com.sample.web">
 		<level value="info" />
 	</logger>
 	
@@ -38,4 +38,8 @@
 		<appender-ref ref="console" />
 	</root>
 	
+	<logger name="com.bit.web.play">
+      <level value="trace" />
+   </logger>
+   
 </log4j:configuration>
