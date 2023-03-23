@@ -46,8 +46,8 @@ public class playController {
 	//TODO 0314 서비스를 wired 해주셔야합니다.
 	private final PlayService playService;
 	
-	
-//	아이디 찾기
+//로그인페이지
+	//	아이디 찾기
 	@RequestMapping(value = "idSearch", method = RequestMethod.GET)
 	@ResponseBody
 	public String sendId(@RequestParam(value ="email", required = false)String email) {
@@ -56,7 +56,7 @@ public class playController {
 		return "success";
 	};
 
-//	비밀번호찾기
+	//	비밀번호찾기
 	@RequestMapping(value="pwSearch", method=RequestMethod.GET)
 	@ResponseBody
 	public String pwSearch(@RequestParam(value="user_id", required = false)String userId, @RequestParam(value="pw_find_email", required=false)String pw_find_email) {
@@ -88,7 +88,7 @@ public class playController {
 		 }
 	};
 	
-//	로그아웃
+	//	로그아웃
 	@RequestMapping(value = "logoutAction")
 	@ResponseBody
 	public String logoutAction(HttpServletRequest req) {
