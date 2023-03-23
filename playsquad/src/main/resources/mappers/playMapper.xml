@@ -307,6 +307,23 @@ SELECT GAME_IMG FROM GAMEGENRE WHERE GAMEGENRE_NO = #{value}
 	</select>	
 	
 	
+	<insert id="insertMyInfo" 
+		parameterType="com.bit.web.play.vo.membersBean">
+		INSERT INTO MEMBERS(members_id, password, nickname, birth,
+		email, tel, regdate, genre1, genre2, aboutme, profile_img, follow_cnt, 
+		review_cnt, grade, stopcnt, balance, isDeleted)
+		VALUES(#{members_id}, #{password}, #{nickname}, #{birth}, #{email},
+		#{tel}, SYSDATE, #{genre1}, #{genre2}, #{aboutme}, #{profile_img}, #{follow_cnt},
+		#{review_cnt}, #{grade}, #{stopcnt}, #{balance}, #{isDeleted})
+	</insert>
 	
+	<select id="selectMyInfo" parameterType="String"
+		resultType="com.bit.web.play.vo.membersBean">
+		select m.profile_img as profile_img, m.grade as grade,
+		m.follow_cnt as follow_cnt 
+		from members m
+		where m.members_id = #{VALUE}
+			
+	</select>
 	
 </mapper>
