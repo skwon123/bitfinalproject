@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="UTF-8">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
@@ -26,56 +27,74 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	
+
 <style type="text/css"></style>
 
 
 <script type="text/javascript">
 $(function() {
 	
-	if(($("input#attendSH").val() == 'Y') || ($("input#attendAW").val() == 'Y')){
-		const fieldset = document.getElementById('btnRequest');
-		fieldset.disabled = true;
+
+	function chagneButtonStateFunction() {
+		let state = $("input#squadstate").val();
+		const buttonSS= document.getElementById('btnSquadState');;
+		const spanSS= document.getElementById('spanSquadState');;
+		// ìŠ¤ì¿¼ë“œìƒíƒœì— ë”°ë¥¸ ë²„íŠ¼ 
+		switch (state)
+		{
+		case 0://ëª¨ì§‘ì¤‘ 
+			
+		break;    
+		
+		case 1://ëª¨ì§‘ì™„ë£Œ ë²„íŠ¼ë¹„í™œì„±í™”
+			spanSS.textContent="ëª¨ì§‘ì™„ë£Œ"
+			console.log(spanSS);
+		break;    
+	
+		case 2://ì§„í–‰ì¤‘ ë²„íŠ¼ë¹„í™œì„±í™”
+			spanSS.textContent="ëª¨ì§‘ì™„ë£Œ"
+			console.log(spanSS);
+		break;    
+
+		case 3://ì¢…ë£Œ ë²„íŠ¼ë¹„í™œì„±í™”    
+			spanSS.textContent="ëª¨ì§‘ì™„ë£Œ"
+			console.log(spanSS);
+		break;    
+
+		case 4://ì·¨ì†Œ ë²„íŠ¼ë¹„í™œì„±í™”     
+			
+		break;    
+	   
+	    default :  
+	      
+
+		}
 	}
-
-	
-	var squadstate = $("input#squadstate").val();
-	// 1ºĞ¸¶´Ù »õ·Î°íÄ§
-	
-	// ½ºÄõµå»óÅÂ¿¡ µû¸¥ ¹öÆ° 
-	switch (squadstate)
-	{
-	case 0:     
-	
-    break;
-	case 1:     
+		if(($("input#attendSH").val() == 'Y') || ($("input#attendAW").val() == 'Y')){
+			const fieldset = document.getElementById('btnRequest');
+			fieldset.disabled = true;
+		}
+		console.log(playtime);
+		$("input#playtime").val(val);
+		console.log($("input#playtime").val());
+		/*  $("#playtime_output").text(playtime_output); */
 		
-	break;    
-
-	case 2:     
 		
-	break;    
-
-	case 3:     
-		
-	break;    
-
-	case 4:     
-		
-	break;    
-   
-    default :  
-      
-
-	}
+	}	
 	
-	//½ÅÃ»¹öÆ°
+	// 1ë¶„ë§ˆë‹¤ ìƒˆë¡œê³ ì¹¨
+	
+		
+	//ì‹ ì²­ë²„íŠ¼
 	$("button#btnRequest1").click(function(){
 		window.open("/web/squadRequsetSelect?no=${squad.squadboard_no}&id=${userId}" , "..", "left=300, top=200, width=500, height=600");
 	})
@@ -110,59 +129,74 @@ $(function() {
 				
 			<div class="text">
 				<h3 style="margin-left: 1000px; margin-top: 10px">${squad.hostname}</h3>
-				<h3 style="margin-left: 1000px; margin-top: 10px">ÆòÁ¡ 0 / 5.0(´ñ±Û¼ö)</h3>
-				<h3 style="margin-left: 1000px; margin-top: 10px">½ºÄõµå¼ö 0</h3>
+				<h3 style="margin-left: 1000px; margin-top: 10px">í‰ì  0 / 5.0(ëŒ“ê¸€ìˆ˜)</h3>
+				<h3 style="margin-left: 1000px; margin-top: 10px">ìŠ¤ì¿¼ë“œìˆ˜ 0</h3>
 				<div class="buttons"style="margin-left: 1000px; margin-top: 10">
-					<a class="button" href="profile.jsp">È£½ºÆÃ Á¤º¸</a>
+					<a class="button" href="profile.jsp">í˜¸ìŠ¤íŒ… ì •ë³´</a>
 				</div>
 			</div>
 			
 			<div class="text">
 				
-				<h3 style="margin-left: 1000px; margin-top: 10px">½ÃÀÛ½Ã°£ ${squad.reservedate}</h3>
-				<h3 style="margin-left: 1000px; margin-top: 10px">¿¹»óÁøÇà½Ã°£ ${squad.playtime}ºĞ</h3>
-				<h3 style="margin-left: 1000px; margin-top: 10px">½ÅÃ» ÀÎ¿ø ${squad.user_acceptcnt}¸í/${squad.user_maxcnt}¸í</h3>
-				<div class="buttons" style="margin-left: 1000px; margin-top: 10">				
+				<h3 style="margin-left: 1000px; margin-top: 10px">ì‹œì‘ì‹œê°„ ${squad.reservedate}</h3>
+				<h3 style="margin-left: 1000px; margin-top: 10px">ì˜ˆìƒì§„í–‰ì‹œê°„ ${squad.playtime}ë¶„</h3>
+				<h3 style="margin-left: 1000px; margin-top: 10px">ì‹ ì²­ ì¸ì› ${squad.user_acceptcnt}ëª…/${squad.user_maxcnt}ëª…</h3>
+	<script type="text/javascript">
+	$(window).on('load', function(){
+		chagneButtonStateFunction();
+	});	
+	</script>				
+			<div class="buttons" style="margin-left: 1000px; margin-top: 10">				
 				
 					<!-- btnActive / btnDisabled-->
 					<c:choose>
 						<c:when test="${userId == null}">
 							<button type="button" class="btn" id="btnOffer" style="background-color: gray;" onclick="btnDisabled()">
-								<span id="spanOffer">·Î±×ÀÎÇØÁÖ¼¼¿©</span>
+								<span id="spanOffer">ë¡œê·¸ì¸í•´ì£¼ì„¸ì—¬</span>
 							</button>
 						</c:when>
 						<c:otherwise>
 							<c:choose>
 								<c:when test="${squad.members_id==userId}">
 									<button type="button" class="btn" id="btnEdit" style="background-color: green;" onclick="btnActive()">
-										<span id="spanEdit">¼öÁ¤</span>
+										<span id="spanEdit">ìˆ˜ì •</span>
 									</button>
 								</c:when>
 								<c:otherwise>
-									<fieldset id="btnRequest">
 									<c:choose>
-										<c:when test="${squad.recruitoption==0 && squad.payedstate==0}">
-											<button type="button" class="btn" id="btnRequest1" style="background-color: green;" onclick="btnActive()">
-												<span id="spanRequest">¹«·á Âü°¡</span>
+										<c:when test="${squad.squadstate==0}">
+											<fieldset id="btnRequest">
+											<c:choose>
+												<c:when test="${squad.recruitoption==0 && squad.payedstate==0}">
+													<button type="button" class="btn" id="btnRequest1" style="background-color: green;" onclick="btnActive()">
+														<span id="spanRequest">ë¬´ë£Œ ì°¸ê°€</span>
+													</button>
+												</c:when>
+												<c:when test="${squad.recruitoption==1 && squad.payedstate==0}">
+													<button type="button" class="btn" id="btnRequest1" style="background-color: green;" onclick="btnActive()">
+														<span id="spanRequest">ë¬´ë£Œ ì§€ì›</span>
+													</button>
+												</c:when>
+												<c:when test="${squad.recruitoption==0 && squad.payedstate==1}">
+													<button type="button" class="btn" id="btnRequest2" style="background-color: green;" onclick="btnActive()">
+														<span id="spanRequest">${squad.price} ìœ ë£Œ ì°¸ê°€</span>
+													</button>
+												</c:when>
+												<c:when test="${squad.recruitoption==1 && squad.payedstate==1}">
+													<button type="button" class="btn" id="btnRequest2" style="background-color: green;" onclick="btnActive()">
+														<span id="spanRequest">${squad.price} ìœ ë£Œ ì§€ì›</span>
+													</button>					
+												</c:when>
+											</c:choose>
+											</fieldset>
+										</c:when>
+										<c:otherwise>
+											<button type="button" class="btn" id="btnSquadState" style="background-color: green;" onclick="btnDisabled()">
+												<span id="spanSquadState"></span>
 											</button>
-										</c:when>
-										<c:when test="${squad.recruitoption==1 && squad.payedstate==0}">
-											<button type="button" class="btn" id="btnRequest1" style="background-color: green;" onclick="btnActive()">
-												<span id="spanRequest">¹«·á Áö¿ø</span>
-											</button>
-										</c:when>
-										<c:when test="${squad.recruitoption==0 && squad.payedstate==1}">
-											<button type="button" class="btn" id="btnRequest2" style="background-color: green;" onclick="btnActive()">
-												<span id="spanRequest">${squad.price} À¯·á Âü°¡</span>
-											</button>
-										</c:when>
-										<c:when test="${squad.recruitoption==1 && squad.payedstate==1}">
-											<button type="button" class="btn" id="btnRequest2" style="background-color: green;" onclick="btnActive()">
-												<span id="spanRequest">${squad.price} À¯·á Áö¿ø</span>
-											</button>					
-										</c:when>
+										</c:otherwise>
 									</c:choose>
-									</fieldset>
+									
 								</c:otherwise>
 							
 							</c:choose>					
@@ -177,11 +211,11 @@ $(function() {
 
 	<section>
 		<div class="left" style="margin-bottom: 200px; margin-left:200px">
-			<h3>½ºÄõµå ¼³¸í</h3>
+			<h3>ìŠ¤ì¿¼ë“œ ì„¤ëª…</h3>
 			<h4>${squad.contents}</h4>
 		</div>
 		<div class="content-list" style="height: 300px; min-width: 1200px;">
-			<h5>È£½ºÆ®ÀÇ ´Ù¸¥ ½ºÄõµå</h5>
+			<h5>í˜¸ìŠ¤íŠ¸ì˜ ë‹¤ë¥¸ ìŠ¤ì¿¼ë“œ</h5>
 			<c:forEach var="j" items="${squadList}" varStatus="cnt">
 
 					<div class="title">
@@ -203,7 +237,7 @@ $(function() {
 
 			</c:forEach>
 			
-			<h5>°Ô½ºÆ® ÈÄ±â</h5>
+			<h5>ê²ŒìŠ¤íŠ¸ í›„ê¸°</h5>
 			<div class="list_cmt">
 				<div class="cmt_head"></div>
 				<div class="cmt_body">
@@ -213,9 +247,9 @@ $(function() {
 							<span class="info_append"> <span class="txt_name">${r.name}</span>
 							<span class="txt_bar">|</span> <span class="txt_time">${r.score}</span>
 							<span class="txt_bar">|</span> <span class="txt_time">${r.regdate}</span>
-							<span class="txt_bar">|</span> <span class="txt_time">ÁÁ¾Æ¿ä ¹öÆ° / ÁÁ¾Æ¿ä¼ö</span>
+							<span class="txt_bar">|</span> <span class="txt_time">ì¢‹ì•„ìš” ë²„íŠ¼ / ì¢‹ì•„ìš”ìˆ˜</span>
 						</span>
-						<p class="txt_desc">${r.contents} <a href="#none">½Å°í</a></p>
+						<p class="txt_desc">${r.contents} <a href="#none">ì‹ ê³ </a></p>
 					</c:forEach>
 				</div>
 			</div>

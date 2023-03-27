@@ -77,13 +77,13 @@
 	<section>
 		<!-- 인기스쿼드 리스트 -->
 		<div class="content-list">
-			<a href="/web/squadBoardInfoSelect?no=1&hostid=blue&job=info"><h1>인기 스쿼드</h1></a>
+			<h1>인기 스쿼드</h1>
        
 			<div class="prev" id="prevPopularSquad">
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-			<div class="slider" align="center" id="sliderPopularSquad">
+			<div class="slider" align="center" id="sliderPopularSquad" style="height:300px;">
 <!-- 				<img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
              	<img src="/web/resources/img/play/lol.jpg" style="max-width: 15%; height: auto; "/>   -->
 			</div>
@@ -117,16 +117,43 @@
  			   contentType:'application/x-www-form-urlencoded; charset=UTF-8',
  			   success:function(s){
  				   console.log(s);
- 				   for (var j=0; j < s.length; j++){
- 					   var eachFilename = s[j].filename;
- 					   var ext = eachFilename.slice(-3);
- 					   var imgSrc = '/web/resources/img/play/upload/'+eachFilename;
- 					   console.log(eachFilename);
- 					   var div = document.createElement('div');
- 					   div.className='item';
-	 				   div.innerHTML = `<img src="/web/resources/img/play/upload/\${eachFilename}">`;
-	 				   slider.appendChild(div);
- 				   }
+ 				  for (var j=0; j < s.length; j++){
+					   var eachFilename = s[j].filename;
+					   var ext = eachFilename.slice(-3);
+					   var imgSrc = '/web/resources/img/play/upload/'+eachFilename;
+					   var eachProfile = s[j].members_profile_img;
+					   var eachTitle = s[j].title;
+					   var eachWriter = s[j].hostname;
+					   var eachGenre = s[j].gamegenre_name;
+					   var eachMax = s[j].user_maxcnt;
+					   var eachAcp = s[j].user_acceptcnt;
+					   var reservedateString = s[j].reservedate;
+					   var reservedateDate = new Date(reservedateString);
+					   var date = reservedateDate.toLocaleDateString();
+					   var time = reservedateDate.toLocaleTimeString();
+					   var div = document.createElement('div');
+					   div.className='item';
+					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
+	 					    div.innerHTML = `<img src="/web/resources/img/play/upload/board/\${eachFilename}"><br>
+	 					    	<table style="text-align:center; width:250px;">
+	 					    	  <thead>
+	 					    	  </thead>
+	 					    	  <tbody>
+	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
+	 					    	  <tr>
+	 					    	  <td>\${date}<br>\${time}</td>
+	 					    	  <td>\${eachAcp}/\${eachMax}</td>
+	 					    	  </tr>
+	 					    	  </tbody>`;
+	 					    slider.appendChild(div); 						   
+					    }else{
+					    	div.innerHTML = `<img src="\${eachFilename}">`;
+	 					    slider.appendChild(div);
+					    }
+				   }
  			   },
  			   error:function(e){
  				   console.log('error');
@@ -143,9 +170,8 @@
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-		<div class="slider" align="center" id="sliderRecruit">
-				<!-- <img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/lostark.jpg" style="max-width: 15%; height: auto; "/> -->
+		<div class="slider" align="center" id="sliderRecruit" style="height:300px;">
+				
 		</div>
 			
 			<div class="next" id="nextRecruit">
@@ -181,16 +207,35 @@
  				   console.log(s);
  				   for (var j=0; j < s.length; j++){
  					   var eachFilename = s[j].filename;
- 					   var eachSquadboardNo = s[j].squadboard_no;
- 					   var eachHostId = s[j].members_id;
  					   var ext = eachFilename.slice(-3);
  					   var imgSrc = '/web/resources/img/play/upload/'+eachFilename;
- 					   console.log(eachFilename);
+					   var eachProfile = s[j].members_profile_img;
+					   var eachTitle = s[j].title;
+					   var eachWriter = s[j].hostname;
+					   var eachGenre = s[j].gamegenre_name;
+					   var eachMax = s[j].user_maxcnt;
+					   var eachAcp = s[j].user_acceptcnt;
+					   var reservedateString = s[j].reservedate;
+					   var reservedateDate = new Date(reservedateString);
+					   var date = reservedateDate.toLocaleDateString();
+					   var time = reservedateDate.toLocaleTimeString();
  					   var div = document.createElement('div');
  					   div.className='item';
  					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
- 						  div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
- 		 				  <img src="/web/resources/img/play/upload/\${eachFilename}"></a> `;
+	 					    div.innerHTML = `<img src="/web/resources/img/play/upload/board/\${eachFilename}"><br>
+	 					    	<table style="text-align:center; width:250px;">
+	 					    	  <thead>
+	 					    	  </thead>
+	 					    	  <tbody>
+	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
+	 					    	  <tr>
+	 					    	  <td>\${date}<br>\${time}</td>
+	 					    	  <td>\${eachAcp}/\${eachMax}</td>
+	 					    	  </tr>
+	 					    	  </tbody>`;
 	 					    slider.appendChild(div); 						   
 					    }else{
 					    	div.innerHTML = `<img src="\${eachFilename}">`;
@@ -214,15 +259,8 @@
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-			<div class="slider" align="center" id="sliderPopularGame">
-				<!-- <img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/lol.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/battleground.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/lostark.jpg" style="max-width: 15%; height: auto; "/>
-				<img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/lol.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/battleground.jpg" style="max-width: 15%; height: auto; "/>
-            	<img src="/web/resources/img/play/lostark.jpg" style="max-width: 15%; height: auto; "/> -->
+			<div class="slider" align="center" id="sliderPopularGame" style="height:180px;">
+				
 			</div>
 			<div class="next" id="nextPopularGame">
 				<i class="fa-solid fa-angle-right"></i>
@@ -261,7 +299,7 @@
  					   console.log(eachFilename);
  					   var div = document.createElement('div');
  					   div.className='item';
-	 				   div.innerHTML = `<img src="/web/resources/img/play/\${eachFilename}">`;
+	 				   div.innerHTML = `<img src="/web/resources/img/play/\${eachFilename}"><br><table><thead></thead><tbody><tr><td><p>\${s[j].name}</p></td></tr></tbody></table>`;
 	 				   slider.appendChild(div); 						    
  				   }
  			   },
