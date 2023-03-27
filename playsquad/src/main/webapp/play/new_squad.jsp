@@ -15,7 +15,7 @@
 button{
 border: 1px solid white;
 color:white;
-background-color:#323232;
+background-color:#141414;
 border-radius:10px;
 height:35px;
 width:60px;
@@ -114,7 +114,7 @@ $(function(){
 </script>
 </head>
 
-<body bgcolor="#323232">
+<body bgcolor="#141414">
 <form action="/web/squadBoardInsert" name="squadBoardInsert" id="squadBoardInsert" method="post" enctype="multipart/form-data">
 <!-- 유저아이디 -->
 <input type="hidden" name="userId" value="${userId }">
@@ -124,21 +124,49 @@ $(function(){
 <tbody>
 </tbody>
 </table>
-
+<fieldset style="display:block;border:none;">
 <!-- 게임 선택 이미지 -->
-<div id="game_img_area" style="background:transparent; position:relative; align-items:center; vertical-align:middle; height: 190px; width: 160px;">
+<div id="area1" style="display:inline-block"style="float:left">
+<div id="game_img_area" style="display:block;background:black; position:relative; align-items:center; vertical-align:middle; height: 190px; width: 160px;">
 <img id="game_img" src="/web/resources/img/play/addicon.png" style="position:absolute; top:40%; left:40%; height: 30px; width: 30px;"> <br>
-<p id="guideText" style="display:block; align:center; position:absolute; bottom:5%; left:27%; color:white;">게임 선택
+<p id="guideText" style="display:inline-block; align:center; position:absolute; bottom:5%; left:27%; color:white;">게임 선택
 </div>
 <!-- 게임 선택 옵션 -->
-<select id="gamegenre" onchange="gameImgFunc()"style="background-color:#323232;color:white;border:black;">
+<select id="gamegenre" onchange="gameImgFunc()"style="display:block;background-color:#141414;color:white;margin:15px;border-radius:10px;padding:5px;">
 <option value=999>게임선택</option>
 <c:forEach items="${games}" var="i" varStatus="cnt">
 <option value="${i.gamegenre_no }">${i.name }</option>
 </c:forEach>
 <option value=0>기타</option>
 </select>
+</div>
 <input name="gamegenre_no" id="gamegenre_no" type="hidden" value=999>
+<!-- 스쿼드 제목 -->
+<div id="titleDiv" style="display:inline-block;position:relative;left:50px;">
+<label for="titleInput" style="display:inline-block;background:transparent;color:white;margin:5px;">스쿼드 이름</label>
+<input class="titleInput"type="text" id="title" name="title" placeholder="스쿼드 이름(제목)" style="padding:10px;margin:5px;border:1px solid white;width:250px;border-radius:5px;display:block;background:transparent;color:white;"> <br>
+<span style="color:white;">썸네일 / 해시태그</span><br><br>
+<button type="button" id="thumbnail_file">+ 파일</button>&emsp;
+<button type="button" id="thumbnail_url">+ URL</button>&emsp;
+<button type="button" id="tagsBtn">+ 태그</button> <input type="text" style="display:none" id="tags" name="tags" value="defaultTag">
+<br>
+<input type="file" id="thumbnail_file" name="thumbnail_file" style="display:none"><br>
+<!-- 선착순 / 수락대기 -->
+	<select id="recruitoption" name="recruitoption" style="border-radius:10px; background-color:#141414; padding:5px; margin:15px; color:white;">
+        <option value="0">선착순</option>
+        <option value="1">수락대기</option>
+    </select>
+<!-- <span>입력한 주소</span> -->
+<div id="modal" class="modal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.3);">
+	<div id="modal_content" class="modal" style="background-color:#323232; margin:15%auto; padding:20px; border:1px solid #888; width:50%; text-align:center; box-shadow:2px 2px 2px 2px black, 0 0 25px grey;">
+		<span style="color:white;">URL: <input type="text" id="thumbnail_url_input" style="color:white; background-color:#707070">
+		<button type="button" id="url_input_btn">입력</button>
+		<button type="button" id="modal_close">닫기</button> </span>
+	</div>
+</div>
+<input type="text" id="filename" name="filename" style="display:none">
+</div>
+</fieldset>
 <script>
 // 게임 선택시 대표이미지 변경
 	function gameImgFunc() {
@@ -196,31 +224,81 @@ $(function(){
 			}
 		});
 	};
+	
+	/* 버튼 - 파일업로드 연동 */
+	$("button#thumbnail_file").click(function() {
+		$("input#thumbnail_file").click();
+	});
+
+	/* 모달창 코드 */
+	var btn = document.getElementById("thumbnail_url");
+	var modal = document.getElementById('modal');
+	var close = document.getElementById('modal_close');
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+	close.onclick = function() {
+		/* $("input#thumbnail_url_input").val(''); */
+		modal.style.display = "none";
+	}
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			$("input#thumbnail_url_input").val('');
+			/* modal.style.display = "none"; */
+			close.click();
+		}
+	}
+	$("button#url_input_btn").click(function() {
+		if ($("input#thumbnail_url_input").val().length == 0) {
+			alert('url이 입력되지 않았습니다');
+		} else {
+			$("input#filename").val($("input#thumbnail_url_input").val());
+			console.log($("input#filename").val());
+			$("button#modal_close").click();
+		}
+	});
 </script>
 
-<!-- 스쿼드 제목 -->
-<input type="text" id="title" name="title" placeholder="스쿼드 이름(제목)" style="background:transparent;color:white;"> <br>
+
 
 
 <!-- ------------------------------------------------ -->
 
-<fieldset style="display:block; color:white; border:1px dashed white;">
+<fieldset style="display:block; color:white; border:0.5px solid white; border-radius:10px;">
 <legend style="color:white;">
 스쿼드설정
 </legend>
-
-<div class="num-block skin-4" style="display:block">
-<label for="num-in" style="color:white;display:block">인원 선택</label>
-  <div class="num-in" style="display:block;margin-top:5px;;margin-bottom:5px;padding:5px;border:1px solid white;border-radius:10px">
+<div style="display:block;margin-left:12px;margin-top:10px;">
+<div class="num-block skin-4" style="display:inline-block;float:left;">
+<label for="num-in" style="color:white;">인원 선택</label><br>
+  <div class="num-in" style="margin-top:5px;;margin-bottom:5px;padding:5px;border:1px solid white;border-radius:10px">
     <input id="user_maxcnt" name="user_maxcnt" id="user_maxcnt" type="text" class="in-num" value="1" onchange="maxcntCheckFunc()"  style="background:transparent;color:white;border:none;border-radius:10px;">
     <div class="all-span" >
       <span class="plus"></span>
       <span class="minus dis"></span>
     </div>
   </div>
+</div>&emsp;&emsp;
+<!-- 시작 날짜 및 시간 -->
+<div id="timeArea" style="display:inline-block;margin-left:30px;margin-bottom:10px;">
+<label for="reservedate" style="color:white;">시작시간</label> <br>
+<input type="datetime-local" id="reservedate_input" name="reservedate_input" style="background:transparent;color:white;">
+<br><br>
+<!-- 예상 플레이시간 -->
+<label for="playtime_input" style="color:white;">플레이시간: </label>
+<span id="playtime_show" style="color:white;">30분</span><br>
+<span style="color:white;">30분</span><input type="range" min="30" step="30" value="30" max="360" id="playtime_input" oninput="playTimeFunction()"style="width:120px"/><span style="color:white;">6시간</span><br>
+<input type="number" id="playtime" name="playtime" value="30" style="display:none">
 </div>
 
+<div id="priceArea" style="display:inline-block;float:right;margin-right:30px;margin-top:20px;">
+<input type="checkbox" id="payedstate" name="payedstate"><span style="color:white;">유료</span><br>
+<label for="price" style="color:white;">참가비</label>
+<input type="number" min="0" step="5" max="1000" placeholder="0" value="0" id="price_input" name="price_input" disabled style="width:32px;height:20px;">
+<input type="hidden" id="price" name="price">
+</div>
 
+</div>
 </fieldset>
 <!-- 모집 인원 -->
 <script>
@@ -262,32 +340,6 @@ $(function(){
 			document.getElementById("user_maxcnt").value = 1;
 		}
 	}
-</script>
-<br>
-<br>
-<div>
-
-<!-- 선착순 / 수락대기 -->
-	<select id="recruitoption" name="recruitoption" style=" border-radius:10px; background:transparent; padding:10px; margin:5px; color:white;">
-        <option value="0">선착순</option>
-        <option value="1">수락대기</option>
-    </select>
-</div> <br>
-
-<!-- 시작 날짜 및 시간 -->
-<div>
-<label for="reservedate" style="color:white;">시작시간</label> <br>
-<input type="datetime-local" id="reservedate_input" name="reservedate_input" style="background:transparent;color:white;">
-</div> <br>
-
-<!-- 예상 플레이시간 -->
-<div>
-<label for="playtime_input" style="color:white;">플레이시간: </label>
-<span id="playtime_show" style="color:white;">30분</span><br>
-<span style="color:white;">30분</span><input type="range" min="30" step="30" value="30" max="360" id="playtime_input" oninput="playTimeFunction()"style="width:200px"/><span style="color:white;">6시간</span><br>
-<input type="number" id="playtime" name="playtime" value="30" style="display:none">
-</div> <br>
-<script>
 	function playTimeFunction() {
 		let val = document.getElementById('playtime_input').value;
 		if (val == 30) {
@@ -311,14 +363,6 @@ $(function(){
 		$("input#playtime").val(no);
 	})
 </script>
-
-<!-- 유료, 무료 / 참가비 -->
-<div>
-<label for="price" style="color:white;">참가비</label> <br>
-<input type="number" min="0" step="5" max="1000" placeholder="0" value="0" id="price_input" name="price_input" disabled>
-<input type="hidden" id="price" name="price">
-</div> <br>
-<input type="checkbox" id="payedstate" name="payedstate"><span style="color:white;">유료</span> <br>
 <script>
 	document.getElementById('payedstate').onchange = function() {
 		if ($("input#payedstate").is(":checked") == true) {
@@ -337,68 +381,18 @@ $(function(){
 	});
 </script>
 
-<!-- ------------------------------------------------ -->
+<fieldset style="display:block; color:white; border:none; ">
 
-<!-- 썸네일 -->
-<h4 style="color:white;">대표영상 / 썸네일</h4>
-<button type="button" id="thumbnail_file">+ 파일</button><br>
-<input type="file" id="thumbnail_file" name="thumbnail_file" style="display:none"><br>
-<button type="button" id="thumbnail_url">+ URL</button><br>
-<!-- <span>입력한 주소</span> -->
-<div id="modal" class="modal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.3);">
-	<div id="modal_content" class="modal" style="background-color:#323232; margin:15%auto; padding:20px; border:1px solid #888; width:50%; text-align:center; box-shadow:2px 2px 2px 2px black, 0 0 25px grey;">
-		<span style="color:white;">URL: <input type="text" id="thumbnail_url_input" style="color:white; background-color:#707070">
-		<button type="button" id="url_input_btn">입력</button>
-		<button type="button" id="modal_close">닫기</button> </span>
-	</div>
-</div>
-<input type="text" id="filename" name="filename" style="display:none">
-<script>
-	/* 버튼 - 파일업로드 연동 */
-	$("button#thumbnail_file").click(function() {
-		$("input#thumbnail_file").click();
-	});
-
-	/* 모달창 코드 */
-	var btn = document.getElementById("thumbnail_url");
-	var modal = document.getElementById('modal');
-	var close = document.getElementById('modal_close');
-	btn.onclick = function() {
-		modal.style.display = "block";
-	}
-	close.onclick = function() {
-		/* $("input#thumbnail_url_input").val(''); */
-		modal.style.display = "none";
-	}
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			$("input#thumbnail_url_input").val('');
-			/* modal.style.display = "none"; */
-			close.click();
-		}
-	}
-
-	$("button#url_input_btn").click(function() {
-		if ($("input#thumbnail_url_input").val().length == 0) {
-			alert('url이 입력되지 않았습니다');
-		} else {
-			$("input#filename").val($("input#thumbnail_url_input").val());
-			console.log($("input#filename").val());
-			$("button#modal_close").click();
-		}
-	});
-</script>
-
-<!-- 스쿼드 설명 글 -->
-<div>
-<span style="color:white;">스쿼드 설명<button type="button" id="tagsBtn">+ 태그</button> <input type="text" style="display:none" id="tags" name="tags" value="defaultTag"><br></span>
-<span>
-<textarea id="contents" name="contents" style="width:500px; height:300px; resize:none; border:1px solid white; border-radius:10px; background:transparent; padding:10px; margin:5px; color:white;">
+<div id="contentsInputItems" style="display:block;">
+<label for="contentsInput" style="color:white;display:inline-block;">스쿼드 설명 </label>&emsp;<span id="inputlength" style="color:white;display:inline-block;"> </span><span style="color:white;display:inline-block;">/500</span>
+<textarea class="contentsInput"id="contents" name="contents" style="display:block;width:500px; height:110px; resize:none; border:1px solid white; border-radius:10px; background:transparent; padding:10px; margin:5px; color:white;">
 스쿼드 목적, 준비사항 등 스쿼드에 대해 자세히 설명해주세요(10자이상)</textarea>
-</span>
-<br>
-<span id="inputlength" style="color:white;"> </span><span style="color:white;">/500</span>
 </div>
+<div>
+<button id="squadInsert" type="submit" style="border:none;background:#035AA6;color:white; margin-left: 40%;">등록</button>
+</div>
+
+</fieldset>
 <script>
 	$("textarea#contents").focus(function() {
 		$("textarea#contents").text("");
@@ -417,8 +411,6 @@ $(function(){
 	});
 </script>
 
-<!-- form.submit 버튼 -->
-<button id="squadInsert" type="submit">등록</button>
 </form>
 </body>
 </html>
