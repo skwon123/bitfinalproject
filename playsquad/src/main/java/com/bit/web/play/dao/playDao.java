@@ -208,10 +208,15 @@ public class playDao extends SqlSessionDaoSupport{
 	}	
 
 	
+	// 사용자 정보 insert
+	public String insertMyInfo(membersBean bean) {
+		return this.getSqlSession().selectOne("insertMyInfo", bean);
+	}
 	
-	
-	
-	
+	//사용자 정보 select
+	public List<membersBean> selectMyInfo(String id) {
+		return this.getSqlSession().selectList("selectMyInfo", id);
+	}
 	
 	// 기타?
 	// 유저 아이디로 회원번호 return

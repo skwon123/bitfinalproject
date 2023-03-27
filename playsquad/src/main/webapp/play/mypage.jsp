@@ -43,16 +43,15 @@
 	<!--header  -->
 
 	<main>
-		<div class="center"
-			style="height: 400px; min-width: 400px; margin-left: 200px; margin-bottom: 100px">
-			<img src="${profile_img}"
-				style="width: 250px; height: 200px; margin-top: 30px;" />
-			<!-- <span class="rate">평점</span>-->
+		<div class="contents-list"
+			style="height: 300px; min-width: 400px; margin-left: 200px; margin-bottom: 100px">
 			<div class="text">
-				<h3 style="margin-left: 450px; margin-top: 30">/ 5.0</h3>
-				<h3 style="margin-left: 450px; margin-top: 30">0 Hosted</h3>
-				<h3 style="margin-left: 450px; margin-top: 30">0 Followers</h3>
-
+				<c:forEach var="i" items="${info}" varStatus="cnt">
+				<img src="/web/resources/img/play/upload/profile/${i.profile_img}" style="width: 250px; height: 200px; margin-top: 30px;" />
+				<h3 style="margin-left: 420px; margin-top: 30">평점: ${i.grade} / 5.0</h3>
+				<h3 style="margin-left: 420px; margin-top: 30">0 Hosted</h3>
+				<h3 style="margin-left: 420px; margin-top: 30">${i.follow_cnt} Followers</h3>
+				</c:forEach>
 			</div>
 
 			<!--             <div class= "text"> -->
@@ -69,19 +68,19 @@
 				</span>
 
 			</div>-->
-			<div class="buttons">
+			<div class="buttons" align="left">
 				<!--<button class="btn" style="background-color: #141414"><a href="profile.jsp"></a>
 					<i class="fa-sharp fa-solid fa-gear"></i><span>프로필 수정</span>
 					
 				</button>-->
 				<a class="button" href="profile.jsp">프로필 수정</a>
 
-				<button class="btn" style="background-color: #141414;">
+				<!--<button class="btn" style="background-color: #141414;">
 					<i class="fa-solid fa-person"></i><span>팔로우</span>
 				</button>
 				<button class="btn" style="background-color: #141414;">
 					<i class="fa-sharp fa-solid fa-gamepad"></i><span>스쿼드 예약</span>
-				</button>
+				</button>-->
 			</div>
 		</div>
 

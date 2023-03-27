@@ -411,9 +411,28 @@ public class playController {
 		@RequestMapping(value="GuestReviewSelect", method=RequestMethod.GET)
 		public String GuestReviewSelect(Model model, String id) {
 			model.addAttribute("review", dao.selectGuestReview1(id));
+			model.addAttribute("info", dao.selectMyInfo(id));
 			//model.addAttribute("reviewList", dao.selectGuestReview1(writer_id));
 			System.out.println(model);
 			return "play/mypage";
 		}
+		
+		@RequestMapping(value="insertMyInfo", method = RequestMethod.POST)
+		public String insertMyInfo(membersBean bean, Model model, @RequestParam String members_id) {
+			bean.setMembers_id(members_id);
+			System.out.println(bean); //콘솔에 뿌림
+			dao.insertMyInfo(bean); //insert
+			return "play/mypage";
+
+		}
+		
+		//마이페이지 - 평점, 팔로워 수 
+		@RequestMapping(value="selectMyInfo", method=RequestMethod.GET)
+		public String selectMyInfo(Model model, String id) {
+			model.addAttribute("info", dao.selectMyInfo(id));
+			System.out.println(model);
+			return "play/mypage";
+		}
+		
 		
 }
