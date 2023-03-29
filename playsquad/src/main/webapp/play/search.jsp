@@ -61,8 +61,8 @@ $(function(){
 	<jsp:include page="testHeader.jsp"></jsp:include>
 
 <form action="listPageSearch" method="get">
-	<div align="center" style="margin:200px; color:black; background:#141414;">
-		<select id="query" name="query" >
+	<div align="center" style="margin:100px; color:black; ">
+		<select id="query" name="query" style="background:#141414;">
 		    <option selected="selected" value="empty">선택하세요</option>
 		   
 	        <option value="hostname">호스트</option>
@@ -70,31 +70,21 @@ $(function(){
 
 		</select>
 		
-		<input type="text" name="data" id="data" class="inputText" size="30" />
+		<input type="text" name="data" id="data" class="inputText" size="30" style="background:#141414;"/>
 		<span class="button" id="search"><a href="#">검색</a></span>
 	</div>
-
-	
-		<table class="bbsWrite mgb35">
-			<caption></caption>
-			<colgroup style="margin:200px;">
-				<col width="30" />
-				<col width="100" />
-				<col width="100" />
-				<col width="100" />
-				<col width="100" />
-				<col width="100" />		
-			</colgroup>
-		</table><!-- formend -->
 		</form>
+	
+	<div align="center" style="margin">
+	
+		<table class="bbsList" >
 
-		<table class="bbsList">
 			<colgroup>
-				<col width="120" />
-				<col width="120" />
-				<col width="120" />
-				<col width="120" />
-				<col width="120" />
+				<col width="150" />
+				<col width="150" />
+				<col width="150" />
+				<col width="150" />
+				<col width="150" />
 					
 			</colgroup>
 			<thead>
@@ -114,11 +104,11 @@ $(function(){
 
 		<c:forEach items="${list}" var="list">
 			<tr>
-				<td>${list.gamegenre_no}</td>
+				<td>${list.gamegenre_name}</td>
 				<td>${list.hostname}</td>
 				<td>${list.contents}</td>
 				<td>${list.playtime}</td>
-				<td>${list.regdate}</td>		
+				<td>${list.reservedateT}</td>		
 			</tr>
 		</c:forEach>
 
@@ -126,7 +116,7 @@ $(function(){
 	</tbody>
 
 </table>
-
+</div>
 
 
 

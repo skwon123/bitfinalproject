@@ -93,11 +93,11 @@ $(function(){
         }
      });
     $("button#write").click(function(){
-    	var puw = 600;
-    	var puh = screen.height*4/5;
+    	var puw = 580;
+    	var puh = 800;
     	var pul = (screen.width/2)-(puw/2);
     	var put = (screen.height/2)-(puh/2);
-    	window.open('/web/newsquadLoadingAction', '..', 'width='+puw+', height='+puh+', top='+put+', left='+pul+', resizable=no');
+    	window.open('/web/newsquadLoadingAction', '..', 'width='+puw+', height='+puh+', top='+put+', left='+pul+'');
     	
     });
     
@@ -126,7 +126,7 @@ $(function(){
 		
 	<div class="banner_right" style="flex-grow:2; float:right; text-align:right;">	
 		<span class="search">
-			<input type="text" style="height:40px;width:200px; background-color: #141414; border:1; border-color:white;" placeholder="" />
+
 					
 					<a type="button" href="search.jsp"> 
 						<i class="fa-solid fa-magnifying-glass"></i>
@@ -173,7 +173,6 @@ $(function(){
 	</div>
 	<div class="banner_right" style="flex-grow:2; float:right; text-align:right;">	
 		<span class="search">
-			<input type="text" placeholder="" />
 					<i class="fa-solid fa-magnifying-glass"></i>
 		</span>
 

@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		genre2 = #{genre2},
 		aboutme = #{aboutme}
 		<choose>
-			<when test="profile_img !=null">
+			<when test="profile_img != null">
 				,profile_img=#{profile_img}
 			</when>
 		</choose>
@@ -109,50 +109,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="regdate" column="reg" />
 	</resultMap>
 
-	<select id="selectBoardList"
-		resultType="com.bit.web.play.vo.squadboardBean"
-		resultMap="selectBoardID" parameterType="HashMap">
-		select gamegenre_no, members_id, hostname, title, contents, playtime,
-		regdate
-		from squadboard
-		<if test="query != null and data != null">
-			where ${query} LIKE '%'||#{data}||'%'
-		</if>
-	</select>
+	   <select id="selectBoardList" resultType="com.bit.web.play.vo.squadboardBean" resultMap="selectBoardID" parameterType="HashMap">
+   select  (gg.name) gamegenre_name, sb.members_id, sb.hostname, sb.title, sb.contents, sb.playtime, to_char(sb.regdate, 'YY/MM/DD') reservedateT
+      from squadboard sb, gamegenre gg
+      where sb.gamegenre_no = gg.gamegenre_no
+
+      <if test="query != null and data != null">
+          and ${query} LIKE '%'||#{data}||'%'
+      </if> 
+   </select>
 	<!-- -->
 
 	<!-- 메인페이지 -->
 
 	<!-- 메인페이지 모집중인 스쿼드 -->
-	<select id="squadstate0Select"
-		resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE,
-		SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE,
-		SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
-		GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
-		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
-		FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
-		WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
-		SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
-		SB.MEMBERS_ID ORDER BY SB.SQUADBOARD_NO DESC
-	</select>
-	<!-- 메인페이지 인기 스쿼드 팔로워순 -->
-	<select id="squadPopularSelect"
-		resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE, SB.USER_ACCEPTCNT,
-		SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE, SB.RESERVEDATE, SB.PRICE,
-		SB.FILENAME,
-		GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
-		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
-		FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
-		WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
-		SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
-		SB.MEMBERS_ID ORDER BY MB.FOLLOW_CNT DESC
-	</select>
-
-	<!-- 메인페이지 > 인기게임 리스트 검색 -->
-	<select id="popularGameListSelect"
-		resultType="com.bit.web.play.vo.gamegenreBean">
+<select id="squadstate0Select" resultType="com.bit.web.play.vo.squadboardBean">
+SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE, SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE, SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
+GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
+FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO = SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID = SB.MEMBERS_ID ORDER BY SB.SQUADBOARD_NO DESC
+</select>
+<!-- 메인페이지 인기 스쿼드 팔로워순 -->
+<select id="squadPopularSelect" resultType="com.bit.web.play.vo.squadboardBean">
+SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE, SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE, SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
+GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
+FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO = SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID = SB.MEMBERS_ID ORDER BY MB.FOLLOW_CNT DESC
+</select>
+	
+	<!-- 메인페이지 > 인기게임 리스트 검색-->
+	<select id="popularGameListSelect" resultType="com.bit.web.play.vo.gamegenreBean">
 		SELECT GAMEGENRE_NO, NAME, GAME_IMG, SQUAD_CNT
 		FROM
 		GAMEGENRE
@@ -379,7 +365,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectMyInfo" 
 		resultType="com.bit.web.play.vo.membersBean">
-		select m.profile_img as profile_img, m.grade as grade,
+		select m.nickname as nickname, m.profile_img as profile_img, m.grade as grade,
 		m.follow_cnt as follow_cnt
 		from members m
 		where m.members_id = #{VALUE}

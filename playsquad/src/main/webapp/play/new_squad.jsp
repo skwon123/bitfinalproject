@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>스쿼드 만들기</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- FLATPICKR -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 <%-- <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/play/index.css"> --%>
 <style>
@@ -283,6 +289,7 @@ $(function(){
 <div id="timeArea" style="display:inline-block;margin-left:30px;margin-bottom:10px;">
 <label for="reservedate" style="color:white;">시작시간</label> <br>
 <input type="datetime-local" id="reservedate_input" name="reservedate_input" style="background:transparent;color:white;">
+
 <br><br>
 <!-- 예상 플레이시간 -->
 <label for="playtime_input" style="color:white;">플레이시간: </label>
@@ -330,6 +337,7 @@ $(function(){
 					return false;
 				});
 	});
+	/* 최대 최소 모집인원 범위 설정 */
 	function maxcntCheckFunc(){
 		var maxcntInput = document.getElementById("user_maxcnt").value;
 		if(maxcntInput > 20){
@@ -340,6 +348,43 @@ $(function(){
 			document.getElementById("user_maxcnt").value = 1;
 		}
 	}
+	/* 예약시간 최소값 sysdate로 설정 */
+	$(document).ready(function(){	
+ 		const now = new Date();
+		const nowyear = now.getFullYear();
+		const nowmonth = String(now.getMonth() + 1).padStart(2, '0');
+		const nowday = String(now.getDate()).padStart(2, '0');
+		const nowhour = String(now.getHours()).padStart(2, '0');
+		const nowminute = String(now.getMinutes()).padStart(2, '0');
+		const nowsecond = String(now.getSeconds()).padStart(2, '0');
+		/* const datetimeLocalValue = `${nowyear}-${nowmonth}-${nowday}T${nowhour}:${nowminute}:${nowsecond}`; */
+		/* if(nowminute%10!=0){
+			
+		} */
+		const dateTimeInput = document.getElementById("reservedate_input");
+		const minute_10min = Math.ceil(now.getMinutes() / 10) * 10;
+		const defaultDateValue = new Date(nowyear, nowmonth - 1, nowday, nowhour, minute_10min);
+		flatpickr(dateTimeInput, {
+		    enableTime: true,
+		    minDate: `'\${nowyear}-\${nowmonth}-\${nowday}T\${nowhour}:\${nowminute}:\${nowsecond}'`,
+		    defaultDate: defaultDateValue,
+		    disable: [
+		      { from: '2022-12-12',
+		        to: `'\${nowyear}-\${nowmonth}-\${nowday}'`
+		      }
+		    ],
+			minuteIncrement: 10,
+			onValueUpdate: function(selectedDates, dateStr, instance) {
+			      const minute = instance.selectedDateObj? instance.selectedDateObj.getMinutes() : null;
+			      if (minute !== null && minute % 10 != 0) {
+			        instance.setDate(instance.selectedDateObj.setMinutes(minute + (10 - (minute % 10))));
+			      }
+			    }
+		  });
+		
+		});
+
+	/* 분단위로 받은 input을 n시간n분으로 바꿔줌 */
 	function playTimeFunction() {
 		let val = document.getElementById('playtime_input').value;
 		if (val == 30) {
@@ -357,13 +402,13 @@ $(function(){
 		console.log($("input#playtime").val());
 		/*  $("#playtime_output").text(playtime_output); */
 	}
+	/* 예상플레이시간 설정시 화면에 표시 */
 	$(function() {
-		/* 예상플레이시간 설정시 화면에 표시 */
 		var no = $("span#playtime_input").val();
 		$("input#playtime").val(no);
 	})
-</script>
-<script>
+	
+	/* 무료, 유료 설정 */
 	document.getElementById('payedstate').onchange = function() {
 		if ($("input#payedstate").is(":checked") == true) {
 			console.log('유료');

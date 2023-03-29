@@ -161,7 +161,7 @@ public class playController {
 		// price - view¿¡¼­ °¡Á®¿È
 		// payedstate - view¿¡¼­ °¡Á®¿È
 		// filename
-		String uploadLoc = "C:\\project\\com.bit.web.play\\src\\main\\webapp\\resources\\img\\play\\upload\\";
+		String uploadLoc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//board//";
 		FileOutputStream fos = null;
 		String originFileName = file.getOriginalFilename();
 		if(originFileName.length() > 0) {
@@ -273,14 +273,15 @@ public class playController {
 //	    	return "play/mypage";
 //	    }
 	    
-		@RequestMapping(value = "/play/updateProfile", method = RequestMethod.POST )
+		@RequestMapping(value = "updateProfile", method = {RequestMethod.POST, RequestMethod.GET})
 		public String updateProfile(membersBean bean,
-				@RequestParam(value = "profileimg", required = false, defaultValue = "profileimg") MultipartFile file) {
-	       
-			String loc = "C:\\Users\\BIT\\git\\bitProject\\sample\\src\\main\\webapp\\resources\\img\\play\\upload\\";
-			
+				@RequestParam(value = "profileimg", required = false, defaultValue = "profileimg") MultipartFile file, HttpServletRequest req) {
+			HttpSession session = req.getSession();
+			String userId = (String)session.getAttribute("userId");
+			String loc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//profile//";
 			FileOutputStream fos = null;
 			String orginFile = file.getOriginalFilename();
+			System.out.println(orginFile);
 			if (orginFile.length() > 0) {
 				try {
 					fos = new FileOutputStream(loc + orginFile);
@@ -293,9 +294,9 @@ public class playController {
 
 			}
 			playService.postViewProfile(bean);
-	    	 
+	    	System.out.println(orginFile);
 	    	System.out.println(bean);
-	    	return "play/mypage";
+	    	return "redirect:/GuestReviewSelect?id="+userId;
 			
 			}
 

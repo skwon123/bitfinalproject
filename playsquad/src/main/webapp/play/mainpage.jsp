@@ -119,6 +119,8 @@
  				   console.log(s);
  				  for (var j=0; j < s.length; j++){
 					   var eachFilename = s[j].filename;
+					   var eachSquadboardNo = s[j].squadboard_no;
+ 					   var eachHostId = s[j].members_id;
 					   var ext = eachFilename.slice(-3);
 					   var imgSrc = '/web/resources/img/play/upload/'+eachFilename;
 					   var eachProfile = s[j].members_profile_img;
@@ -134,7 +136,8 @@
 					   var div = document.createElement('div');
 					   div.className='item';
 					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
-	 					    div.innerHTML = `<img src="/web/resources/img/play/upload/board/\${eachFilename}"><br>
+	 					    div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}"></a><br>
 	 					    	<table style="text-align:center; width:250px;">
 	 					    	  <thead>
 	 					    	  </thead>
@@ -207,6 +210,8 @@
  				   console.log(s);
  				   for (var j=0; j < s.length; j++){
  					   var eachFilename = s[j].filename;
+ 					   var eachSquadboardNo = s[j].squadboard_no;
+					   var eachHostId = s[j].members_id;
  					   var ext = eachFilename.slice(-3);
  					   var imgSrc = '/web/resources/img/play/upload/'+eachFilename;
 					   var eachProfile = s[j].members_profile_img;
@@ -222,7 +227,8 @@
  					   var div = document.createElement('div');
  					   div.className='item';
  					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
-	 					    div.innerHTML = `<img src="/web/resources/img/play/upload/board/\${eachFilename}"><br>
+	 					    div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}"></a><br>
 	 					    	<table style="text-align:center; width:250px;">
 	 					    	  <thead>
 	 					    	  </thead>

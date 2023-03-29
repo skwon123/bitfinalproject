@@ -20,26 +20,12 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>TogetherSquad</title>
 	
-	<!-- Bootstrap Core CSS -->
-	
-	<link href="/web/resources/boardFront/css/bootstrap.min.css"
-		rel="stylesheet">
-	
-	<!-- Custom CSS -->
-	<!-- <link href="css/login.css" rel="stylesheet"> -->
-	<link href="/web/resources/boardFront/css/clean-blog.css"
-		rel="stylesheet">
-	
-	<!-- Custom Fonts -->
-	<link
-		href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-		rel="stylesheet" type="text/css">
-	<link
-		href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic'
-		rel='stylesheet' type='text/css'>
-	<link
-		href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet"
+		href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+		integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath}/resources/css/play/index.css">
@@ -52,54 +38,23 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript"></script>
 
-<script type="text/javascript">
+<script>
 
+function previewImage() {
+	  const preview = document.getElementById('preview');
+	  const file = document.getElementById('profileimg').files[0];
+	  const reader = new FileReader();
 
-    //이미지 미리보기
-    $(document).ready(function () {
-        $("#profile_img").on("change", handleImgFileSelect);
+	  reader.onloadend = function() {
+	    preview.src = reader.result;
+	  }
 
-//         //포로필 업데이트
-//         $("#sendButton").click(function () {
-//             if ($("input[name='nickname']").val().length != 0
-//                 || $("input#genre1").val().length != 0
-//                 || $("input#genre2").val().length != 0
-//                 || $("input#tel").val().length != 0
-//                 || $("input#email").val().length != 0
-//                 || $("input#aboutme").val().length != 0
-//             ) {
-//                 return false;
-
-// 		{if($("[type='password']").val().length==0|| $("textarea").val().length==0){
-// 			 alert('password or textarea Check!');
-// 			 $("[type='password']").val('');
-// 			 $("textarea").val('');
-// 			 return false;
-//             }
-
-//             $("form").submit();
-        });
-
-
-    function handleImgFileSelect(e) {
-        let files = e.target.files;
-        let filesArr = Array.prototype.slice.call(files);
-
-        let reg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
-
-        filesArr.forEach(function (f) {
-            if (!f.type.match(reg)) {
-                alert("확장자는 이미지 확장자만 가능합니다.");
-                return;
-            }
-
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                $("#img").attr("src", e.target.result);
-            }
-            reader.readAsDataURL(f);
-        });
-    }
+	  if (file) {
+	    reader.readAsDataURL(file);
+	  } else {
+	    preview.src = "";
+	  }
+	}
 </script>
 
 
@@ -108,7 +63,7 @@
 $(function () {
 
 	//포로필 업데이트
-	$("a#sendButton").click(function() {
+	$("button#sendButton").click(function() {
 		if($("input#nickname").val().length == 0
 		
         ) {
@@ -128,23 +83,38 @@ $(function () {
 <body>
 <jsp:include page="testHeader.jsp"></jsp:include>
 
-<form action="updateProfile" method="post" enctype="multipart/form-data">
+<form action="/web/updateProfile" method="POST" enctype="multipart/form-data">
 	
-	
-    <main>
-        <div class="profile1" align="center">
-            <img name="profile_img" style="max-width: 12%; height: auto; margin-top:70px; background-color: #141414;"/>
-            <div>
-                <label for="profile_img"></label>
-                <input type="hidden" name="profile_img" id="profile_img" value="${view.profile_img}" />
-                <input type="file" name="profileimg" id="profileimg" size="50"/>
-
-			</div>            
-            </div>
-    </main>
+	<div align="center">
+    <table>
+        <tr>
+        <th width="150">변경 전</th>
+        <th width="150">변경 후</th>
+        </tr>
     
-<%--     ${view } --%>
- 
+    	<tr>    
+         <th><img src="/web/resources/img/play/upload/profile/${view.profile_img}" style="width:300px; height::150px"/></th>
+         
+         <th>
+         <img id="preview" src="" style="width:300px; height::auto">
+         <br><img id="preview" src="" style="width:300px; height::auto">
+         </tr>        	          
+        
+        <tr>
+        <th></th>
+        
+        <th align="center">
+        <input type="file" name="profileimg" id="profileimg"  onchange="previewImage()" style="width:300px; height::150px"/>
+        </th>
+        </tr>    
+            
+    </table>
+   </div> 
+
+<!--   <input type="file" id="imageFile" name="imageFile" onchange="previewImage()"> -->
+<!--   <img id="preview" src="" alt="Preview Image"> -->
+
+
         <div class="profile" style="font-style: white; border:1; border-color=white">
         
         <div>
@@ -254,7 +224,8 @@ $(function () {
                 
       
 				<textarea  style="background-color: #141414; margin-top:10px; width:300px; height: 400px" 
-				id="aboutme" name="aboutme" placeholder="   자기소개">
+				id="aboutme" name="aboutme"  placeholder="   자기소개">${view.aboutme}
+	
 				
 				</textarea> 
                 
@@ -270,8 +241,8 @@ $(function () {
                        id="password2" name="password2" placeholder="  비밀번호 변경"/>
                 <input type="hidden" name="password" id="password" value="" class="form-control"/>
             </div>
-            <div class="form-group" align="center">
-                <a id="sendButton" href="#" class="btn btn-sm btn-info btn-block" style="font-size: 1.2rem; width:300px; height: 30px">확인</a>
+            <div class="form-group" align="center" style="magin-top:40px">
+                <button id="sendButton" type="button" class="btn btn-sm btn-info btn-block" style="font-size: 1.2rem; width:300px; height: 20px">확인</button>
             </div>
         </div>
 
