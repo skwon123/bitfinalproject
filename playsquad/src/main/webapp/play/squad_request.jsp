@@ -71,19 +71,13 @@
 				</h3>
 				<form name="squadRequset" id="squadRequset" method="POST" action="/web/squadRequsetAccept">
 
-					<div class="form-group" align="center">
-						<input type="hidden" style="background-color: #141414; margin-top:10px; width:300px; height: 50px" 
-						class="form-control" placeholder="게시판 번호"  name="squadboard_no" id="squadboard_no" value="${squad.squadboard_no}"/>
+					<div class="form-group" id="hiddenInput" align="center">
+						<input type="hidden" placeholder="게시판 번호"  name="squadboard_no" id="squadboard_no" value="${squad.squadboard_no}"/>
+						<input type="hidden" placeholder="아이디" name="members_id" id="members_id" value="${userId}"/>
+						<input type="hidden" placeholder="모집옵션" name="recruitoption" id="recruitoption" value="${squad.recruitoption}"/>
+						<input type="hidden" placeholder="수락된인원" name="userAcceptcnt" id="userAcceptcnt" value="${squad.user_acceptcnt}"/>
+						<input type="hidden" placeholder="최대인원" name="userMaxcnt" id="userMaxcnt" value="${squad.user_maxcnt}"/>
 					</div>
-					<div class="form-group" align="center">
-						<input type="hidden" style="background-color: #141414; margin-top:10px; width:300px; height: 50px" 
-						class="form-control" placeholder="아이디" name="members_id" id="members_id" value="${userId}"/>
-					</div>
-					<div class="form-group" align="center">
-						<input type="hidden" style="background-color: #141414; margin-top:10px; width:300px; height: 50px" 
-						class="form-control" placeholder="모집옵션" name="recruitoption" id="recruitoption" value="${squad.recruitoption}"/>
-					</div>
-					
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<button type="button" class="btn btn-sm btn-danger btn-block" id="btnCancel" style="background-color: #141414;" onclick="btnActive()">

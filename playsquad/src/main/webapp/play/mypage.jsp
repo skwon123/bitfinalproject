@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-   pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html>
 <html lang="kr">
@@ -41,12 +41,12 @@
 			<div class="text">
 				<c:forEach var="i" items="${info}" varStatus="cnt">
 				<img src="/web/resources/img/play/upload/profile/${i.profile_img}" style="width: 250px; height: 200px; margin-top: 30px;" /><br>
-				<!--<a class="button" href="/web/play/profile.jsp">га╥нгй ╪Жа╓</a>-->
+				<!--<a class="button" href="/web/play/profile.jsp">М■└К║°М∙└ Л┬≤Л═∙</a>-->
 				<button type="button" style="background-color: #141414;"
 				onclick="location.href='/web/play/viewProfile?id=${userId}'">
-				х╦©Ьа╓╨╦ ╪Жа╓</button>
+				М ▄Л⌡░Л═∙КЁ╢ Л┬≤Л═∙</button>
 				<h3 style="margin-left: 150px; margin-top: 30">${i.nickname}</h3>
-				<h3 style="margin-left: 150px; margin-top: 30">фРа║: ${i.grade} / 5.0</h3>
+				<h3 style="margin-left: 150px; margin-top: 30">М▐┴Л═░: ${i.grade} / 5.0</h3>
 				<h3 style="margin-left: 150px; margin-top: 30">0 Hosted</h3>
 				<h3 style="margin-left: 150px; margin-top: 30">${i.follow_cnt} Followers</h3>
 				</c:forEach>	
@@ -58,7 +58,7 @@
 
 	<section>
 		<div class="content-list" style="height: 200px; min-width: 1200px;">
-			<h1>╫ец╩ ╟║╢игя ╫╨дУ╣Е</h1>
+			<h1>Л▀═Л╡╜ Й╟─К┼╔М∙° Л┼╓Л©╪К⌠°</h1>
 	
 			<div class="slider">
 			<c:forEach var="j" items="${info}" varStatus="cnt">
@@ -78,7 +78,7 @@
 		</div>
 
 		<div class="content-list" style="height: 200px; min-width: 1200px;">
-			<h1>аж╥нго╢б ╟тюс</h1>
+			<h1>Лё╪К║°М∙≤К┼■ Й╡▄Л·└</h1>
 			<div class="slider">
 			<c:forEach var="k" items="${info}" varStatus="cnt">
 				<a href="/web/play/gamepage.jsp"> <img
@@ -95,7 +95,7 @@
 
 
 		<div class="content-list" style="height: 200px; min-width: 1200px;">
-			<h1>╟т╫╨ф╝ хд╠Б</h1>
+			<h1>Й╡▄Л┼╓М┼╦ М⌡└Й╦╟</h1>
 			<div class="list_cmt">
 				<div class="cmt_head"></div>
 				<div class="cmt_body">

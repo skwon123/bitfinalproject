@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -25,16 +25,16 @@
 	<jsp:include page="testHeader.jsp"></jsp:include>
 	<main>		
 			<div class="left" style="margin-bottom: 200px; margin-left:200px">
-			<h1>³» ½ºÄõµå</h1>
+			<h1>ë‚´ ìŠ¤ì¿¼ë“œ</h1>
 				<div class="buttons">
 				<button class="btn" style="background-color: #141414;">
-					<i class="fa-solid fa-people-arrows"></i><span>Âü¿©</span>
+					<i class="fa-solid fa-people-arrows"></i><span>ì°¸ì—¬</span>
 				</button>
 				<button class="btn" style="background-color: #141414;">
-					<i class="fa-solid fa-person"></i><span>È£½ºÆÃ</span>
+					<i class="fa-solid fa-person"></i><span>í˜¸ìŠ¤íŒ…</span>
 				</button>
 				<button class="btn" style="background-color: #141414;">
-					<i class="fa-solid fa-gear"></i><span>¼³Á¤</span>
+					<i class="fa-solid fa-gear"></i><span>ì„¤ì •</span>
 				</button>
 
 			</div>
@@ -46,35 +46,35 @@
 	<section>
 
 		<div class="left" style="margin-bottom: 200px; margin-left:200px">
-			<h1>Âü°¡ ÁßÀÎ ½ºÄõµå</h1>
+			<h1>ì°¸ê°€ ì¤‘ì¸ ìŠ¤ì¿¼ë“œ</h1>
 			
 		</div>
 
 		<div class="left" style="margin-bottom: 200px; margin-left:200px">
-			<h1>¿¹¾à ½ºÄõµå</h1>
+			<h1>ì˜ˆì•½ ìŠ¤ì¿¼ë“œ</h1>
 			<div align="center">	
 			<table style="width:100%">
 				<tr>
-					<th scope="col">½ÃÀÛ ½Ã°£</th>
-					<th scope="col">½ºÄõµå Á¦¸ñ</th>
-					<th scope="col">È£½ºÆ®</th>
-					<th scope="col">¸Þ¼¼Áö</th>
-					<th scope="col">»óÅÂ</th>
-					<th scope="col">Ã³¸®</th>
+					<th scope="col">ì‹œìž‘ ì‹œê°„</th>
+					<th scope="col">ìŠ¤ì¿¼ë“œ ì œëª©</th>
+					<th scope="col">í˜¸ìŠ¤íŠ¸</th>
+					<th scope="col">ë©”ì„¸ì§€</th>
+					<th scope="col">ìƒíƒœ</th>
+					<th scope="col">ì²˜ë¦¬</th>
 				</tr>
 			</table>
 			</div>
 		</div>
 		
 		<div class="left" style="margin-bottom: 200px; margin-left:200px">
-			<h1>Áö³­ ½ºÄõµå</h1>
+			<h1>ì§€ë‚œ ìŠ¤ì¿¼ë“œ</h1>
 			<table style="width: 100%">
 				<tr>
-					<th scope="col">½ÃÀÛ ½Ã°£</th>
-					<th scope="col">Å¸ÀÔ</th>
-					<th scope="col">½ºÄõµå Á¦¸ñ</th>
-					<th scope="col">»óÅÂ</th>
-					<th scope="col">°Ô½ºÆ® ÈÄ±â</th>
+					<th scope="col">ì‹œìž‘ ì‹œê°„</th>
+					<th scope="col">íƒ€ìž…</th>
+					<th scope="col">ìŠ¤ì¿¼ë“œ ì œëª©</th>
+					<th scope="col">ìƒíƒœ</th>
+					<th scope="col">ê²ŒìŠ¤íŠ¸ í›„ê¸°</th>
 				</tr>
 			</table>
 		</div>

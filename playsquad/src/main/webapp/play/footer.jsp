@@ -21,11 +21,11 @@ $(function(){
 <body>
 
 <div style="position:fixed; bottom:5px; left:5px;">
-	<img src="../resources/img/play/chat.png" width="70" height="70" title="QnA">
+	<img src="/web/resources/img/play/chat.png" width="70" height="70" title="QnA">
 </div>
 
 <div style="position:fixed; bottom:5px; right:5px;">
-	<a href="#"><img src="../resources/img/play/top.png" width="40" height="40"  title="맨 위로"></a>
+	<a href="#"><img src="/web/resources/img/play/top.png" width="40" height="40"  title="맨 위로"></a>
 </div>
 
 

@@ -173,7 +173,13 @@ $(function(){
 	</div>
 	<div class="banner_right" style="flex-grow:2; float:right; text-align:right;">	
 		<span class="search">
-					<i class="fa-solid fa-magnifying-glass"></i>
+
+					
+					<a type="button" href="/web/play/search.jsp"> 
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</a>
+					
+	
 		</span>
 
 		<span class="my_page">

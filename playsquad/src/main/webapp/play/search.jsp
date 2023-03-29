@@ -1,44 +1,39 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+   pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+   content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>SquadBoard</title>
+<title>mypage</title>
 <link rel="stylesheet"
-	href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+   href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-	integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+   integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+   crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/play/index.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-	integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-	crossorigin="anonymous">
+   href="${pageContext.request.contextPath}/resources/css/play/index.css">
+
 
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
         
 </script>
 
 <head>
-<title>Й╡▄Л▀°К╛╪ К╙╘К║²</title>
+<title>╟т╫ц╧╟ ╦Я╥о</title>
 
 <script>
 $(function(){
@@ -63,15 +58,15 @@ $(function(){
 <form action="listPageSearch" method="get">
 	<div align="center" style="margin:100px; color:black; ">
 		<select id="query" name="query" style="background:#141414;">
-		    <option selected="selected" value="empty">Л└═М┐²М∙≤Л└╦Л ■</option>
+		    <option selected="selected" value="empty">╪╠ецго╪╪©Д</option>
 		   
-	        <option value="hostname">М≤╦Л┼╓М┼╦</option>
-		    <option value="title">Л╩╗М┘░Л╦═</option>
+	        <option value="hostname">хё╫╨ф╝</option>
+		    <option value="title">даеыцВ</option>
 
 		</select>
 		
 		<input type="text" name="data" id="data" class="inputText" size="30" style="background:#141414;"/>
-		<span class="button" id="search"><a href="#">Й╡─Л┐┴</a></span>
+		<span class="button" id="search"><a href="#">╟к╩Ж</a></span>
 	</div>
 		</form>
 	
@@ -91,11 +86,11 @@ $(function(){
 			
 
 			<tr>
-				<th scope="col" class="fir">Й╡▄Л·└</th>   
-				<th scope="col">К▀┴К└╓Л·└</th>
-				<th scope="col">Л╩╗М┘░Л╦═</th>
-				<th scope="col">Й╡▄Л·└Л▀°Й╟└</th>
-				<th scope="col">Л▀°Й╟└</th>
+				<th scope="col" class="fir">╟тюс</th>   
+				<th scope="col">╢пЁвюс</th>
+				<th scope="col">даеыцВ</th>
+				<th scope="col">╟тюс╫ц╟ё</th>
+				<th scope="col">╫ц╟ё</th>
 
 			</tr>
 			</thead>
