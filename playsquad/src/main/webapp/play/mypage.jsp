@@ -30,6 +30,11 @@
    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <body>
 
+<script>
+function showPopup(){
+	window.open("/web/play/review.jsp", "a", "width=600, height=400, left=200, top=100"); 
+}
+</script>
 
 	<!--header  -->
 	<jsp:include page="testHeader.jsp"></jsp:include>
@@ -45,6 +50,12 @@
 				<button type="button" style="background-color: #141414;"
 				onclick="location.href='/web/play/viewProfile?id=${userId}'">
 				회원정보 수정</button>
+				<button class="btn" style="background-color: #141414;" onclick="showPopup();">
+					<i class="fa-sharp fa-solid fa-pen" ></i><span>후기 작성</span>
+				</button>
+				<button class="btn" style="background-color: #141414;">
+					<i class="fa-solid fa-people-arrows" ></i><span>팔로우</span>
+				</button>
 				<h3 style="margin-left: 150px; margin-top: 30">${i.nickname}</h3>
 				<h3 style="margin-left: 150px; margin-top: 30">평점: ${i.grade} / 5.0</h3>
 				<h3 style="margin-left: 150px; margin-top: 30">0 Hosted</h3>
@@ -112,27 +123,6 @@
 				<div class="cmt_foot"></div>
 			</div>
 		</div>
-
-		<!--<div class="list-group">
-				
-				<c:forEach items="${review}" var="i" varStatus="cnt">	
-			
-				<div class="title">
-						<a href="/web/GuestReviewSelect?no=${i.hostreview_no}" style="color:white;">
-							${i.title}<span class="badge">New</span>
-						</a>
-					</div>
-					
-					<div class="board-meta" style="font-weight: 400; font-size: 1.2rem; color: #141414;">
-						<p>
-							<i class="glyphicon glyphicon-time"></i>${i.regdate}
-						</p>
-					</div>
-				
-				</c:forEach>
-				
-				
-		</div>-->
 
 
 	</section>

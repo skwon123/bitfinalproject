@@ -9,6 +9,8 @@ public class acceptwaittingBean {
 	private int acceptwaitting_no;
 	private int squadboard_no;
 	private String members_id;
-	private Date regdate;
-
+	private Object regdate;
+	
+	private String members_nickname;
+	private String members_profile_img;
 }

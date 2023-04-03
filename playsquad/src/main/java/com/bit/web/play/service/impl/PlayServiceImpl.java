@@ -97,8 +97,8 @@ public class PlayServiceImpl implements PlayService {
      * 마이 페이지 > 게스트 후기 > 데이터 넣기
      */	
 	@Override
-	public String insertGuestReview(GuestReviewBean bean) {
-		return dao.insertGuestReview(bean);
+	public void insertGuestReview(GuestReviewBean bean) {
+		dao.insertGuestReview(bean);
 	}
 	/*
      * 마이 페이지 > 게스트 후기 > 호스트리뷰 검색(작성자 기준) 
@@ -248,6 +248,13 @@ public class PlayServiceImpl implements PlayService {
 		dao.updateSB_acceptcnt_decrease(squadboardno);
 	}
 	/*
+     * 스쿼드 게시판 페이지 > 참가버튼 > 참가자수 비교
+     */
+	@Override
+	public String selelctCompareUserCnt(int squadboardno) {
+		return dao.selelctCompareUserCnt(squadboardno);
+	}
+	/*
      * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(참가기록 테이블)
      */	
 	@Override
@@ -264,15 +271,89 @@ public class PlayServiceImpl implements PlayService {
 	/*
      * 스쿼드 게시판 페이지 > Ajax검색(예약시간)
      */	
+	@Override
 	public String selectReserveDate(int squadboardno) {
 		return dao.selectReserveDate(squadboardno);
 	}	
 	/*
      * 스쿼드 게시판 페이지 > 상태 수정
      */	
-	public void updateSquadState(int squadboardno) {	
-		 dao.updateSquadState(squadboardno);
+	@Override
+	public void updateSquadState(HashMap<String, Object>map) {	
+		 dao.updateSquadState(map);
 	}
+	
+	/*
+	 *  내 스쿼드 페이지 > 게스트 기준 진행 전 스쿼드 검색
+	 */
+	@Override
+	public List<squadboardBean>selectParticipationSquad(String hostId) {
+		return dao.selectParticipationSquad(hostId);
+	}
+	/*
+	 *  내 스쿼드 페이지 > 게스트 기준 참가 기록 
+	 */
+	@Override
+	public List<squadboardBean>selectGuestHistory(String hostId) {
+		return dao.selectGuestHistory(hostId);
+	}
+	/*
+	 *  내 스쿼드 페이지 > 호스트 기준 종료 전 스쿼드 검색
+	 */
+	@Override
+	public List<squadboardBean>selectHostingSquad(String hostId) {
+		return dao.selectHostingSquad(hostId);
+	}
+	/*
+	 *  내 스쿼드 페이지 > 호스트 기준 호스팅 기록
+	 */
+	@Override
+	public List<squadboardBean>selectHostingHistory(String hostId) {
+		return dao.selectHostingHistory(hostId);
+	}
+	/*
+	 * 삭제페이지(게스트) > 삭제버튼 > 수락대기 삭제  
+	 */
+	@Override
+	public void deleteAcceptWaittingGuest(HashMap<String, Object>map) {
+		dao.deleteAcceptWaittingGuest(map);
+	}
+	/*
+	 * 삭제페이지(게스트) > 삭제버튼 > 참가기록 삭제
+	 */
+	@Override
+	public void deleteSquadHistoryGuest(HashMap<String, Object>map) {
+		dao.deleteSquadHistoryGuest(map);
+	}
+	/*
+	 * 삭제페이지(호스트) > 삭제버튼 > 수락대기 삭제(조건게시판)  
+	 */
+	@Override
+	public void deleteAcceptWaittingSB(int squadboardno) {
+		dao.deleteAcceptWaittingSB(squadboardno);
+	}
+	/*
+	 * 삭제페이지(호스트) > 삭제버튼 > 참가기록 삭제(조건게시판)
+	 */
+	@Override
+	public void deleteSquadHistorySB(int squadboardno) {
+		dao.deleteSquadHistorySB(squadboardno);
+	}
+	/*
+	 *  호스팅관리페이지 > 참가신청 완료 인원 확인
+	 */
+	@Override
+	public List<squadboardBean>selectSquadHistoryNo(int squadboardno) {
+		return dao.selectSquadHistoryNo(squadboardno);
+	}
+	/*
+	 *  호스팅관리페이지 > 수락대기 인원 확인
+	 */
+	@Override
+	public List<squadboardBean>selectAcceptWaittingNo(int squadboardno) {
+		return dao.selectAcceptWaittingNo(squadboardno);
+	}
+	
 	/*
      * 공지사항 페이지 > 기본키 생성
      */	

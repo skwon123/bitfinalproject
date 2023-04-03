@@ -19,7 +19,7 @@
 			});
 		
 		$("button#btnSubmit").click(function(){
-			$("form#squadRequset").submit();
+			$("form#squadDelete").submit();
 			});
 		
 
@@ -60,44 +60,60 @@
     <![endif]-->
 </head>
 <body>
-
+<c:set var="no" value="${param.no}"></c:set>
+<c:set var="job" value="${param.job}"></c:set>
+<c:set var="work" value="${param.work}"></c:set>
+<c:set var="rc" value="${param.rc}"></c:set>
+	
 	<div class="container" style="margin-top: 15px" align="center">
 		<div class="row">
 			<div class="main" style="background-color:#141414">
+			<%-- no : ${no} / job : ${job} / work : ${work} / rc : ${rc} --%>	
+			<c:choose>
+			<c:when test="${param.job=='host'}">
+				<h3>정말 이 스쿼드를 <br> 삭제하시겠습니까?</h3>
+			</c:when>
+			<c:when test="${param.job=='guest'}">
+				<c:choose>
+				<c:when test="${param.rc==0}">
+					<h3>정말 이 스쿼드의 참가를 <br> 취소하시겠습니까?</h3>
+				</c:when>
+				<c:when test="${param.rc==1}">
+					<h3>정말 이 스쿼드의 대기를 <br> 취소하시겠습니까?</h3>
+				</c:when>
+				</c:choose>
 				
+			</c:when>
+			</c:choose>	
 				
-				<h3>
-					스쿼드 신청하기
-				</h3>
-				<form name="squadRequset" id="squadRequset" method="POST" action="/web/squadRequsetAccept">
-
-					<div class="form-group" id="hiddenInput" align="center">
-						<input type="hidden" placeholder="게시판 번호"  name="squadboard_no" id="squadboard_no" value="${squad.squadboard_no}"/>
-						<input type="hidden" placeholder="아이디" name="members_id" id="members_id" value="${userId}"/>
-						<input type="hidden" placeholder="모집옵션" name="recruitoption" id="recruitoption" value="${squad.recruitoption}"/>
-						<input type="hidden" placeholder="수락된인원" name="userAcceptcnt" id="userAcceptcnt" value="${squad.user_acceptcnt}"/>
-						<input type="hidden" placeholder="최대인원" name="userMaxcnt" id="userMaxcnt" value="${squad.user_maxcnt}"/>
+			<form name="squadDelete" id="squadDelete" method="POST" action="/web/squadDeleteOrCancel">
+				<div class="form-group" id="hiddenInput" align="center">	
+					<input type="hidden" placeholder="게시판 번호"  name="no" id="no" value="${no}"/>
+					<input type="hidden" placeholder="아이디" name="members_id" id="members_id" value="${userId}"/>
+					<input type="hidden" placeholder="클라이언트" name="job" id="job" value="${job}"/>
+					<input type="hidden" placeholder="작업" name="work" id="work" value="${work}"/>
+					<input type="hidden" placeholder="모집옵션" name="rc" id="rc" value="${rc}"/>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<button type="button" class="btn btn-sm btn-info btn-block" id="btnSubmit" style="background-color: #141414;" onclick="btnActive()">
+							<span>확인</span>
+						</button>
 					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<button type="button" class="btn btn-sm btn-danger btn-block" id="btnCancel" style="background-color: #141414;" onclick="btnActive()">
-								<span>취소</span>
-							</button>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<button type="button" class="btn btn-sm btn-info btn-block" id="btnSubmit" style="background-color: #141414;" onclick="btnActive()">
-								<span>확인</span>
-							</button>
-						</div>
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<button type="button" class="btn btn-sm btn-danger btn-block" id="btnCancel" style="background-color: #141414;" onclick="btnActive()">
+							<span>취소</span>
+						</button>
 					</div>
+						
+				</div>
 					
 					
-				</form>
+			</form>
 			</div>
 
 		</div>
 	</div>
-
 </body>
 
 </html>

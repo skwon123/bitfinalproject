@@ -1,17 +1,22 @@
 package com.bit.web.play.controller;
 
+import com.bit.web.play.action.PagingAction;
 import com.bit.web.play.email.MailUtil;
 import com.bit.web.play.service.PlayService;
 import com.bit.web.play.vo.hostreviewBean;
 import com.bit.web.play.vo.membersBean;
+import com.bit.web.play.vo.pageBean;
 import com.bit.web.play.vo.squadboardBean;
 import com.bit.web.play.vo.squadhistoryBean;
 import com.bit.web.play.vo.gamegenreBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,12 +40,13 @@ import java.util.List;
 @Slf4j
 public class playController {
 
-
+	@Autowired   
+	private PagingAction pageAction;  
 	private final PlayService playService;
-	
-    /* 
-     * 로그인 페이지 > 로그인 > 아이디찾기 
-     */
+
+	/* 
+	 * 로그인 페이지 > 로그인 > 아이디찾기 
+	 */
 	@RequestMapping(value = "idSearch", method = RequestMethod.GET)
 	@ResponseBody
 	public String sendId(@RequestParam(value ="email", required = false)String email) {
@@ -48,9 +54,9 @@ public class playController {
 		MailUtil.naverMailSend(email, "PlaySquad ID입니다.", checkedId);
 		return "success";
 	};
-    /*
-     * 로그인 페이지 > 로그인 > 비밀번호 찾기
-     */
+	/*
+	 * 로그인 페이지 > 로그인 > 비밀번호 찾기
+	 */
 	@RequestMapping(value="pwSearch", method=RequestMethod.GET)
 	@ResponseBody
 	public String pwSearch(@RequestParam(value="user_id", required = false)String userId, @RequestParam(value="pw_find_email", required=false)String pw_find_email) {
@@ -59,32 +65,32 @@ public class playController {
 		map.put("pw_find_email", pw_find_email);
 		return playService.find_user_pw(map);
 	};
-    /*
-     * 로그인 체크
-     */
+	/*
+	 * 로그인 체크
+	 */
 	@RequestMapping(value = "playsquadLoginCheck", method = RequestMethod.POST)
 	@ResponseBody
 	public String loginCheck(@RequestParam(value = "id", required = false)String inputId, @RequestParam(value = "password", required = false)String inputPassword,
-							HttpServletRequest req) {
-		
-		 String loginPass = playService.loginPass(inputId);
-		 String authority = playService.selectAuthority(inputId);
-		 System.out.println(inputId);
-		 System.out.println(inputPassword);
-		 System.out.println(loginPass);
-		 if(loginPass.equals(inputPassword)) {
-			 req.getSession().setAttribute("userId", inputId);
-			 req.getSession().setAttribute("userAuthority", authority);
-			 System.out.println(playService.selectAuthority(inputId));
-			 req.getSession().setMaxInactiveInterval(60*60*24);
-			 return "success";
-		 }else { 
-			 return "failed";
-		 }
+			HttpServletRequest req) {
+
+		String loginPass = playService.loginPass(inputId);
+		String authority = playService.selectAuthority(inputId);
+		System.out.println(inputId);
+		System.out.println(inputPassword);
+		System.out.println(loginPass);
+		if(loginPass.equals(inputPassword)) {
+			req.getSession().setAttribute("userId", inputId);
+			req.getSession().setAttribute("userAuthority", authority);
+			System.out.println(playService.selectAuthority(inputId));
+			req.getSession().setMaxInactiveInterval(60*60*24);
+			return "success";
+		}else { 
+			return "failed";
+		}
 	};
-    /*
-     * 로그아웃
-     */
+	/*
+	 * 로그아웃
+	 */
 	@RequestMapping(value = "logoutAction")
 	@ResponseBody
 	public String logoutAction(HttpServletRequest req) {
@@ -93,32 +99,32 @@ public class playController {
 		System.out.println("Session Deleted");
 		return "Logout Success";
 	};
-    /*
-     * 로그인시 mainpage로
-     */
+	/*
+	 * 로그인시 mainpage로
+	 */
 	@RequestMapping(value = "playsquadListAction", method = RequestMethod.POST)
 	public String playsquadListAction() {
 		System.out.println("List Action In Process..");
-		
+
 		return "play/mainpage";
 	};
-    /*
-     * 스쿼드 모집글 작성전 로딩
-     */
+	/*
+	 * 스쿼드 모집글 작성전 로딩
+	 */
 	@RequestMapping(value = "newsquadLoadingAction")
 	public String newsquadLoadingAction(Model model) {
 		model.addAttribute("games", playService.popularGameListSelect());
 		return "play/new_squad";
 	}
-    /*
-     * 스쿼드 모집글 작성전 로딩, 세션에서 아이디 읽어오기, 해시태그 받아서 db에 넣는 기능 미구현
-     */
+	/*
+	 * 스쿼드 모집글 작성전 로딩, 세션에서 아이디 읽어오기, 해시태그 받아서 db에 넣는 기능 미구현
+	 */
 	@PostMapping(value = "squadBoardInsert")
 	public String squadBoardInsert(squadboardBean bean,
 			@RequestParam(value = "reservedate_input") String reservedate_input
-	 , @RequestParam(value = "userId", required=false)String writerId
-	 , @RequestParam(value = "filename", required=false, defaultValue = "defaultImg.jpg")String filename
-	 , @RequestParam(value = "thumbnail_file", required=false)MultipartFile file) {
+			, @RequestParam(value = "userId", required=false)String writerId
+			, @RequestParam(value = "filename", required=false, defaultValue = "defaultImg.jpg")String filename
+			, @RequestParam(value = "thumbnail_file", required=false)MultipartFile file) {
 		System.out.println("Board Insert In Process..");
 		// 테스트용 작성자 아이디 blue로 임시 설정. 로그인부터 연결시 parameter에서 가져와야 함.
 		// 구현시 아래 코드 수정해야
@@ -156,9 +162,9 @@ public class playController {
 		String originFileName = file.getOriginalFilename();
 		if(originFileName.length() > 0) {
 			try {
-			fos = new FileOutputStream(uploadLoc + originFileName);
-			fos.write(file.getBytes());
-			bean.setFilename(originFileName);
+				fos = new FileOutputStream(uploadLoc + originFileName);
+				fos.write(file.getBytes());
+				bean.setFilename(originFileName);
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
@@ -168,7 +174,7 @@ public class playController {
 		}else {
 			return "redirect:play/insertFailed.jsp";
 		}
-		
+
 		// tags 미구현. 임시로 기본태그 설정
 		bean.setTags("defaultHashtag");
 
@@ -180,8 +186,8 @@ public class playController {
 		return "redirect:play/insertSuccess.jsp";
 	}
 	/*
-     * 모집중인 스쿼드
-     */		
+	 * 모집중인 스쿼드
+	 */		
 	@GetMapping(value = "squadstate0ListAction")
 	@ResponseBody
 	public List<squadboardBean> mainPageListAction(Model model) {
@@ -191,8 +197,8 @@ public class playController {
 		return  playService.squadstate0Select();
 	};
 	/*
-     * 인기게임
-     */	
+	 * 인기게임
+	 */	
 	@GetMapping(value = "popularGameListAction")
 	@ResponseBody
 	public List<gamegenreBean> popularGameListAction(){
@@ -200,16 +206,16 @@ public class playController {
 		return playService.popularGameListSelect();
 	};
 	/*
-     * 인기스쿼드 호스트 팔로워순
-     */	
+	 * 인기스쿼드 호스트 팔로워순
+	 */	
 	@GetMapping(value = "squadPopularSelectAction")
 	@ResponseBody
 	public List<squadboardBean> squadPopularSelectAction(){
 		return playService.squadPopularSelect();
 	};
 	/*
-     * 회원가입
-     */	
+	 * 회원가입
+	 */	
 	@RequestMapping(value = "newMember")
 	public String newAjaxCrudReplyAction(membersBean bean) {
 		log.debug("회원가입 {}", bean);
@@ -217,74 +223,74 @@ public class playController {
 		return "redirect:/play/login.jsp";
 	};
 	/*
-     * 회원가입 - 아이디 중복체크
-     */	
+	 * 회원가입 - 아이디 중복체크
+	 */	
 	@PostMapping(value = "ajaxFindID")
 	@ResponseBody
 	public String findId(@RequestParam(value = "id",required = false,defaultValue = "BLUE")String id) {	 
-		   System.out.println(playService);
+		System.out.println(playService);
 		//return "Test";
 		return playService.ajaxGetId(id)!=null?String.valueOf(true):String.valueOf(false);
 	}
 	/*
-     * 회원가입 - 별명 중복 체크
-     */	
+	 * 회원가입 - 별명 중복 체크
+	 */	
 	@PostMapping(value = "ajaxFindNickname")
 	@ResponseBody
 	public String findNickname(@RequestParam(value = "Nickname",required = false,defaultValue = "BLUE")String ninckname) {	 
-		   System.out.println(playService);
+		System.out.println(playService);
 		//return "Test";
 		return playService.ajaxGetNickname(ninckname)!=null?String.valueOf(true):String.valueOf(false);
 	}    
 	/*
-     * 프로필 - 가져오기
-     */	
-    @RequestMapping(value = "/play/viewProfile", method = RequestMethod.GET)
-    public String getView(membersBean bean, String id ,Model model) throws Exception {
-    		membersBean vo = playService.getViewProfile(id);
-    		model.addAttribute("view", vo);
-//	    	bean.setMembers_id(id);
-    		System.out.println(vo);
-    	return "play/profile";
-	    }
-		/*
-		 * 프로필 수정
-		 * 
-		 * @RequestMapping(value = "/play/updateProfile", method = RequestMethod.POST)
-		 * public String postView(membersBean bean) {
-		 * 
-		 * playService.postViewProfile(bean);
-		 * 
-		 * System.out.println(bean); return "play/mypage"; }
-		 */
+	 * 프로필 - 가져오기
+	 */	
+	@RequestMapping(value = "/play/viewProfile", method = RequestMethod.GET)
+	public String getView(membersBean bean, String id ,Model model) throws Exception {
+		membersBean vo = playService.getViewProfile(id);
+		model.addAttribute("view", vo);
+		//	    	bean.setMembers_id(id);
+		System.out.println(vo);
+		return "play/profile";
+	}
 	/*
-     * 프로필 - 수정
-     */	
+	 * 프로필 수정
+	 * 
+	 * @RequestMapping(value = "/play/updateProfile", method = RequestMethod.POST)
+	 * public String postView(membersBean bean) {
+	 * 
+	 * playService.postViewProfile(bean);
+	 * 
+	 * System.out.println(bean); return "play/mypage"; }
+	 */
+	/*
+	 * 프로필 - 수정
+	 */	
 	@RequestMapping(value = "updateProfile", method = {RequestMethod.POST, RequestMethod.GET})
 	public String updateProfile(membersBean bean,
 			@RequestParam(value = "profileimg", required = false, defaultValue = "profileimg") MultipartFile file, HttpServletRequest req) {
-			HttpSession session = req.getSession();
-			String userId = (String)session.getAttribute("userId");
-			String loc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//profile//";
-			FileOutputStream fos = null;
-			String orginFile = file.getOriginalFilename();
-			System.out.println(orginFile);
-			if (orginFile.length() > 0) {
-				try {
-					fos = new FileOutputStream(loc + orginFile);
-					fos.write(file.getBytes());
-					bean.setProfile_img(orginFile);
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
-
+		HttpSession session = req.getSession();
+		String userId = (String)session.getAttribute("userId");
+		String loc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//profile//";
+		FileOutputStream fos = null;
+		String orginFile = file.getOriginalFilename();
+		System.out.println(orginFile);
+		if (orginFile.length() > 0) {
+			try {
+				fos = new FileOutputStream(loc + orginFile);
+				fos.write(file.getBytes());
+				bean.setProfile_img(orginFile);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
 			}
-			playService.postViewProfile(bean);
-	    	System.out.println(orginFile);
-	    	System.out.println(bean);
-    	return "redirect:/GuestReviewSelect?id="+userId;
-			
+
+		}
+		playService.postViewProfile(bean);
+		System.out.println(orginFile);
+		System.out.println(bean);
+		return "redirect:/GuestReviewSelect?id="+userId;
+
 	}
 	/*
      * 스쿼드 게시판 - 매핑
@@ -334,12 +340,19 @@ public class playController {
 			@RequestParam(value = "recruitoption", required = false)int recruitoption,
 			@RequestParam(value = "userAcceptcnt", required = false)int userAcceptcnt,
 			@RequestParam(value = "userMaxcnt", required = false)int userMaxcnt) {
+		HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("squadboard_no", squadboard_no);
+		map.put("squadstate", 1);
 		if(userAcceptcnt < userMaxcnt) {
 			if(recruitoption == 0) {
 				shBean.setSquadhistory_no(playService.getSequence_SquadHistory());
 				playService.insertSquadHistory(shBean);		
 				System.out.println(squadboard_no);
 				playService.updateSB_acceptcnt_increase(squadboard_no);
+				String result = playService.selelctCompareUserCnt(squadboard_no);
+				if(result.equals("fullYes")) {
+					playService.updateSquadState(map);
+				}
 				return "play/squad_request_success";
 			} else if(recruitoption == 1){
 				awBean.setAcceptwaitting_no(playService.getSequence_AcceptWaitting());
@@ -362,18 +375,139 @@ public class playController {
 		return playService.selectReserveDate(Integer.parseInt(newSquadboardNo));
 	}
 	/*
-     * 스쿼드 게시판 - 상태 수정
+     * 스쿼드 게시판 - 상태 수정(진행중)
      */	
 	@RequestMapping(value="SquadStateUpdate")
 	public String SquadStateUpdateProcess(int no, String hostId) {
-		
-		playService.updateSquadState(no);
-		
+		HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("squadboard_no", no);
+		map.put("squadstate", 2);
+		playService.updateSquadState(map);
+		playService.deleteAcceptWaittingSB(no);
 		return "redirect:/squadBoardInfoSelect?no="+no+"&hostId="+hostId;
 	}
+	
 	/*
-     * 공지사항
-     */	
+	 *  내 스쿼드 페이지 - 매핑
+	 */
+	@RequestMapping(value="mysquadInfoSelect")
+	public String mysquadInfoSelectProcess(Model model, String hostId) {
+		//게스트 기준 진행 전 스쿼드 검색
+		model.addAttribute("GSquadList", playService.selectParticipationSquad(hostId));
+		//게스트 기준 참가 기록 
+		model.addAttribute("GHistoryList", playService.selectGuestHistory(hostId));
+		//호스트 기준 종료 전 스쿼드 검색
+		model.addAttribute("HSquadList", playService.selectHostingSquad(hostId));
+		//호스트 기준 호스팅 기록
+		model.addAttribute("HHistoryList", playService.selectHostingHistory(hostId));
+		
+		return "play/mysquad";
+	}
+	
+	/*
+	 *  내 스쿼드 페이지 > 삭제 기능
+	 */
+	@RequestMapping("squadDeleteOrCancel")
+	public String squadDeleteProcess(HttpServletRequest request,@RequestParam("no") int no, String job, int rc, String work) {
+		System.out.println(no);
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
+		
+		HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("squadboard_no", no);
+		
+		if(job.equals("host")) {			
+			if(work.equals("delete")) {
+				System.out.println("delete");
+				System.out.println("no :" + no);
+				map.put("squadstate", 4);
+				playService.deleteAcceptWaittingSB(no);
+				playService.deleteSquadHistorySB(no);
+				playService.updateSquadState(map);
+			}else if(work.equals("end")) { 
+				System.out.println("end");
+				map.put("squadstate", 3);
+				playService.deleteAcceptWaittingSB(no);
+				playService.updateSquadState(map);
+			}
+
+		} else if(job.equals("guest")) {
+			map.put("members_id", userId);
+			if(rc == 0) {
+				playService.deleteSquadHistoryGuest(map);
+				playService.updateSB_acceptcnt_decrease(no);
+				String result = playService.selelctCompareUserCnt(no);
+				if(result.equals("fullNo")) {
+					HashMap<String, Object>map2 = new HashMap<String, Object>();
+					map2.put("squadboard_no", no);
+					map2.put("squadstate", 0);
+					playService.updateSquadState(map2);
+				}
+				
+			}else if(rc == 1) {
+				playService.deleteAcceptWaittingGuest(map);
+			}
+		}
+		return "play/squadDeleteSuccess";
+	}
+	
+	/*
+     * 호스트 관리페이지 > 매핑
+     */
+	@RequestMapping("squadHostingSelect")
+	public String squadHostingSelectProcess(Model model, int no) {
+		model.addAttribute("squadhistory", playService.selectSquadHistoryNo(no));
+		model.addAttribute("acceptwaitting", playService.selectAcceptWaittingNo(no));
+		return "play/squadHosting";
+	}
+	/*
+     * 호스트 관리페이지 > 버튼 
+     */
+	@RequestMapping("squadHostingButtonAC")
+	public String squadHostingButtonProcess(squadhistoryBean shBean, int no, String acId, String ac) {
+		HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("squadboard_no", no);
+		map.put("members_id", acId);
+		
+		shBean.setSquadhistory_no(playService.getSequence_SquadHistory());
+		shBean.setSquadboard_no(no);
+		shBean.setMembers_id(acId);
+		System.out.println(shBean);
+		if(ac.equals("yes")) {
+			String result = playService.selelctCompareUserCnt(no);
+			playService.deleteAcceptWaittingGuest(map);
+			shBean.setSquadhistory_no(playService.getSequence_SquadHistory());
+			playService.insertSquadHistory(shBean);		
+			playService.updateSB_acceptcnt_increase(no);
+			if(result.equals("fullYes")) {
+				HashMap<String, Object>map2 = new HashMap<String, Object>();
+				map2.put("squadboard_no", no);
+				map2.put("squadstate", 1);
+				playService.updateSquadState(map2);
+				System.out.println("fullYes");
+			}
+			
+		}else if(ac.equals("no")){
+			playService.deleteAcceptWaittingGuest(map);
+		}
+		
+		return "redirect:/squadHostingSelect?no="+no;
+	}
+	
+	@RequestMapping("squadHostingButtonSH")
+	public String squadHostingButtonProcess(int no, String acId) {
+		HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("squadboard_no", no);
+		map.put("members_id", acId);
+		playService.deleteSquadHistoryGuest(map);
+		playService.updateSB_acceptcnt_decrease(no);
+		
+		return "redirect:/squadHostingSelect?no="+no;
+	}
+
+	/*
+	 * 공지사항
+	 */	
 	@RequestMapping(value="NoticeBoardInsert", method = RequestMethod.POST)
 	public String NoticeBoardInsert(NoticeBoardBean bean, Model model, @RequestParam String writer_id) {
 		bean.setNoticeboard_no(playService.getSequence2());
@@ -381,49 +515,69 @@ public class playController {
 		System.out.println(bean);
 		playService.insertNoticeBoard(bean);
 		return "play/noticeboard";
-		
+
 	}
-		
+
 	@RequestMapping(value="selectNoticeBoard", method=RequestMethod.GET)
-		public String selectNoticeBoard(Model model) {
+	public String selectNoticeBoard(Model model) {
 		model.addAttribute("notice", playService.selectNoticeBoard());
 		System.out.println(model);
 		return "play/noticeboard";
 	}		
 	/*
-     * 검색
-     */		
+	 * 검색
+	 */		
 	@RequestMapping(value="/play/listPageSearch")
 	public String selectBoardList(ModelMap model, HttpServletRequest request) {
 		//검색 맵 생성
 		HashMap<String, Object>map  = new HashMap<String, Object>();
 		map.put("query", request.getParameter("query"));
 		map.put("data", request.getParameter("data"));
-//			//페이징 맵 생성
-//			PageBean pageBean = pageAction.paging(request, map);
-//			map.put("start",  pageBean.getStart());
-//			map.put("end",  pageBean.getEnd());
+		//페이징 맵 생성
+		pageBean pageBean = pageAction.paging(request, map);
+		map.put("start",  pageBean.getStart());
+		map.put("end",  pageBean.getEnd());
 		//모델 생성
-//			model.addAttribute("pageBean", pageBean);
+		model.addAttribute("pageBean", pageBean);
 		model.addAttribute("list", playService.selectBoardList(map));
 		//System.out.println(playService.selectBoardList(map));
 		System.out.println(map);
 		return "play/search";
 	}
+
 	/*
-     * 게스트 후기 insert
-     */	
-	@RequestMapping(value="GuestReviewInsert", method = RequestMethod.POST)
-	public String GuestReviewInsert(GuestReviewBean bean, Model model, @RequestParam String writer_id) {
-		bean.setHostreview_no(playService.getGuestReviewSequence()); // hostreview_no
-		System.out.println(bean); //콘솔에 뿌림
-		playService.insertGuestReview(bean); //insert
+	 * 게스트 후기 insert
+	 */	
+	@RequestMapping(value="GuestReviewInsert")
+	public String GuestReviewInsert(GuestReviewBean bean, Model model, @RequestParam(value="userId", required=false)String writer_id, 
+			@RequestParam(value="gamehostId", required=false)String host_id, 
+			@RequestParam(value="userName", required=false)String name) {
+		System.out.println("Review Insert in process"); // 정상 출력
+		System.out.println(writer_id); // 정상 출력
+		bean.setHostreview_no(playService.getGuestReviewSequence()); // hostreview_no, 정상 출력
+		bean.setWriter_id(writer_id); //writer_id, 정상 출력
+		System.out.println(host_id);
+		bean.setHost_id(host_id);
+		System.out.println(name);
+		bean.setName(name);
+		// 콘솔에 뿌려서 확인
+		System.out.println(bean); 
+		// insert
+		playService.insertGuestReview(bean); 
+		System.out.println("Review Insert Success!");
 		return "play/mypage";
+		//return "redirect:play/reviewInsertSuccess.jsp";
 
 	}
+	//	@RequestMapping(value = "GuestReviewInsert")
+	//	public String GuestReviewInsert(GuestReviewBean bean) {
+	//		log.debug("게스트 후기 {}", bean);
+	//		playService.insertGuestReview(bean); 
+	//		return "redirect:play/reviewInsertSuccess.jsp";
+	//	};
 	/*
-     * 게스트 후기 select
-     */	
+	 * 게스트 후기 select
+	 */	
 	@RequestMapping(value="GuestReviewSelect", method=RequestMethod.GET)
 	public String GuestReviewSelect(Model model, String id) {
 		model.addAttribute("review", playService.selectGuestReview1(id));
@@ -432,7 +586,7 @@ public class playController {
 		System.out.println(model);
 		return "play/mypage";
 	}
-		
+
 	@RequestMapping(value="insertMyInfo", method = RequestMethod.POST)
 	public String insertMyInfo(membersBean bean, Model model, @RequestParam String members_id) {
 		bean.setMembers_id(members_id);
@@ -441,14 +595,14 @@ public class playController {
 		return "play/mypage";
 	}
 	/*
-     * 마이페이지 - 평점, 팔로워 수 
-     */		
+	 * 마이페이지 - 평점, 팔로워 수 
+	 */		
 	@RequestMapping(value="selectMyInfo", method=RequestMethod.GET)
 	public String selectMyInfo(Model model, String id) {
 		model.addAttribute("info", playService.selectMyInfo(id));
 		System.out.println(model);
 		return "play/mypage";
 	}
-		
-		
+
+
 }

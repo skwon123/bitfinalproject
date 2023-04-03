@@ -124,7 +124,6 @@ $(function() {
 				window.open("/web/squadRequsetSelect?no=${squad.squadboard_no}&id=${userId}" , "..", "left=300, top=200, width=500, height=600");
 			})
 			$("button#btnRequest2").click(function(){
-				
 				window.open("/web/squadRequsetSelect?no=${squad.squadboard_no}&id=${userId}" , "..", "left=300, top=200, width=500, height=600");
 			})
 			break;    
@@ -248,7 +247,7 @@ $(function() {
 						<c:otherwise>
 							<c:choose>
 								<c:when test="${squad.members_id==userId}">
-									<button type="button" class="btn" id="btnEdit" disabled='disabled' style="background-color: green;" >
+									<button type="button" class="btn" id="btnEdit" style="background-color: green;" onclick="location.href='/web/mysquadInfoSelect?hostId=${userId}'">
 										<span id="spanEdit">수정</span>
 									</button>
 								</c:when>

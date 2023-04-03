@@ -14,14 +14,9 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(function() {		
-		$("button#btnCancel").click(function(){
-			window.close();
-			});
 		
-		$("button#btnSubmit").click(function(){
-			$("form#squadRequset").submit();
-			});
-		
+		window.opener.location.reload();
+	    window.close();
 
 				 
 	});
@@ -60,44 +55,7 @@
     <![endif]-->
 </head>
 <body>
-
-	<div class="container" style="margin-top: 15px" align="center">
-		<div class="row">
-			<div class="main" style="background-color:#141414">
-				
-				
-				<h3>
-					스쿼드 신청하기
-				</h3>
-				<form name="squadRequset" id="squadRequset" method="POST" action="/web/squadRequsetAccept">
-
-					<div class="form-group" id="hiddenInput" align="center">
-						<input type="hidden" placeholder="게시판 번호"  name="squadboard_no" id="squadboard_no" value="${squad.squadboard_no}"/>
-						<input type="hidden" placeholder="아이디" name="members_id" id="members_id" value="${userId}"/>
-						<input type="hidden" placeholder="모집옵션" name="recruitoption" id="recruitoption" value="${squad.recruitoption}"/>
-						<input type="hidden" placeholder="수락된인원" name="userAcceptcnt" id="userAcceptcnt" value="${squad.user_acceptcnt}"/>
-						<input type="hidden" placeholder="최대인원" name="userMaxcnt" id="userMaxcnt" value="${squad.user_maxcnt}"/>
-					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<button type="button" class="btn btn-sm btn-danger btn-block" id="btnCancel" style="background-color: #141414;" onclick="btnActive()">
-								<span>취소</span>
-							</button>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<button type="button" class="btn btn-sm btn-info btn-block" id="btnSubmit" style="background-color: #141414;" onclick="btnActive()">
-								<span>확인</span>
-							</button>
-						</div>
-					</div>
-					
-					
-				</form>
-			</div>
-
-		</div>
-	</div>
-
+<h1>Accept Success</h1>
 </body>
 
 </html>

@@ -9,7 +9,7 @@ public class GuestReviewBean {
 	private int hostreview_no;
 	private String host_id;
 	private String writer_id;
-	private String title;
+	//private String title;
 	private String name;
 	private String contents;
 	private int score;

@@ -160,7 +160,7 @@ $(function(){
 			
  		</span>
 		<span class="my_squad" id="my_squad">
-			<button id="my_squad" onclick="location.href='/web/play/mysquad.jsp'" class="btn" style="margin:3px; background-color: #141414;">내 스쿼드</button>
+			<button id="my_squad" onclick="location.href='/web/mysquadInfoSelect?hostId=${userId}'" class="btn" style="margin:3px; background-color: #141414;">내 스쿼드</button>
 		</span>
 		<span class="my_wallet" id="my_wallet">
 			<button id="my_wallet" onclick="location.href='/web/play/pay.jsp'" class="btn" style="margin:3px; background-color: #141414;">지갑</button>

@@ -59,7 +59,7 @@ public interface PlayService {
 	/*
      * 마이 페이지 > 게스트 후기 > 데이터 넣기
      */	
-    String insertGuestReview(GuestReviewBean bean);
+    void insertGuestReview(GuestReviewBean bean);
 	/*
      * 마이 페이지 > 게스트 후기 > 호스트리뷰 검색(작성자 기준) 
      */	
@@ -104,7 +104,7 @@ public interface PlayService {
 	 * 스쿼드 게시판 > 생성 페이지 > 스쿼드 모집 글 insert
 	 */	
     public void insertSquadBoard(squadboardBean bean);
-	/*
+    /*
      * 스쿼드 게시판 페이지 > 스쿼드 상세내용 검색
      */	
     Object selectSquadBoardInfo(int squadboardno);
@@ -144,6 +144,10 @@ public interface PlayService {
      * 스쿼드 게시판 페이지 > 참가버튼 > 참가자 수 감소
      */	
     void updateSB_acceptcnt_decrease(int squadboardno) ;
+    /*
+     * 스쿼드 게시판 페이지 > 참가버튼 > 참가자수 비교
+     */
+	String selelctCompareUserCnt(int squadboardno);
 	/*
      * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(참가기록 테이블)
      */	
@@ -159,7 +163,49 @@ public interface PlayService {
 	/*
      * 스쿼드 게시판 페이지 > 상태 수정
      */	
-    void updateSquadState(int squadboardno);
+    void updateSquadState(HashMap<String, Object>map);
+    
+    /*
+	 *  내 스쿼드 페이지 > 게스트 기준 진행 전 스쿼드 검색
+	 */
+	List<squadboardBean>selectParticipationSquad(String hostId);
+	/*
+	 *  내 스쿼드 페이지 > 게스트 기준 참가 기록 
+	 */
+	List<squadboardBean>selectGuestHistory(String hostId);
+	/*
+	 *  내 스쿼드 페이지 > 호스트 기준 종료 전 스쿼드 검색
+	 */
+	List<squadboardBean>selectHostingSquad(String hostId);
+	/*
+	 *  내 스쿼드 페이지 > 호스트 기준 호스팅 기록
+	 */
+	List<squadboardBean>selectHostingHistory(String hostId);
+	/*
+	 * 삭제페이지(게스트) > 삭제버튼 > 수락대기 삭제  
+	 */
+	void deleteAcceptWaittingGuest(HashMap<String, Object>map);
+	/*
+	 * 삭제페이지(게스트) > 삭제버튼 > 참가기록 삭제
+	 */
+	void deleteSquadHistoryGuest(HashMap<String, Object>map);
+	/*
+	 * 삭제페이지(호스트) > 삭제버튼 > 수락대기 삭제(조건게시판)  
+	 */
+	void deleteAcceptWaittingSB(int squadboardno);
+	/*
+	 * 삭제페이지(호스트) > 삭제버튼 > 참가기록 삭제(조건게시판)
+	 */
+	void deleteSquadHistorySB(int squadboardno);
+	/*
+	 *  호스팅관리페이지 > 참가신청 완료 인원 확인
+	 */
+	List<squadboardBean>selectSquadHistoryNo(int squadboardno);
+	/*
+	 *  호스팅관리페이지 > 수락대기 인원 확인
+	 */
+	List<squadboardBean>selectAcceptWaittingNo(int squadboardno);
+
 	/*
      * 공지사항 페이지 > 기본키 생성
      */	

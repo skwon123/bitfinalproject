@@ -1,39 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-   pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-   content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>mypage</title>
+<title>SquadBoard</title>
 <link rel="stylesheet"
-   href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+	href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet"
-   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-   integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-   crossorigin="anonymous" referrerpolicy="no-referrer" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet"
-   href="${pageContext.request.contextPath}/resources/css/play/index.css">
-
+	href="${pageContext.request.contextPath}/resources/css/play/index.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+	integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+	crossorigin="anonymous">
 
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
-   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
         
 </script>
 
 <head>
-<title>°Ô½Ã¹° ¸ñ·Ï</title>
+<title>ê²Œì‹œë¬¼ ëª©ë¡</title>
 
 <script>
 $(function(){
@@ -44,6 +49,7 @@ $(function(){
 			$("input#data").val('');
 			return false;
 		}
+			
 		$("form").submit();
 	 }) 
  });
@@ -55,18 +61,21 @@ $(function(){
 
 	<jsp:include page="testHeader.jsp"></jsp:include>
 
+
+
+
 <form action="listPageSearch" method="get">
 	<div align="center" style="margin:100px; color:black; ">
 		<select id="query" name="query" style="background:#141414;">
-		    <option selected="selected" value="empty">¼±ÅÃÇÏ¼¼¿ä</option>
+		    <option selected="selected" value="empty" disabled >ì„ íƒí•˜ì„¸ìš”</option>  <!-- disabled optionì—ì„œ ê°’ ê³ ì • -->
 		   
-	        <option value="hostname">È£½ºÆ®</option>
-		    <option value="title">ÄÁÅÙÃ÷</option>
+	        <option value="hostname">í˜¸ìŠ¤íŠ¸</option>
+		    <option value="name">ê²Œì„</option>
 
 		</select>
 		
 		<input type="text" name="data" id="data" class="inputText" size="30" style="background:#141414;"/>
-		<span class="button" id="search"><a href="#">°Ë»ö</a></span>
+		<span class="button" id="search"><a href="#">ê²€ìƒ‰</a></span>
 	</div>
 		</form>
 	
@@ -80,17 +89,19 @@ $(function(){
 				<col width="150" />
 				<col width="150" />
 				<col width="150" />
+				<col width="150" />
 					
 			</colgroup>
 			<thead>
 			
 
 			<tr>
-				<th scope="col" class="fir">°ÔÀÓ</th>   
-				<th scope="col">´Ğ³×ÀÓ</th>
-				<th scope="col">ÄÁÅÙÃ÷</th>
-				<th scope="col">°ÔÀÓ½Ã°£</th>
-				<th scope="col">½Ã°£</th>
+				<th scope="col"></th>
+				<th scope="col">ì œëª©</th>
+				<th scope="col" class="fir">ê²Œì„</th>   
+				<th scope="col">ë‹‰ë„¤ì„</th>
+				<th scope="col">ê²Œì„ì‹œê°„</th>
+				<th scope="col">ì‹œê°„</th>
 
 			</tr>
 			</thead>
@@ -99,9 +110,15 @@ $(function(){
 
 		<c:forEach items="${list}" var="list">
 			<tr>
+			
+				<td>
+				<a href="/web/squadBoardInfoSelect?no=${list.squadboard_no}&hostId=${list.members_id}">
+					<img src="/web/resources/img/play/upload/board/${list.filename}" style="width:100px; height::auto;"/>
+				</a>
+				</td>
+				<td>${list.title}</td>
 				<td>${list.gamegenre_name}</td>
 				<td>${list.hostname}</td>
-				<td>${list.contents}</td>
 				<td>${list.playtime}</td>
 				<td>${list.reservedateT}</td>		
 			</tr>
@@ -111,12 +128,63 @@ $(function(){
 	</tbody>
 
 </table>
-</div>
 
 
 
 
-	
+					<div class="paging">
+						<a href="listPageSearch?page=1"><img src="/web/resources/img/play/button/btn_first.gif" alt="ì²˜ìŒí˜ì´ì§€" /></a>
+						<c:choose>
+						     <c:when test="${pageBean.currentBlock > 1 }">
+						     <a href="listPageSearch?page=${pageBean.startPage-1 }"><img src="/web/resources/img/play/button/btn_prev.gif" alt="ì´ì „" /></a>
+						     </c:when>
+						     <c:otherwise>
+						     <a href="#"><img src="/web/resources/img/play/button/btn_prev.gif" alt="ì´ì „" /></a>
+						     </c:otherwise>
+						</c:choose>
+						<c:choose>
+						   <c:when test="${pageBean.currentPage>1 }">
+						      <a href="listPageSearch?page=${pageBean.currentPage-1 }"> [Before]</a>
+						   </c:when>
+						   <c:otherwise>
+						   [Before]	
+						   </c:otherwise>
+						</c:choose>						
+											
+						<span>
+						    <c:forEach var="i" begin="${pageBean.startPage}" end="${pageBean.endPage }">
+						      <c:choose>
+						        <c:when test="${pageBean.currentPage == i }">
+						        	<a href="#"><font size="5" color="red">[${i}]</font></a>
+						        </c:when>
+						        <c:otherwise>
+						         <a href="listPageSearch?page=${i}">[${i}]</a>
+						        </c:otherwise>
+						      </c:choose>						
+							</c:forEach>
+						</span>
+						<c:choose>
+						   <c:when test="${pageBean.currentPage< pageBean.totalPage }">
+						      <a href="listPageSearch?page=${pageBean.currentPage+1 }"> [Next]</a>
+						   </c:when>
+						   <c:otherwise>
+						   [Next]	
+						   </c:otherwise>
+						</c:choose>	
+						<c:choose>
+						   <c:when test="${pageBean.totalPage > pageBean.endPage }">
+						   <a href="listPageSearch?page=${pageBean.endPage+1}"><img src="/web/resources/img/play/button/btn_next.gif" alt="ë‹¤ìŒ" /></a>
+						   </c:when>
+						   <c:otherwise>
+						   <a href="#"><img src="/web/resources/img/button/play/btn_next.gif" alt="ë‹¤ìŒ" /></a>
+						   </c:otherwise>
+						</c:choose> 						
+						 <a href="listPageSearch?page=${pageBean.totalPage}"><img src="/web/resources/img/play/button/btn_last.gif" alt="ë§ˆì§€ë§‰í˜ì´ì§€" /></a>
+
+					</div>
+
+
+	</div>
 	
 
 

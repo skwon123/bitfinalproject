@@ -62,12 +62,24 @@ function previewImage() {
 <script type="text/javascript">
 $(function () {
 
+    $("input#password2").blur(function () {
+        if ($("input#password1").val() == $("input#password2").val() && $("input#password1").val().length > 0) {
+            $("input#password").val($("input#password1").val());
+        } else {
+            $("input#password1").val('');
+            $("input#password2").val('');
+            $("input#password1").focus();
+        }
+    });
+	
+	
 	//포로필 업데이트
-	$("button#sendButton").click(function() {
+	$("a#sendButton").click(function() {
 		if($("input#nickname").val().length == 0
-		
+           || $("input#password1").val().length == 0
+           || $("input#password2").val().length == 0
         ) {
-            alert('닉네임을 입력해주세요');
+            alert('닉네임, 비밀번호를 입력해주세요');
             return false;
         }
         $("form").submit();
@@ -238,11 +250,11 @@ $(function () {
             </div>
             <div class="content-list" align="center">
                 <input type="password" style="background-color: #141414; margin-top:10px; width:300px; height: 50px"
-                       id="password2" name="password2" placeholder="  비밀번호 변경"/>
-                <input type="hidden" name="password" id="password" value="" class="form-control"/>
+                       id="password2" name="password2" placeholder="  비밀번호 확인"/>
+                <input type="hidden" name="password" id="password" class="form-control"/>
             </div>
             <div class="form-group" align="center" style="magin-top:40px">
-                <button id="sendButton" type="button" class="btn btn-sm btn-info btn-block" style="font-size: 1.2rem; width:300px; height: 20px">확인</button>
+                <a id="sendButton" type="button" class="btn btn-sm btn-info btn-block" style="font-size: 1.2rem; width:300px; height: 20px">확인</a>
             </div>
         </div>
 

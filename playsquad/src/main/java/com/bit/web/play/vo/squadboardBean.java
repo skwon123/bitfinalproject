@@ -34,6 +34,7 @@ public class squadboardBean {
 	private String reservedateT;
 	
 	private String members_profile_img;
+	private String members_nickname;
 	private String members_grade;
 	private String members_review_cnt;
 }
