@@ -11,6 +11,7 @@
 <script type="text/javascript">
 $(function(){
 	alert('게시글 작성 성공!');
+	window.opener.location.reload();
 	window.close();
 });
 </script>

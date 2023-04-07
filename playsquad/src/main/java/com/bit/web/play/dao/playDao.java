@@ -99,6 +99,10 @@ public class playDao extends SqlSessionDaoSupport{
 		return this.getSqlSession().selectList("selectGuestReview1", id);
 	}
 
+	/*public GuestReviewBean getReviewInfo(String host_id) {
+		return this.getSqlSession().selectOne("getReviewInfo", host_id);
+	}*/
+
 
 	/*
 	 * 마이 페이지 > 사용자 정보 insert 임의로
@@ -161,92 +165,92 @@ public class playDao extends SqlSessionDaoSupport{
 		this.getSqlSession().insert("insertSquadBoard", bean);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 스쿼드 상세내용 검색
-     */	
+	 * 스쿼드 게시판 페이지 > 스쿼드 상세내용 검색
+	 */	
 	public Object selectSquadBoardInfo(int squadboardno) {
 		return this.getSqlSession().selectOne("selectSquadBoardInfo", squadboardno);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 호스트 기준 > 스쿼드 정보 리스트 검색
-     */	
+	 * 스쿼드 게시판 페이지 > 호스트 기준 > 스쿼드 정보 리스트 검색
+	 */	
 	public List<squadboardBean>selectSquadBoardHost (HashMap<String, Object> map) {
 		return this.getSqlSession().selectList("selectSquadBoardHost", map);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 호스트 기준 > 리뷰 리스트 검색
-     */	
+	 * 스쿼드 게시판 페이지 > 호스트 기준 > 리뷰 리스트 검색
+	 */	
 	public List<hostreviewBean>selectHostReviewHost(String hostId){
 		return this.getSqlSession().selectList("selectHostReviewHost", hostId);
 	}		
 	/*
-     * 스쿼드 게시판 페이지 > 호스트 기준 > 게시판 수 
-     */	
+	 * 스쿼드 게시판 페이지 > 호스트 기준 > 게시판 수 
+	 */	
 	public int selectSquadCnt(String hostId) {
-        return this.getSqlSession().selectOne("selectSquadCnt", hostId);
-     }
+		return this.getSqlSession().selectOne("selectSquadCnt", hostId);
+	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 참가기록 넣기
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 참가기록 넣기
+	 */	
 	public void insertSquadHistory(squadhistoryBean bean) {
 		this.getSqlSession().insert("insertSquadHistory", bean);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 수락대기 넣기
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 수락대기 넣기
+	 */	
 	public void insertAcceptWaitting(acceptwaittingBean bean) {
 		this.getSqlSession().insert("insertAcceptWaitting", bean);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 참가기록 기본키 생성
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 참가기록 기본키 생성
+	 */	
 	public Integer getSequence_SquadHistory() {
 		return this.getSqlSession().selectOne("getSequence_SquadHistory");
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 수락대기 기본키 생성
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 수락대기 기본키 생성
+	 */	
 	public Integer getSequence_AcceptWaitting() {
 		return this.getSqlSession().selectOne("getSequence_AcceptWaitting");
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 참가자 수 증가
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 참가자 수 증가
+	 */	
 	public void updateSB_acceptcnt_increase(int squadboardno) {
 		this.getSqlSession().update("updateSB_acceptcnt_increase", squadboardno);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 참가자 수 감소
-     */	
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 참가자 수 감소
+	 */	
 	public void updateSB_acceptcnt_decrease(int squadboardno) {
 		this.getSqlSession().update("updateSB_acceptcnt_decrease", squadboardno);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가버튼 > 참가자수 비교
-     */
+	 * 스쿼드 게시판 페이지 > 참가버튼 > 참가자수 비교
+	 */
 	public String selelctCompareUserCnt(int squadboardno) {
 		return this.getSqlSession().selectOne("selelctCompareUserCnt", squadboardno);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(참가기록 테이블)
-     */	
+	 * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(참가기록 테이블)
+	 */	
 	public String selectIdSquadHistory(HashMap<String, Object>map) {
 		return this.getSqlSession().selectOne("selectIdSquadHistory", map);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(신청여부 테이블)
-     */	
+	 * 스쿼드 게시판 페이지 > 참가나 신청 중인지 여부 확인(신청여부 테이블)
+	 */	
 	public String selectIdAcceptWaitting(HashMap<String, Object>map) {
 		return this.getSqlSession().selectOne("selectIdAcceptWaitting", map);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > Ajax검색(예약시간)
-     */	
+	 * 스쿼드 게시판 페이지 > Ajax검색(예약시간)
+	 */	
 	public String selectReserveDate(int squadboardno) {
 		return this.getSqlSession().selectOne("selectReserveDate", squadboardno);
 	}
 	/*
-     * 스쿼드 게시판 페이지 > 상태 수정
-     */	
+	 * 스쿼드 게시판 페이지 > 상태 수정
+	 */	
 	public void updateSquadState(HashMap<String, Object>map) {
 		this.getSqlSession().update("updateSquadState", map);
 	}
@@ -330,7 +334,36 @@ public class playDao extends SqlSessionDaoSupport{
 		return this.getSqlSession().selectList("selectNoticeBoard");
 	}
 
-
+	/*
+	 * 메인페이지 > 인기게임 > 게임별 스쿼드 리스트
+	 */
+	public List<squadboardBean> squadListForEachGameSelect(int gamegenre_no){
+		return this.getSqlSession().selectList("squadListForEachGameSelect", gamegenre_no);
+	}
+	/*
+	 * 메인페이지 > 인기게임 > 게임별 호스트 리스트
+	 */
+	public List<membersBean> hostListForEachGameSelect(int gamegenre_no){
+		return this.getSqlSession().selectList("hostListForEachGameSelect", gamegenre_no);
+	}
+	/*
+	 * 메인페이지 > 인기게임 > 게임별 게임 정보
+	 */
+	public List<gamegenreBean> gameInfoForEachGameSelect(int gamegenre_no){
+		return this.getSqlSession().selectList("popularGameInfoSelect", gamegenre_no);
+	}
+	/* 
+	 * 게임별 스쿼드수 업데이트 
+	 */
+	public void squadCntUpdate() {
+		this.getSqlSession().update("squadCntUpdate");
+	}
+	/* 
+	 * 아이디로 닉네임 구해오기 
+	 */
+	public String getNicknameById(String inputId) {
+		return this.getSqlSession().selectOne("getNicknameById", inputId);
+	}
 	// 기타?
 	// 유저 아이디로 회원번호 return
 	public int getUserNo(String writerId) {
@@ -340,6 +373,15 @@ public class playDao extends SqlSessionDaoSupport{
 	public int getTotalRow(HashMap<String, Object>map) {
 		// TODO Auto-generated method stub
 		return this.getSqlSession().selectOne("getTotalRow",map);
+	}
+	
+	// 신청 가능한 스쿼드	
+	public List<squadboardBean> registerSquadInfoSelect(String userId){
+		return this.getSqlSession().selectList("registerSquadInfoSelect", userId);
+	}
+	// 주로 하는 게임
+	public List<gamegenreBean> mainGamePlay(String userId){
+		return this.getSqlSession().selectList("mainGamePlay", userId);
 	}
 
 

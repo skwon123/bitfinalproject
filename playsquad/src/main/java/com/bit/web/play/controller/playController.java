@@ -27,6 +27,7 @@ import com.bit.web.play.vo.acceptwaittingBean;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
@@ -293,47 +294,47 @@ public class playController {
 
 	}
 	/*
-     * 스쿼드 게시판 - 매핑
-     */		
+	 * 스쿼드 게시판 - 매핑
+	 */		
 	@RequestMapping(value="squadBoardInfoSelect", method = RequestMethod.GET)
 	public String squadboardInfoSelectProcess(HttpServletRequest request,Model model, int no, String hostId) {
 
-			HttpSession session = request.getSession();
-			String userId = (String)session.getAttribute("userId");
-			//System.out.println(no);
-			//System.out.println(hostId);
-			//System.out.println(userId);
-			HashMap<String, Object>map1 = new HashMap<String, Object>();
-			map1.put("members_id", hostId);
-			map1.put("squadboard_no", no);
-			HashMap<String, Object>map2 = new HashMap<String, Object>();
-			map2.put("squadboard_no", no);
-			map2.put("members_id", userId);
-			// 스쿼드 게시판 상세 내용
-			model.addAttribute("squad", playService.selectSquadBoardInfo(no));
-			model.addAttribute("squadCnt", playService.selectSquadCnt(hostId));
-			// 호스트기준 스쿼드 정보
-			model.addAttribute("squadList", playService.selectSquadBoardHost(map1));
-			// 호스트기준 호스트리뷰
-			model.addAttribute("reviewList", playService.selectHostReviewHost(hostId));
-			//참가나 신청 중인지 여부 확인
-			if(userId != null) {
-				model.addAttribute("attendSH", playService.selectIdSquadHistory(map2));
-				model.addAttribute("attendAW", playService.selectIdAcceptWaitting(map2));				
-			}
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
+		//System.out.println(no);
+		//System.out.println(hostId);
+		//System.out.println(userId);
+		HashMap<String, Object>map1 = new HashMap<String, Object>();
+		map1.put("members_id", hostId);
+		map1.put("squadboard_no", no);
+		HashMap<String, Object>map2 = new HashMap<String, Object>();
+		map2.put("squadboard_no", no);
+		map2.put("members_id", userId);
+		// 스쿼드 게시판 상세 내용
+		model.addAttribute("squad", playService.selectSquadBoardInfo(no));
+		model.addAttribute("squadCnt", playService.selectSquadCnt(hostId));
+		// 호스트기준 스쿼드 정보
+		model.addAttribute("squadList", playService.selectSquadBoardHost(map1));
+		// 호스트기준 호스트리뷰
+		model.addAttribute("reviewList", playService.selectHostReviewHost(hostId));
+		//참가나 신청 중인지 여부 확인
+		if(userId != null) {
+			model.addAttribute("attendSH", playService.selectIdSquadHistory(map2));
+			model.addAttribute("attendAW", playService.selectIdAcceptWaitting(map2));				
+		}
 		return "play/squadboard";
 	}
 	/*
-     * 스쿼드 게시판 - 참가 2차확인 창
-     */	
+	 * 스쿼드 게시판 - 참가 2차확인 창
+	 */	
 	@RequestMapping("squadRequsetSelect")
 	public String squadRequsetSelectProcess(Model model, int no) {
 		model.addAttribute("squad", playService.selectSquadBoardInfo(no));			
 		return "play/squad_request";
 	}
 	/*
-     * 스쿼드 게시판 - 참가 2차확인 확인버튼
-     */	
+	 * 스쿼드 게시판 - 참가 2차확인 확인버튼
+	 */	
 	@RequestMapping("squadRequsetAccept")
 	public String squadRequsetAcceptProcess(squadhistoryBean shBean,acceptwaittingBean awBean,
 			@RequestParam(value = "squadboard_no", required = false)int squadboard_no,
@@ -363,20 +364,20 @@ public class playController {
 		return "play/squad_request_fail";
 	}
 	/*
-     * 스쿼드 게시판 - AJAX
-     */		
+	 * 스쿼드 게시판 - AJAX
+	 */		
 	@GetMapping(value="squadBoardAjaxSelect")
 	@ResponseBody
 	public String squadBoardAjaxSelectProcess(String newSquadboardNo) {
 		//Integer new_no = Integer.parseInt(no);
 		System.out.println(newSquadboardNo);
 		System.out.println(playService.selectReserveDate(Integer.parseInt(newSquadboardNo)));
-		
+
 		return playService.selectReserveDate(Integer.parseInt(newSquadboardNo));
 	}
 	/*
-     * 스쿼드 게시판 - 상태 수정(진행중)
-     */	
+	 * 스쿼드 게시판 - 상태 수정(진행중)
+	 */	
 	@RequestMapping(value="SquadStateUpdate")
 	public String SquadStateUpdateProcess(int no, String hostId) {
 		HashMap<String, Object>map = new HashMap<String, Object>();
@@ -386,7 +387,7 @@ public class playController {
 		playService.deleteAcceptWaittingSB(no);
 		return "redirect:/squadBoardInfoSelect?no="+no+"&hostId="+hostId;
 	}
-	
+
 	/*
 	 *  내 스쿼드 페이지 - 매핑
 	 */
@@ -400,10 +401,10 @@ public class playController {
 		model.addAttribute("HSquadList", playService.selectHostingSquad(hostId));
 		//호스트 기준 호스팅 기록
 		model.addAttribute("HHistoryList", playService.selectHostingHistory(hostId));
-		
+
 		return "play/mysquad";
 	}
-	
+
 	/*
 	 *  내 스쿼드 페이지 > 삭제 기능
 	 */
@@ -412,10 +413,10 @@ public class playController {
 		System.out.println(no);
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
-		
+
 		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("squadboard_no", no);
-		
+
 		if(job.equals("host")) {			
 			if(work.equals("delete")) {
 				System.out.println("delete");
@@ -443,17 +444,17 @@ public class playController {
 					map2.put("squadstate", 0);
 					playService.updateSquadState(map2);
 				}
-				
+
 			}else if(rc == 1) {
 				playService.deleteAcceptWaittingGuest(map);
 			}
 		}
 		return "play/squadDeleteSuccess";
 	}
-	
+
 	/*
-     * 호스트 관리페이지 > 매핑
-     */
+	 * 호스트 관리페이지 > 매핑
+	 */
 	@RequestMapping("squadHostingSelect")
 	public String squadHostingSelectProcess(Model model, int no) {
 		model.addAttribute("squadhistory", playService.selectSquadHistoryNo(no));
@@ -461,14 +462,14 @@ public class playController {
 		return "play/squadHosting";
 	}
 	/*
-     * 호스트 관리페이지 > 버튼 
-     */
+	 * 호스트 관리페이지 > 버튼 
+	 */
 	@RequestMapping("squadHostingButtonAC")
 	public String squadHostingButtonProcess(squadhistoryBean shBean, int no, String acId, String ac) {
 		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("squadboard_no", no);
 		map.put("members_id", acId);
-		
+
 		shBean.setSquadhistory_no(playService.getSequence_SquadHistory());
 		shBean.setSquadboard_no(no);
 		shBean.setMembers_id(acId);
@@ -486,14 +487,14 @@ public class playController {
 				playService.updateSquadState(map2);
 				System.out.println("fullYes");
 			}
-			
+
 		}else if(ac.equals("no")){
 			playService.deleteAcceptWaittingGuest(map);
 		}
-		
+
 		return "redirect:/squadHostingSelect?no="+no;
 	}
-	
+
 	@RequestMapping("squadHostingButtonSH")
 	public String squadHostingButtonProcess(int no, String acId) {
 		HashMap<String, Object>map = new HashMap<String, Object>();
@@ -501,7 +502,7 @@ public class playController {
 		map.put("members_id", acId);
 		playService.deleteSquadHistoryGuest(map);
 		playService.updateSB_acceptcnt_decrease(no);
-		
+
 		return "redirect:/squadHostingSelect?no="+no;
 	}
 
@@ -548,25 +549,35 @@ public class playController {
 	/*
 	 * 게스트 후기 insert
 	 */	
+
+	/*@GetMapping(value="ReviewInfo")
+	public String ReviewInfo(GuestReviewBean bean, String host_id, Model model) {
+
+	}*/
+
 	@RequestMapping(value="GuestReviewInsert")
-	public String GuestReviewInsert(GuestReviewBean bean, Model model, @RequestParam(value="userId", required=false)String writer_id, 
-			@RequestParam(value="gamehostId", required=false)String host_id, 
-			@RequestParam(value="userName", required=false)String name) {
+	public String GuestReviewInsert(GuestReviewBean bean,
+			HttpServletRequest req) {
+		String userId = (String) req.getSession().getAttribute("userId");
 		System.out.println("Review Insert in process"); // 정상 출력
-		System.out.println(writer_id); // 정상 출력
+		System.out.println(userId); // 정상 출력
 		bean.setHostreview_no(playService.getGuestReviewSequence()); // hostreview_no, 정상 출력
-		bean.setWriter_id(writer_id); //writer_id, 정상 출력
-		System.out.println(host_id);
-		bean.setHost_id(host_id);
-		System.out.println(name);
-		bean.setName(name);
+		bean.setWriter_id(userId); //writer_id 콘솔에 나오는 거 확인
+		bean.setName(playService.getNicknameById(userId));
+		bean.setScore(5);
+		bean.setGood_cnt(0);
+		bean.setRef(0);
+		bean.setPnum(0);
+		bean.setLev(0);
+		bean.setStep(0);
+
 		// 콘솔에 뿌려서 확인
 		System.out.println(bean); 
 		// insert
 		playService.insertGuestReview(bean); 
 		System.out.println("Review Insert Success!");
-		return "play/mypage";
-		//return "redirect:play/reviewInsertSuccess.jsp";
+		//return "play/mypage";
+		return "redirect:play/reviewInsertSuccess.jsp";
 
 	}
 	//	@RequestMapping(value = "GuestReviewInsert")
@@ -604,5 +615,46 @@ public class playController {
 		return "play/mypage";
 	}
 
+	/* 
+	 * 인기게임 게임별 스쿼드 리스트
+	 */
+	@RequestMapping(value="popularGameInfoSelect")
+	public String popularGameInfoSelectPro(Model model, int ggno) {
+		model.addAttribute("list", playService.squadListForEachGameSelect(ggno));
+		model.addAttribute("info", playService.popularGameInfoSelect(ggno));
+		playService.squadCntUpdate();
+		return "play/popular_game";
+	}
+	/* 
+	 * 인기게임 게임별 인기 호스트 리스트
+	 */
+	@RequestMapping(value="hostListForEachGameSelect", method=RequestMethod.GET)
+	@ResponseBody
+	public List<membersBean> hostListForEachGameSelectPro(int ggno){
+		return playService.hostListForEachGameSelect(ggno);
+	}
+	
+	/* 
+	 * 신청 가능한 스쿼드 (마이페이지)
+	 */
+	@GetMapping(value = "registerSquadInfoSelect")
+	@ResponseBody
+	public List<squadboardBean> registerSquadInfoSelect(String userId) {
+		System.out.println(playService.registerSquadInfoSelect(userId));
+		return playService.registerSquadInfoSelect(userId);
+	};
+	
+	
+	@GetMapping(value = "mainGamePlay")
+	@ResponseBody
+	public List<gamegenreBean> mainGamePlay(String userId) {
+		System.out.println(playService.mainGamePlay(userId));
+		return playService.mainGamePlay(userId);
+	};
+	
+	
+	
+	
+	
 
 }

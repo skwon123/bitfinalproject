@@ -67,79 +67,86 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
-<!-- 마이페이지 -->
-   <!-- 마이페이지 > 프로필 수정 > 검색-->
-   <select id="getViewProfile" resultType="com.bit.web.play.vo.membersBean" parameterType="String">
-        select *
-        from members
-      where members_id = #{vaule}
-   
-   </select>
-   <!-- 마이페이지 > 프로필 수정 > 수정 -->
-   <update id="postViewProfile" parameterType="com.bit.web.play.vo.membersBean">
-      UPDATE MEMBERS
-      SET 
-      nickname = #{nickname},
-      tel = #{tel},
-      email = #{email},
-      password = #{password},
-      genre1 = #{genre1},
-      genre2 = #{genre2},
-      aboutme = #{aboutme}
-      <choose> 
-            <when test="profile_img !=null">
-            ,profile_img=#{profile_img}
-            </when>
-       </choose>
-       where members_id= #{members_id}
+	<!-- 마이페이지 -->
+	<!-- 마이페이지 > 프로필 수정 > 검색 -->
+	<select id="getViewProfile"
+		resultType="com.bit.web.play.vo.membersBean" parameterType="String">
+		select *
+		from members
+		where members_id = #{vaule}
 
-   </update>
-   
+	</select>
+	<!-- 마이페이지 > 프로필 수정 > 수정 -->
+	<update id="postViewProfile"
+		parameterType="com.bit.web.play.vo.membersBean">
+		UPDATE MEMBERS
+		SET
+		nickname = #{nickname},
+		tel = #{tel},
+		email = #{email},
+		password = #{password},
+		genre1 = #{genre1},
+		genre2 = #{genre2},
+		aboutme = #{aboutme}
+		<choose>
+			<when test="profile_img !=null">
+				,profile_img=#{profile_img}
+			</when>
+		</choose>
+		where members_id= #{members_id}
+
+	</update>
+
 
 
 
 	<!-- -->
 
-   <!-- 검색 구현 -->
+	<!-- 검색 구현 -->
 
-<resultMap type="squadboard" id="selectBoardID">
+	<resultMap type="squadboard" id="selectBoardID">
 
-       <result property="gamegenre_no" column="gamegenre_no"/>
-       <result property="members_id" column="members_id"/>
-       <result property="hostname" column="hostname"/>
-       <result property="title" column="title"/>
-       <result property="contents" column="contents"/>
-       <result property="password" column="password"/>
-       <result property="playtime" column="playtime"/>
-       <result property="regdate" column="reg"/>
-       <result property="reservedate" column="reservedate"/>
-       <result property="gamegenre_name" column="gamegenre_name"/>
-       <result property="name" column="name"/>
-       <result property="filename" column="filename"/>
-       <result property="squadboard_no" column="squadboard_no"/>
-    </resultMap>
+		<result property="gamegenre_no" column="gamegenre_no" />
+		<result property="members_id" column="members_id" />
+		<result property="hostname" column="hostname" />
+		<result property="title" column="title" />
+		<result property="contents" column="contents" />
+		<result property="password" column="password" />
+		<result property="playtime" column="playtime" />
+		<result property="regdate" column="reg" />
+		<result property="reservedate" column="reservedate" />
+		<result property="gamegenre_name" column="gamegenre_name" />
+		<result property="name" column="name" />
+		<result property="filename" column="filename" />
+		<result property="squadboard_no" column="squadboard_no" />
+	</resultMap>
 
 
-   <select id="selectBoardList" resultType="com.bit.web.play.vo.squadboardBean" resultMap="selectBoardID" parameterType="HashMap">
-   select  (gg.name)gamegenre_name, sb.squadboard_no, sb.members_id, sb.filename, sb.hostname, sb.title, sb.contents, sb.playtime, to_char(sb.regdate, 'YYYY/MM/DD HH:SS') reservedateT
-      from squadboard sb, gamegenre gg
-      where sb.gamegenre_no = gg.gamegenre_no
+	<select id="selectBoardList"
+		resultType="com.bit.web.play.vo.squadboardBean"
+		resultMap="selectBoardID" parameterType="HashMap">
+		select (gg.name)gamegenre_name, sb.squadboard_no, sb.members_id,
+		sb.filename, sb.hostname, sb.title, sb.contents, sb.playtime,
+		to_char(sb.regdate, 'YYYY/MM/DD HH:SS') reservedateT
+		from squadboard sb, gamegenre gg
+		where sb.gamegenre_no = gg.gamegenre_no
 
-      <if test="query != null and data != null">
-          and ${query} LIKE '%'||#{data}||'%'
-      </if> 
-   </select>   
-   
-   <select id="getTotalRow" resultType="java.lang.Integer"   parameterType="java.util.HashMap">
-   SELECT COUNT(*) 
-   FROM squadboard sb 
-   INNER JOIN gamegenre gg 
-   ON sb.gamegenre_no = gg.gamegenre_no
-        
-      <if test="query !=null and data !=null">
-            and ${query} LIKE '%'||#{data}||'%'
-      </if>
-   </select>
+		<if test="query != null and data != null">
+			and ${query} LIKE '%'||#{data}||'%'
+		</if>
+	</select>
+
+	<select id="getTotalRow" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(*)
+		FROM squadboard sb
+		INNER JOIN gamegenre gg
+		ON sb.gamegenre_no = gg.gamegenre_no
+
+		<if test="query !=null and data !=null">
+			and ${query} LIKE '%'||#{data}||'%'
+		</if>
+	</select>
 	<!-- -->
 
 	<!-- 메인페이지 -->
@@ -147,28 +154,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 메인페이지 모집중인 스쿼드 -->
 	<select id="squadstate0Select"
 		resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE,
+		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME,
+		SB.TITLE,
 		SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE,
 		SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
-		GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
+		GG.NAME AS GAMEGENRE_NAME,
+		GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
 		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
-		FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
-		WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
-		SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
-		SB.MEMBERS_ID ORDER BY SB.SQUADBOARD_NO DESC
+		FROM
+		SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+		WHERE
+		SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
+		SB.SQUADSTATE
+		AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
+		SB.MEMBERS_ID ORDER BY
+		SB.SQUADBOARD_NO DESC
 	</select>
 	<!-- 메인페이지 인기 스쿼드 팔로워순 -->
 	<select id="squadPopularSelect"
 		resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE,
+		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME,
+		SB.TITLE,
 		SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE,
 		SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
-		GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
+		GG.NAME AS GAMEGENRE_NAME,
+		GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
 		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
-		FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
-		WHERE SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
-		SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
-		SB.MEMBERS_ID ORDER BY MB.FOLLOW_CNT DESC
+		FROM
+		SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+		WHERE
+		SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
+		SB.SQUADSTATE
+		AND SS.SQUADSTATE_NO = 0 AND MB.MEMBERS_ID =
+		SB.MEMBERS_ID ORDER BY
+		MB.FOLLOW_CNT DESC
 	</select>
 
 	<!-- 메인페이지 > 인기게임 리스트 검색 -->
@@ -222,21 +241,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- -->
 
-	<!--  스쿼드게시판--> 
-	
-	<!--  스쿼드게시판 > 스쿼드 상세내용 검색-->
-	<select id="selectSquadBoardInfo" parameterType="java.lang.Integer" resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT sb.squadboard_no as squadboard_no, sb.gamegenre_no as gamegenre_no, sb.members_id as members_id, 
-				sb.hostname as hostname, sb.title as title, sb.contents as contents, sb.user_acceptcnt as user_acceptcnt, sb.user_maxcnt as user_maxcnt, 
-				sb.recruitoption as recruitoption, sb.playtime as playtime, sb.regdate as regdate, TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH:SS') as reservedate, 
-				sb.squadstate as squadstate, sb.price as price, sb.payedstate as payedstate, sb.filename as filename, sb.tags as tags,
-				m.review_cnt as members_review_cnt, m.grade as members_grade, m.profile_img as members_profile_img
+	<!-- 스쿼드게시판 -->
+
+	<!-- 스쿼드게시판 > 스쿼드 상세내용 검색 -->
+	<select id="selectSquadBoardInfo"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		SELECT sb.squadboard_no as squadboard_no, sb.gamegenre_no
+		as gamegenre_no, sb.members_id as members_id,
+		sb.hostname as hostname, sb.title as title, sb.contents as contents,
+		sb.user_acceptcnt as user_acceptcnt, sb.user_maxcnt as user_maxcnt,
+		sb.recruitoption as recruitoption, sb.playtime as playtime, sb.regdate
+		as regdate, TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH:SS') as
+		reservedate,
+		sb.squadstate as squadstate, sb.price as price, sb.payedstate as payedstate,
+		sb.filename as filename, sb.tags as tags,
+		m.review_cnt as members_review_cnt, m.grade as members_grade, m.profile_img as
+		members_profile_img
 		FROM squadboard sb, members m
-		WHERE m.members_id = sb.members_id and sb.squadboard_no=#{VALUE}
+		WHERE m.members_id =
+		sb.members_id and sb.squadboard_no=#{VALUE}
 	</select>
-		
-	<!--  스쿼드게시판 > 호스트기준 스쿼드 정보 검색-->
-	<select id="selectSquadBoardHost" parameterType="HashMap" resultType="com.bit.web.play.vo.squadboardBean">
+
+	<!-- 스쿼드게시판 > 호스트기준 스쿼드 정보 검색 -->
+	<select id="selectSquadBoardHost" parameterType="HashMap"
+		resultType="com.bit.web.play.vo.squadboardBean">
 	<![CDATA[
 		select gg.game_img as gamegenre_game_img, sb.squadboard_no as squadboard_no, 
 		sb.title as title, gg.name as gamegenre_name, sb.members_id as members_id , TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH:SS') as reservedate,
@@ -247,83 +276,107 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</select>
 	<!-- 스쿼드게시판 > 호스트가 만든 스쿼드 게시판 수 -->
-	<select id="selectSquadCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+	<select id="selectSquadCnt" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
 		select count(*) as squadCnt
 		from squadboard
-		where members_id = #{VALUE}
+		where members_id
+		= #{VALUE}
 	</select>
-	<!--  스쿼드게시판 > 호스트기준 리뷰 검색-->
-	<select id="selectHostReviewHost" parameterType="java.lang.String" resultType="com.bit.web.play.vo.hostreviewBean">
-		select  m.profile_img as profile_img , hr.name as name, TO_CHAR(hr.regdate, 'YYYY/MM/DD HH:SS') as regdate, hr.contents as contents, hr.score as score
+	<!-- 스쿼드게시판 > 호스트기준 리뷰 검색 -->
+	<select id="selectHostReviewHost"
+		parameterType="java.lang.String"
+		resultType="com.bit.web.play.vo.hostreviewBean">
+		select m.profile_img as profile_img , hr.name as name,
+		TO_CHAR(hr.regdate, 'YYYY/MM/DD HH:SS') as regdate, hr.contents as
+		contents, hr.score as score
 		from members m, hostreview hr
-		where m.members_id = hr.writer_id and hr.host_id = #{VALUE}
+		where
+		m.members_id = hr.writer_id and hr.host_id = #{VALUE}
 	</select>
-	
-	<!-- 스쿼드게시판 > 참가버튼 > 참가기록 넣기-->
-	<insert id="insertSquadHistory" parameterType="com.bit.web.play.vo.squadhistoryBean">
-		insert into 
+
+	<!-- 스쿼드게시판 > 참가버튼 > 참가기록 넣기 -->
+	<insert id="insertSquadHistory"
+		parameterType="com.bit.web.play.vo.squadhistoryBean">
+		insert into
 		squadhistory(squadhistory_no, squadboard_no, members_id, regdate)
-		values(#{squadhistory_no}, #{squadboard_no}, #{members_id}, SYSDATE)
+		values(#{squadhistory_no},
+		#{squadboard_no}, #{members_id}, SYSDATE)
 	</insert>
-	<!-- 스쿼드게시판 > 참가버튼 > 수락대기 넣기-->
-	<insert id="insertAcceptWaitting" parameterType="com.bit.web.play.vo.acceptwaittingBean">
-		insert into 
+	<!-- 스쿼드게시판 > 참가버튼 > 수락대기 넣기 -->
+	<insert id="insertAcceptWaitting"
+		parameterType="com.bit.web.play.vo.acceptwaittingBean">
+		insert into
 		acceptwaitting(acceptwaitting_no, squadboard_no, members_id, regdate)
-		values(#{acceptwaitting_no}, #{squadboard_no}, #{members_id}, SYSDATE)
+		values(#{acceptwaitting_no},
+		#{squadboard_no}, #{members_id}, SYSDATE)
 	</insert>
-	<!-- 스쿼드게시판 > 참가버튼 > 참가기록 기본키 생성-->
-	<select id="getSequence_SquadHistory" resultType="java.lang.Integer">
+	<!-- 스쿼드게시판 > 참가버튼 > 참가기록 기본키 생성 -->
+	<select id="getSequence_SquadHistory"
+		resultType="java.lang.Integer">
 		select SquadHistory_seq.nextval from dual
 	</select>
-	<!-- 스쿼드게시판 > 참가버튼 > 수락대기 기본키 생성-->
-	<select id="getSequence_AcceptWaitting" resultType="java.lang.Integer">
+	<!-- 스쿼드게시판 > 참가버튼 > 수락대기 기본키 생성 -->
+	<select id="getSequence_AcceptWaitting"
+		resultType="java.lang.Integer">
 		select AcceptWaitting_seq.nextval from dual
 	</select>
 	<!-- 스쿼드게시판 > 참가버튼 > 참가자 수 증가 -->
-	<update id="updateSB_acceptcnt_increase" parameterType="java.lang.Integer" >
+	<update id="updateSB_acceptcnt_increase"
+		parameterType="java.lang.Integer">
 		update squadboard
-		set user_acceptcnt = user_acceptcnt + 1
+		set user_acceptcnt
+		= user_acceptcnt + 1
 		where squadboard_no=#{value}
 	</update>
 	<!-- 스쿼드게시판 > 참가버튼 > 참가자 수 감소 -->
-	<update id="updateSB_acceptcnt_decrease" parameterType="java.lang.Integer" >
+	<update id="updateSB_acceptcnt_decrease"
+		parameterType="java.lang.Integer">
 		update squadboard
-		set user_acceptcnt = user_acceptcnt - 1
+		set user_acceptcnt
+		= user_acceptcnt - 1
 		where squadboard_no=#{value}
 	</update>
-  	<!-- 스쿼드게시판 > 참가버튼 > 참가자수 비교 -->
-  	<select id="selelctCompareUserCnt" parameterType="java.lang.Integer" resultType="java.lang.String">
-  	SELECT
-  		CASE 
-  		WHEN sb.user_acceptcnt >= sb.user_maxcnt THEN 'fullYes'
-    	ELSE 'fullNo'
-  		END AS result
-	FROM squadboard sb
-	WHERE sb.squadboard_no = #{VALUE}
-  	</select>
-  	
-	<!-- 스쿼드게시판 > 참가나 신청 중인지 여부 확인(참가기록 테이블) -->
-	<select id="selectIdSquadHistory" parameterType="HashMap" resultType="java.lang.String">
-		select nvl(min('Y'), 'N') as attendCheck
-		from dual
-		where exists (select *
-	    	from squadhistory
-	   		where squadboard_no=#{squadboard_no} and members_id=#{members_id})
+	<!-- 스쿼드게시판 > 참가버튼 > 참가자수 비교 -->
+	<select id="selelctCompareUserCnt"
+		parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT
+		CASE
+		WHEN sb.user_acceptcnt >= sb.user_maxcnt THEN 'fullYes'
+		ELSE 'fullNo'
+		END AS result
+		FROM squadboard sb
+		WHERE sb.squadboard_no = #{VALUE}
 	</select>
-	
-	<!-- 스쿼드게시판 > 참가나 신청 중인지 여부 확인(신청여부 테이블) -->
-	<select id="selectIdAcceptWaitting" parameterType="HashMap" resultType="java.lang.String">
+
+	<!-- 스쿼드게시판 > 참가나 신청 중인지 여부 확인(참가기록 테이블) -->
+	<select id="selectIdSquadHistory" parameterType="HashMap"
+		resultType="java.lang.String">
 		select nvl(min('Y'), 'N') as attendCheck
 		from dual
-		where exists (select *
-	    	from acceptwaitting
-	   		where squadboard_no=#{squadboard_no} and members_id=#{members_id})
+		where
+		exists (select *
+		from squadhistory
+		where squadboard_no=#{squadboard_no} and members_id=#{members_id})
+	</select>
+
+	<!-- 스쿼드게시판 > 참가나 신청 중인지 여부 확인(신청여부 테이블) -->
+	<select id="selectIdAcceptWaitting" parameterType="HashMap"
+		resultType="java.lang.String">
+		select nvl(min('Y'), 'N') as attendCheck
+		from dual
+		where
+		exists (select *
+		from acceptwaitting
+		where squadboard_no=#{squadboard_no} and members_id=#{members_id})
 	</select>
 	<!-- 스쿼드게시판 > Ajax검색(예약시간) -->
-	<select id="selectReserveDate" parameterType="java.lang.Integer" resultType="java.lang.String">
+	<select id="selectReserveDate" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
 		SELECT reservedate
 		FROM squadboard
-		WHERE squadboard_no=#{VALUE}
+		WHERE
+		squadboard_no=#{VALUE}
 	</select>
 	<!-- 스쿼드게시판 > 상태 수정 -->
 	<update id="updateSquadState" parameterType="HashMap">
@@ -331,98 +384,135 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET squadstate = #{squadstate}
 		WHERE squadboard_no=#{squadboard_no}
 	</update>
-	
+
 	<!-- 내 스쿼드 페이지 > 게스트 기준 진행 전 스쿼드 검색 -->
-	<select id="selectParticipationSquad" parameterType="java.lang.String" resultType="com.bit.web.play.vo.squadboardBean">
-		SELECT gg.game_img AS gamegenre_game_img, sb.squadboard_no AS squadboard_no, 
-		       sb.title AS title, gg.name AS gamegenre_name, sb.members_id AS members_id, sb.hostname as hostname,
-		       TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') AS reservedate, sb.squadstate AS squadstate,
-		       sb.recruitoption AS recruitoption, sb.user_acceptcnt AS user_acceptcnt, sb.user_maxcnt AS user_maxcnt
-		FROM squadboard sb, gamegenre gg
-		WHERE sb.gamegenre_no = gg.gamegenre_no 
-			  AND sb.squadstate NOT IN (3, 4)
-			  AND sb.squadboard_no IN (
-					    SELECT sh.squadboard_no
-					    FROM squadhistory sh
-					    WHERE sh.members_id = #{value}
-					    UNION
-					    SELECT aw.squadboard_no
-					    FROM acceptwaitting aw
-					    WHERE aw.members_id = #{value}
-  					)
+	<select id="selectParticipationSquad"
+		parameterType="java.lang.String"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		SELECT gg.game_img AS gamegenre_game_img, sb.squadboard_no
+		AS squadboard_no,
+		sb.title AS title, gg.name AS gamegenre_name, sb.members_id AS members_id,
+		sb.hostname as hostname,
+		TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') AS reservedate, sb.squadstate AS squadstate,
+		sb.recruitoption AS recruitoption, sb.user_acceptcnt AS
+		user_acceptcnt, sb.user_maxcnt AS user_maxcnt
+		FROM squadboard sb,
+		gamegenre gg
+		WHERE sb.gamegenre_no = gg.gamegenre_no
+		AND sb.squadstate NOT IN (3, 4)
+		AND sb.squadboard_no IN (
+		SELECT sh.squadboard_no
+		FROM squadhistory sh
+		WHERE sh.members_id = #{value}
+		UNION
+		SELECT aw.squadboard_no
+		FROM acceptwaitting aw
+		WHERE aw.members_id = #{value}
+		)
 		ORDER BY sb.reservedate DESC
 	</select>
-	
+
 	<!-- 내 스쿼드 페이지 > 게스트 기준 참가 기록 -->
-	<select id="selectGuestHistory" parameterType="java.lang.String" resultType="com.bit.web.play.vo.squadboardBean">
-		select sb.squadboard_no as squadboard_no, sb.members_id as members_id,
-			sb.title as title, gg.name as gamegenre_name, sb.hostname as hostname,
-	       	sb.squadstate as squadstate, ss.statename as squadstate_statename,   
-	       	TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate
-		from squadboard sb, gamegenre gg, squadhistory sh, squadstate ss
-		where sb.gamegenre_no = gg.gamegenre_no and sb.squadboard_no = sh.squadboard_no and ss.squadstate_no = sb.squadstate 
-			and sh.members_id = #{VALUE}  and (sb.squadstate not in (0, 1, 2) OR sb.squadstate IS NULL)
+	<select id="selectGuestHistory" parameterType="java.lang.String"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		select sb.squadboard_no as squadboard_no, sb.members_id as
+		members_id,
+		sb.title as title, gg.name as gamegenre_name, sb.hostname as hostname,
+		sb.squadstate as squadstate, ss.statename as squadstate_statename,
+		TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate
+		from
+		squadboard sb, gamegenre gg, squadhistory sh, squadstate ss
+		where
+		sb.gamegenre_no = gg.gamegenre_no and sb.squadboard_no =
+		sh.squadboard_no and ss.squadstate_no = sb.squadstate
+		and sh.members_id = #{VALUE} and (sb.squadstate not in (0, 1, 2) OR
+		sb.squadstate IS NULL)
 		order by sb.reservedate desc
 	</select>
 	<!-- 내 스쿼드 페이지 > 호스트 기준 종료 전 스쿼드 검색 -->
-	<select id="selectHostingSquad" parameterType="java.lang.String" resultType="com.bit.web.play.vo.squadboardBean">
-		select gg.game_img as gamegenre_game_img, sb.squadboard_no as squadboard_no, 
-       		sb.title as title, gg.name as gamegenre_name, sb.members_id as members_id, sb.hostname as hostname,
-       		TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate, sb.squadstate as squadstate, 
-       		sb.recruitoption as recruitoption, sb.user_acceptcnt as user_acceptcnt, sb.user_maxcnt as user_maxcnt
+	<select id="selectHostingSquad" parameterType="java.lang.String"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		select gg.game_img as gamegenre_game_img, sb.squadboard_no
+		as squadboard_no,
+		sb.title as title, gg.name as gamegenre_name, sb.members_id as members_id,
+		sb.hostname as hostname,
+		TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate, sb.squadstate as squadstate,
+		sb.recruitoption as recruitoption, sb.user_acceptcnt as
+		user_acceptcnt, sb.user_maxcnt as user_maxcnt
 		from gamegenre gg
-		inner join squadboard sb on sb.gamegenre_no = gg.gamegenre_no
-		where sb.members_id = #{VALUE} and sb.squadstate not in (3, 4) 
+		inner
+		join squadboard sb on sb.gamegenre_no = gg.gamegenre_no
+		where
+		sb.members_id = #{VALUE} and sb.squadstate not in (3, 4)
 		order by sb.reservedate desc
 	</select>
 	<!-- 내 스쿼드 페이지 > 호스트 기준 호스팅 기록 -->
-	<select id="selectHostingHistory" parameterType="java.lang.String" resultType="com.bit.web.play.vo.squadboardBean">
-		select sb.squadboard_no as squadboard_no, sb.members_id as members_id,
-       		sb.title as title, gg.name as gamegenre_name, sb.hostname as hostname,
-       		sb.squadstate as squadstate, ss.statename as squadstate_statename,  
-			TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate
-		from squadboard sb, gamegenre gg, squadstate ss
-		where sb.gamegenre_no = gg.gamegenre_no and ss.squadstate_no = sb.squadstate 
-		and sb.members_id = #{VALUE} and (sb.squadstate not in (0, 1, 2) OR sb.squadstate IS NULL)
+	<select id="selectHostingHistory"
+		parameterType="java.lang.String"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		select sb.squadboard_no as squadboard_no, sb.members_id as
+		members_id,
+		sb.title as title, gg.name as gamegenre_name, sb.hostname as hostname,
+		sb.squadstate as squadstate, ss.statename as squadstate_statename,
+		TO_CHAR(sb.reservedate, 'YYYY/MM/DD HH24:MI') as reservedate
+		from
+		squadboard sb, gamegenre gg, squadstate ss
+		where sb.gamegenre_no =
+		gg.gamegenre_no and ss.squadstate_no = sb.squadstate
+		and sb.members_id = #{VALUE} and (sb.squadstate not in (0, 1, 2) OR
+		sb.squadstate IS NULL)
 		order by sb.reservedate desc
 	</select>
-	<!-- 삭제페이지(게스트) > 삭제버튼 > 수락대기 삭제-->
+	<!-- 삭제페이지(게스트) > 삭제버튼 > 수락대기 삭제 -->
 	<delete id="deleteAcceptWaittingGuest" parameterType="HashMap">
-		Delete from acceptwaitting
- 		where members_id = #{members_id} and squadboard_no = #{squadboard_no}
+		Delete from
+		acceptwaitting
+		where members_id = #{members_id} and squadboard_no = #{squadboard_no}
 	</delete>
-	<!-- 삭제페이지(게스트) > 삭제버튼 > 참가기록 삭제-->
+	<!-- 삭제페이지(게스트) > 삭제버튼 > 참가기록 삭제 -->
 	<delete id="deleteSquadHistoryGuest" parameterType="HashMap">
-		Delete from squadhistory
- 		where members_id = #{members_id} and squadboard_no = #{squadboard_no}
+		Delete from
+		squadhistory
+		where members_id = #{members_id} and squadboard_no = #{squadboard_no}
 	</delete>
-	<!-- 삭제페이지(호스트) > 삭제버튼 > 수락대기 삭제(조건게시판)-->
-	<delete id="deleteAcceptWaittingSB" parameterType="java.lang.Integer">
+	<!-- 삭제페이지(호스트) > 삭제버튼 > 수락대기 삭제(조건게시판) -->
+	<delete id="deleteAcceptWaittingSB"
+		parameterType="java.lang.Integer">
 		Delete from acceptwaitting
- 		where squadboard_no = #{VALUE}
+		where squadboard_no = #{VALUE}
 	</delete>
-	<!-- 삭제페이지(호스트) > 삭제버튼 > 참가기록 삭제(조건게시판)-->
-	<delete id="deleteSquadHistorySB" parameterType="java.lang.Integer">
+	<!-- 삭제페이지(호스트) > 삭제버튼 > 참가기록 삭제(조건게시판) -->
+	<delete id="deleteSquadHistorySB"
+		parameterType="java.lang.Integer">
 		Delete from squadhistory
- 		where squadboard_no = #{VALUE}
+		where squadboard_no = #{VALUE}
 	</delete>
-	<!-- 호스팅관리페이지 > 참가신청 완료 인원 확인-->
-	<select id="selectSquadHistoryNo" parameterType="java.lang.Integer" resultType="com.bit.web.play.vo.squadhistoryBean">
-		select sh.members_id as members_id, sh.squadboard_no as squadboard_no, 
-		m.profile_img as members_profile_img, m.nickname as members_nickname, 
-		TO_CHAR(sh.regdate, 'YYYY/MM/DD HH24:MI') as regdate
-		from squadhistory sh, members m
-		where sh.members_id = m.members_id and sh.squadboard_no = #{VALUE}
-	</select>
-	<!-- 호스팅관리페이지 > 수락대기 인원 확인-->
-	<select id="selectAcceptWaittingNo" parameterType="java.lang.Integer" resultType="com.bit.web.play.vo.acceptwaittingBean">
-		select aw.members_id as members_id, aw.squadboard_no as squadboard_no, 
+	<!-- 호스팅관리페이지 > 참가신청 완료 인원 확인 -->
+	<select id="selectSquadHistoryNo"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.squadhistoryBean">
+		select sh.members_id as members_id, sh.squadboard_no as
+		squadboard_no,
 		m.profile_img as members_profile_img, m.nickname as members_nickname,
-		TO_CHAR(aw.regdate, 'YYYY/MM/DD HH24:MI') as regdate  
-		from acceptwaitting aw, members m
-		where aw.members_id = m.members_id and aw.squadboard_no = #{VALUE}
+		TO_CHAR(sh.regdate, 'YYYY/MM/DD HH24:MI') as regdate
+		from squadhistory
+		sh, members m
+		where sh.members_id = m.members_id and sh.squadboard_no =
+		#{VALUE}
 	</select>
-<!--  -->
+	<!-- 호스팅관리페이지 > 수락대기 인원 확인 -->
+	<select id="selectAcceptWaittingNo"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.acceptwaittingBean">
+		select aw.members_id as members_id, aw.squadboard_no as
+		squadboard_no,
+		m.profile_img as members_profile_img, m.nickname as members_nickname,
+		TO_CHAR(aw.regdate, 'YYYY/MM/DD HH24:MI') as regdate
+		from acceptwaitting aw, members m
+		where aw.members_id = m.members_id and
+		aw.squadboard_no = #{VALUE}
+	</select>
+	<!-- -->
 	<!-- 공지사항 -->
 	<!-- 공지사항 > 공지사항 기본키 생성 -->
 	<select id="getSequence2" resultType="Integer">
@@ -457,40 +547,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertGuestReview"
 		parameterType="com.bit.web.play.vo.GuestReviewBean">
 		INSERT INTO HOSTREVIEW(hostreview_no, host_id,
-		writer_id, name,
-		contents, score, regdate, ref, pnum)
-		VALUES(#{hostreview_no}, #{host_id}, #{writer_id}, #{name},
-		#{contents},
-		#{score}, SYSDATE, #{ref}, #{pnum})
+		writer_id, name, contents, score, regdate, good_cnt, ref, pnum, lev,
+		step)
+		VALUES(
+		#{hostreview_no}, #{host_id}, #{writer_id}, #{name},
+		#{contents}, #{score}, SYSDATE, #{good_cnt}, #{ref}, #{pnum}, #{lev},
+		#{step})
 	</insert>
 
 	<!-- 게스트 후기 > 호스트리뷰 검색 (작성자 기준) -->
 	<select id="selectGuestReview1" parameterType="String"
 		resultType="com.bit.web.play.vo.GuestReviewBean">
-		<!--select m.members_id as members_id, hr.name as name, hr.regdate as regdate, hr.contents
-		as contents, hr.score as score
-		from hostreview hr, members m 
-		where hr.writer_id = m.members_id and hr.host_id = #{VALUE}-->
-		
-		<!-- select sb.members_id as members_id, m.members_id as members_id, hr.name as name, hr.regdate as regdate, hr.contents
-		as contents, hr.score as score, hr.host_id as host_id
-		from hostreview hr, members m, squadboard sb
-		where hr.writer_id = #{VALUE} -->
-		
-		select hr.hostreview_no as hostreview_no, hr.host_id as host_id, hr.writer_id as writer_id, 
-		hr.name as name, hr.contents as contents, hr.score as score, hr.regdate as regdate, hr.ref as ref, hr.pnum as pnum,
-		m.members_id as members_id
-		from hostreview hr, members m
-		where hr.writer_id = #{VALUE}
-				
-		<!-- select hr.name as name, hr.regdate as regdate, hr.contents
-		as contents, hr.score as score
-		from hostreview hr 
-		where hr.writer_id = #{VALUE}-->
+
+		<!--select hr.name as name, hr.regdate as regdate, hr.contents as contents, 
+			hr.score as score from hostreview hr where hr.writer_id = #{VALUE} -->
+
+		select hr.name as name, hr.regdate as regdate, hr.contents
+		as contents,
+		hr.score as score, m.members_id as members_id
+		from hostreview hr,
+		members m
+		where m.members_id = hr.host_id and hr.host_id = #{VALUE}
+
+	</select>
+
+	<select id="getReviewInfo"
+		resultType="com.bit.web.play.vo.GuestReviewBean"
+		parameterType="String">
+		select *
+		from members
+		where host_id = #{VALUE}
 	</select>
 	<!-- -->
-	
-	
+
+
+
 
 	<insert id="insertMyInfo"
 		parameterType="com.bit.web.play.vo.membersBean">
@@ -511,14 +602,91 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectMyInfo"
 		resultType="com.bit.web.play.vo.membersBean">
-		select m.nickname as nickname, m.profile_img as
-		profile_img, m.grade as grade,
-		m.follow_cnt as follow_cnt
-		from members m
-		where m.members_id = #{VALUE}
+		select members_id, nickname, profile_img,
+		grade,
+		follow_cnt
+		from members
+		where members_id = #{VALUE}
 
 	</select>
 
 
+	<!-- 메인페이지 > 인기게임 리스트 > 선택 게임의 정보 검색 -->
+	<select id="popularGameInfoSelect"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.gamegenreBean">
+		SELECT GAMEGENRE_NO, NAME, GAME_IMG, SQUAD_CNT
+		FROM GAMEGENRE
+		WHERE GAMEGENRE_NO = #{value}
+	</select>
+	<!-- 메인페이지 > 인기게임 리스트 > 선택 게임의 호스트 정보 검색 -->
+	<select id="hostListForEachGameSelect"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.membersBean">
+		SELECT MB.MEMBERS_ID, MB.PROFILE_IMG, MB.NICKNAME, MB.REVIEW_CNT, MB.GRADE
+		FROM SQUADBOARD SB
+		JOIN MEMBERS MB ON MB.MEMBERS_ID = SB.MEMBERS_ID
+		WHERE SB.GAMEGENRE_NO = #{value}
+		GROUP BY MB.MEMBERS_ID, MB.PROFILE_IMG, MB.NICKNAME, MB.REVIEW_CNT,
+		MB.GRADE
+	</select>
 
+	<!-- 메인페이지 > 인기게임 리스트 > 선택 게임의 모집중인 스쿼드 검색 -->
+	<select id="squadListForEachGameSelect"
+		parameterType="java.lang.Integer"
+		resultType="com.bit.web.play.vo.squadboardBean">
+		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME, SB.TITLE,
+		SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE,
+		SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
+		GG.NAME AS GAMEGENRE_NAME, GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
+		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
+		FROM SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+		WHERE SB.GAMEGENRE_NO = #{value} AND SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND
+		SS.SQUADSTATE_NO = SB.SQUADSTATE AND SS.SQUADSTATE_NO = 0 AND
+		MB.MEMBERS_ID = SB.MEMBERS_ID ORDER BY MB.FOLLOW_CNT DESC
+	</select>
+	<!-- 게임별 누적 스쿼드수 업데이트 -->
+	<update id="squadCntUpdate">
+		UPDATE gamegenre
+		SET squad_cnt = (
+		SELECT COUNT(*)
+		FROM squadboard
+		WHERE squadboard.gamegenre_no = gamegenre.gamegenre_no AND squadstate = 0
+		OR
+		squadstate = 1 OR squadstate = 2 OR squadstate = 3
+		)
+		WHERE EXISTS (
+		SELECT 1
+		FROM squadboard
+		WHERE squadboard.gamegenre_no = gamegenre.gamegenre_no
+		)
+	</update>
+	
+	<select id="getNicknameById" parameterType="java.lang.String" resultType="java.lang.String">
+	select nickname from members where members_id=#{value}
+	</select>
+	
+	<!-- 사용자 아이디별로 신청 가능한 스쿼드(마이페이지) -->
+	<select id="registerSquadInfoSelect" parameterType="java.lang.String" resultType="com.bit.web.play.vo.squadboardBean">
+		SELECT SB.SQUADBOARD_NO, SB.MEMBERS_ID, SB.HOSTNAME,
+		SB.TITLE,
+		SB.USER_ACCEPTCNT, SB.USER_MAXCNT, SB.PLAYTIME, SB.REGDATE,
+		SB.RESERVEDATE, SB.PRICE, SB.FILENAME,
+		GG.NAME AS GAMEGENRE_NAME,
+		GG.GAME_IMG AS GAMEGENRE_GAME_IMG, SS.STATENAME AS
+		SQUADSTATE_STATENAME, MB.PROFILE_IMG AS MEMBERS_PROFILE_IMG
+		FROM
+		SQUADBOARD SB, GAMEGENRE GG, SQUADSTATE SS, MEMBERS MB
+		WHERE
+		SB.GAMEGENRE_NO = GG.GAMEGENRE_NO AND SS.SQUADSTATE_NO =
+		SB.SQUADSTATE
+		AND SS.SQUADSTATE_NO = 0 AND SB.MEMBERS_ID = #{value}
+		</select>
+	
+	<!-- 주로 하는 게임(마이페이지) -->
+	<select id="mainGamePlay" parameterType="String" resultType="com.bit.web.play.vo.gamegenreBean">
+	select * from members mb, gamegenre gg where mb.genre1 = gg.name or mb.genre2 = gg.name
+	</select>
+	
+	
 </mapper>

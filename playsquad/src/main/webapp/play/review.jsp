@@ -44,48 +44,20 @@
 		$("button#reviewInsert").click(
 				function() {
 					if($("textarea#contents").val().length == 0) {
-						alert('0자 이상 설명을 적어주세요');
+						alert('1자 이상 적어주세요');
 					} else {
 						$("form#GuestReviewInsert").submit();
 					}
 					return false;
 				});
+		console.log();
 	})
 </script>
 
-<style>
-#myform fieldset{
-    display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
-    direction: rtl; /* 이모지 순서 반전 */
-    border: 0; /* 필드셋 테두리 제거 */
-}
-#myform fieldset legend{
-    text-align: left;
-}
-#myform input[type=radio]{
-    display: none; /* 라디오박스 감춤 */
-}
-#myform label{
-    font-size: 2em; /* 이모지 크기 */
-    color: transparent; /* 기존 이모지 컬러 제거 */
-    text-shadow: 0 0 0 #fffafa; /* 새 이모지 색상 부여 */
-}
-#myform label:hover{
-    text-shadow: 0 0 0 #f3f700; /* 마우스 호버 */
-}
-#myform label:hover ~ label{
-    text-shadow: 0 0 0 #f3f700; /* 마우스 호버 뒤에오는 이모지들 */
-}
-#myform input[type=radio]:checked ~ label{
-    text-shadow: 0 0 0 #f3f700; /* 마우스 클릭 체크 */
-}
-</style>
-
 <body bgcolor="#141414">
 	<form action="/web/GuestReviewInsert" name="GuestReviewInsert" id="GuestReviewInsert" method="post">
-		<input type="hidden" name="userId" value="${userId}"> <!-- writer_id -->
-		<input type="hidden" name="gamehostId" value="${gamehostId}"> 
-		<input type="hidden" name="userName" value="${userName}">
+		<input type="hidden" name="host_id" id="host_id" value="${host_id}"> 
+
 	<fieldset style="display: block; color: white; border: none;">
 			<div id="contentsInputItems" style="display: block;">
 				<label for="contentsInput"
@@ -98,7 +70,7 @@
 후기를 작성하세요.</textarea>
 			</div>
 			<div>
-				<button id="reviewInsert" type="submit" 
+				<button id="reviewInsert" type="button" 
 					style="border: none; background: #035AA6; color: white; margin-left: 30%;">등록</button>
 			</div>
 
@@ -122,15 +94,5 @@
 		</script>
 	</form>
 	
-	<!--<form name="myform" id="myform" method="post" action="/web/GuestReviewInsert" >
-    <fieldset>
-        <legend style="font-color: white">평점</legend>
-        <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-        <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-        <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-        <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-        <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
-    </fieldset>
-</form>-->
 </body>
 </html>

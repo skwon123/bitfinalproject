@@ -33,22 +33,80 @@
 
     var index = 0;   //이미지에 접근하는 인덱스
     window.onload = function(){
-        slideShow();
+        slideShowSelectAction();
+/*         slideShow(); */
     }
-    function slideShow() {
-    var i;
-    var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
-    for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";   //처음에 전부 display를 none으로 한다.
+    
+    function slideShowSelectAction(){
+    	$.ajax({
+			   url:'/web/squadPopularSelectAction',
+			   type:'GET',
+			   dataType:'json',
+			   contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			   success:function(s){
+				   var i = 0;
+				   for(i; i<5; i++){
+					   var eachTitle = s[i].title;
+					   var eachFilename = s[i].filename;
+					   var eachSquadboardNo = s[i].squadboard_no;
+ 					   var eachHostId = s[i].members_id;
+					   var eachProfile = s[i].members_profile_img;
+					   var eachWriter = s[i].hostname;
+					   var eachGenre = s[i].gamegenre_name;
+					   var eachGameImg = s[i].gamegenre_game_img;
+					   var eachMax = s[i].user_maxcnt;
+					   var eachAcp = s[i].user_acceptcnt;
+					   var reservedateString = s[i].reservedate;
+					   var reservedateDate = new Date(reservedateString);
+					   var date = reservedateDate.toLocaleDateString();
+					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
+					   var div = document.createElement('div');
+					   div.className = 'slide1';
+					   div.style.height = '400px';
+					   div.style.display = 'none';
+					   div.innerHTML = `<table>
+						   <tbody>
+						   <tr>
+						   	<td rowspan="5">
+							   	<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+						   		<img src="/web/resources/img/play/upload/board/\${eachFilename}" style="height:330px;width:600px;border-radius:5%"></a>
+						   	</td>
+						   	<td rowspan="2"style="width:100px;padding:5px;text-align:center;">
+						   		<img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;">
+						   	</td>
+						   	<td style="width:120px;height:50px;">
+						   	<b>\${eachTitle}<b>
+						   	</td>
+						   </tr>
+						   <tr><td style="width:120px;height:42px;">\${eachHostId}</td></tr>
+						   <tr><td colspan="2" style="height:100px;width:230px;text-align:center;"><img src="/web/resources/img/play/\${eachGameImg}"style="height:100px;width:200px;"></td></tr>
+						   <tr><td colspan="2" style="height:50px;"><span style="margin-left:20px;color:gray;">게임</span><br><span style="margin-left:20px;"><b>\${eachGenre}</b></span></td></tr>
+						   <tr><td style="width:123px;height:60px;text-align:center;">\${date}<br>\${time}</td>
+						   		<td style="width:100px;height:60px;text-align:center;">모집인원<br>\${eachAcp}/\${eachMax}</td></tr>
+						   </tbody>
+						   </table>`;
+					   document.querySelector('div#gif').appendChild(div);
+				   }
+				   slideShow();
+				   function slideShow(){
+					    var j = 0;
+				        var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
+				        for (j = 0; j < x.length; j++) {
+				           x[j].style.display = "none";   //처음에 전부 display를 none으로 한다.
+				        }
+				        index++;
+				        if (index > x.length) {
+				            index = 1;  //인덱스가 초과되면 1로 변경
+				        } 
+				        x[index-1].style.display = "block";  //해당 인덱스는 block으로
+				        setTimeout(slideShow, 3000);   //함수를 3초마다 호출
+				   }
+				   },
+			   error:function(e){
+				   console.log('error'+e);
+			   	   }
+			   });
     }
-    index++;
-    if (index > x.length) {
-        index = 1;  //인덱스가 초과되면 1로 변경
-    }   
-    x[index-1].style.display = "block";  //해당 인덱스는 block으로
-    setTimeout(slideShow, 3000);   //함수를 3초마다 호출
- 
-	}
  
 </script>
 
@@ -65,10 +123,11 @@
 	<main>
 	<div align="center" id="gif">
 	
-  <img class="slide1" src="/web/resources/img/play/lol.jpg"  style="max-width: auto; height: 400px; ">
+  <!-- <img class="slide1" src="/web/resources/img/play/lol.jpg"  style="max-width: auto; height: 400px; ">
   <img class="slide1" src="/web/resources/img/play/pubg.jpg" style="max-width: auto; height: 400px; ">
   <img class="slide1" src="/web/resources/img/play/lostark.jpg" style="max-width: auto; height: 400px; ">
-  <img class="slide1" src="/web/resources/img/play/overwatch2.jpg" style="max-width: auto; height: 400px; ">
+  <img class="slide1" src="/web/resources/img/play/overwatch2.jpg" style="max-width: auto; height: 400px; "> -->
+  
   
   
 	</div>
@@ -83,7 +142,7 @@
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-			<div class="slider" align="center" id="sliderPopularSquad" style="height:300px;">
+			<div class="slider" align="center" id="sliderPopularSquad" style="height:300px;margin-right:1.8%;margin-left:1.8%;">
 <!-- 				<img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
              	<img src="/web/resources/img/play/lol.jpg" style="max-width: 15%; height: auto; "/>   -->
 			</div>
@@ -132,7 +191,7 @@
 					   var reservedateString = s[j].reservedate;
 					   var reservedateDate = new Date(reservedateString);
 					   var date = reservedateDate.toLocaleDateString();
-					   var time = reservedateDate.toLocaleTimeString();
+					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
 					   var div = document.createElement('div');
 					   div.className='item';
 					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
@@ -148,12 +207,26 @@
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
 	 					    	  <tr>
 	 					    	  <td>\${date}<br>\${time}</td>
-	 					    	  <td>\${eachAcp}/\${eachMax}</td>
+	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
 	 					    	  </tr>
 	 					    	  </tbody>`;
 	 					    slider.appendChild(div); 						   
 					    }else{
-					    	div.innerHTML = `<img src="\${eachFilename}">`;
+					    	div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+					    	<img src="\${eachFilename}"></a><br>
+ 					    	<table style="text-align:center; width:250px;">
+					    	  <thead>
+					    	  </thead>
+					    	  <tbody>
+					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
+					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
+					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
+					    	  <tr>
+					    	  <td>\${date}<br>\${time}</td>
+					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
+					    	  </tr>
+					    	  </tbody>`;
 	 					    slider.appendChild(div);
 					    }
 				   }
@@ -173,7 +246,7 @@
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-		<div class="slider" align="center" id="sliderRecruit" style="height:300px;">
+		<div class="slider" align="center" id="sliderRecruit" style="height:300px;margin-right:1.8%;margin-left:1.8%;">
 				
 		</div>
 			
@@ -223,7 +296,7 @@
 					   var reservedateString = s[j].reservedate;
 					   var reservedateDate = new Date(reservedateString);
 					   var date = reservedateDate.toLocaleDateString();
-					   var time = reservedateDate.toLocaleTimeString();
+					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
  					   var div = document.createElement('div');
  					   div.className='item';
  					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
@@ -239,12 +312,26 @@
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
 	 					    	  <tr>
 	 					    	  <td>\${date}<br>\${time}</td>
-	 					    	  <td>\${eachAcp}/\${eachMax}</td>
+	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
 	 					    	  </tr>
 	 					    	  </tbody>`;
 	 					    slider.appendChild(div); 						   
 					    }else{
-					    	div.innerHTML = `<img src="\${eachFilename}">`;
+					    	div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+					    	<img src="\${eachFilename}"></a><br>
+	 					    	<table style="text-align:center; width:250px;">
+	 					    	  <thead>
+	 					    	  </thead>
+	 					    	  <tbody>
+	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
+	 					    	  <tr>
+	 					    	  <td>\${date}<br>\${time}</td>
+	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
+	 					    	  </tr>
+	 					    	  </tbody>`;
 	 					    slider.appendChild(div);
 					    }
  				   }
@@ -265,7 +352,7 @@
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-			<div class="slider" align="center" id="sliderPopularGame" style="height:180px;">
+			<div class="slider" align="center" id="sliderPopularGame" style="height:180px;margin-right:1.8%;margin-left:1.8%;">
 				
 			</div>
 			<div class="next" id="nextPopularGame">
@@ -300,12 +387,14 @@
  				   console.log(s);
  				   for (var j=0; j < s.length; j++){
  					   var eachFilename = s[j].game_img;
+ 					   var eachGameGenreNo = s[j].gamegenre_no;
  					   var ext = eachFilename.slice(-3);
  					   var imgSrc = '/web/resources/img/play/'+eachFilename;
  					   console.log(eachFilename);
  					   var div = document.createElement('div');
  					   div.className='item';
-	 				   div.innerHTML = `<img src="/web/resources/img/play/\${eachFilename}"><br><table><thead></thead><tbody><tr><td><p>\${s[j].name}</p></td></tr></tbody></table>`;
+	 				   div.innerHTML = `<a href="/web/popularGameInfoSelect?ggno=\${eachGameGenreNo}"> <img src="/web/resources/img/play/\${eachFilename}"><br>
+	 					   	<table><thead></thead><tbody><tr><td><p><b>\${s[j].name}</b></p></td></tr></tbody></table> </a>`;
 	 				   slider.appendChild(div); 						    
  				   }
  			   },
@@ -313,8 +402,7 @@
  				   console.log('error');
  			   }
  		});
-        }
-      
+        }      
     	</script>
 	</section> 
 

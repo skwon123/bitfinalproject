@@ -11,6 +11,7 @@
 <script type="text/javascript">
 $(function(){
 	alert('후기가 성공적으로 작성되었습니다.');
+	window.opener.location.reload();
 	window.close();
 });
 </script>
