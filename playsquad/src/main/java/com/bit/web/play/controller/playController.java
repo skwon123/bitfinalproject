@@ -691,18 +691,23 @@ public class playController {
 		String my_id = (String) req.getSession().getAttribute("userId");
 		List<Map<String, Object>> followList = playService.followCheck(my_id);
 		List<String> followingList = new ArrayList<String>();
+		System.out.println(my_id+host_id);
 	    for (Map<String, Object> map : followList) {
 	        String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
 	        followingList.add(following_id);
 	    }
-	    if(followingList.contains(host_id)==true) {
-	    	return 1;
-	    }else if(followingList.contains(host_id)==false) {
-	    	return 2;
-	    }
-	    else {
-	    	System.out.println("error");
+	    if(host_id.equals(my_id)) {
 	    	return 3;
+	    }else {
+	    	if(followingList.contains(host_id)==true) {
+	    		return 1;
+	    	}else if(followingList.contains(host_id)==false) {
+	    		return 2;
+	    	}
+	    	else {
+	    		System.out.println("error");
+	    		return 4;
+	    	}
 	    }
 	}
 }

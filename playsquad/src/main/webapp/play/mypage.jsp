@@ -57,7 +57,10 @@ $(document).ready(function() {
             } else if(s == 2){
                 console.log(s);
                 followBtnText.text('팔로우');
-            } else {
+            } else if(s == 3){
+            	console.log(s);
+            	document.getElementById("followBtn").style.display="none";
+            }else {
                 console.log('error');
             }
         },
@@ -65,7 +68,7 @@ $(document).ready(function() {
             console.log('error');
         }
     });
-    $("#follow").on("click", function() {
+    $("#followBtn").on("click", function() {
         var id = $("#host_id").val();
         var followcnt = $("h3#follow_cnt");
         $.ajax({
@@ -83,6 +86,37 @@ $(document).ready(function() {
             }
         });
     });
+    
+	//heart 좋아요 클릭시! 하트 뿅
+	window.onload=likeBtnEffect();
+	function likeBtnEffect(){
+	    var $likeBtn =$('.icon.heart');
+
+	        $likeBtn.click(function(){
+	        $likeBtn.toggleClass('active');
+
+	        if($likeBtn.hasClass('active')){          
+	           $(this).find('img').attr({
+	        	   'src': '/web/resources/img/play/heartFull.png',
+	        	   'alt': '좋아요 완료'
+	                });
+	          
+	          
+	         }else{
+	            $(this).find('i').removeClass('fas').addClass('far')
+	           $(this).find('img').attr({
+	        	   'src': '/web/resources/img/play/heartBlank.png',
+	        	   'alt': '좋아요'
+	           });
+	         }
+	        
+	        var reviewId = $(this).closest('table').data('review-id'); // 후기 ID
+	        var url = '/like/' + reviewId; // 좋아요 요청 URL
+
+	        
+	        
+	     });
+	}
 });
 
 </script>
@@ -104,11 +138,13 @@ $(document).ready(function() {
 					<button type="button" style="background-color: #141414;"
 						onclick="location.href='/web/play/viewProfile?id=${userId}'">
 						회원정보 수정</button>
-					<button class="btn" id="reviewwrite"
-						style="background-color: #141414;" onclick="showPopup();">
-						<i class="fa-sharp fa-solid fa-pen"></i><span>후기 작성</span>
-					</button>
-					<button class="btn" id="follow" style="background-color: #141414;">
+					<c:if test="${not empty userId and userId ne i.members_id}">
+						<button class="btn" id="reviewwrite"
+							style="background-color: #141414;" onclick="showPopup();">
+							<i class="fa-sharp fa-solid fa-pen"></i><span>후기 작성</span>
+						</button>
+					</c:if>
+					<button class="btn" id="followBtn" style="background-color: #141414;">
    						 <i class="fa-solid fa-user-group"></i><span id="followBtnText"></span>
 					</button>
 					<h3 style="margin-left: 150px; margin-top: 30">${i.aboutme}</h3>
@@ -237,32 +273,7 @@ $(document).ready(function() {
        });
         }
        </script>
-		<!--  -->
 
-		<!--<div class="content-list"
-			style="margin-right: 1.8%; margin-left: 1.8%;">
-			<h1>주로하는 게임</h1>
-			<c:forEach var="g" items="${game}">
-				<div class="item">
-					<a href="/web/popularGameInfoSelect?ggno=${g.gamegenre_no}">
-						<img src="/web/resources/img/play/${g.game_img}" /><br />
-						<table>
-							<thead>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<p>s
-											<b>${game.name}</b>
-										</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</a>
-				</div>
-			</c:forEach>
-		</div>-->
 		
 		<div class="content-list">
 			<h1>주로 하는 게임 </h1>
@@ -328,50 +339,62 @@ $(document).ready(function() {
     	</script>
 
 		<!--  -->
-		<div class="content-list" style="height: 200px; min-width: 1200px;">
-			<h1>게스트 후기</h1>
-			<div class="list_cmt">
+				<h1 style="margin-left:50px">게스트 후기</h1>
+			<div class="list_cmt" style="border: 1; font-style: white">
 				<div class="cmt_head"></div>
-				<div class="cmt_body" style="margin-left: 100px;">
-					<c:forEach var="r" items="${review}" varStatus="cnt">
-						<table style="margin-top: 30px">
+				<div class="cmt_body" style="margin-left: 100px;border: 1; font-style: white">
+					<c:forEach var="r" items="${review}" varStatus="cnt" >
+					<table  style="margin-top:30px">
+
+						<tbody>
 							<tr>
-								<td rowspan="3" style="width: 100px"><img
-									src="/web/resources/img/play/upload/profile/${r.profile_img}"
-									class="rounded-circle" align="middle"
-									style="width: 50px; height: 50px;" /></td>
+								<td style="width:130px" rowspan="3" align="center">
+								<img src="/web/resources/img/play/upload/profile/${r.profile_img}"
+									class="rounded-circle" style="width: 50px; height: 50px;" /></td>
 							</tr>
 							<tr>
-								<td colspan="2" style="width: 1500px;"><span
-									class="info_append"> <span class="txt_name">${r.name}</span>
-										<!-- 글쓴이 이름으로 넣기 --> <span class="txt_bar">|</span> <span
-										class="txt_time">${r.regdate}</span> <small
-										class="text-muted ${r.score}" style="font-size: 20px"></small>
-										<%--                      <span class="txt_bar">| 평점 : </span> <span class="txt_time" >${r.score}</span>  --%>
-								</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<p class="txt_desc">${r.contents}</p>
+								<td style="width:400px" colspan="2">${r.name}</td>
+								<td style="width:30px"></td>
+								<td style="width:20px"></td>
+								<td style="width:30px">
+								<c:choose>
+								<c:when test="${userId != null}">
+								<a href="javascript:;" class="icon heart"> 
+								<img style="width:30px" src="/web/resources/img/play/heartBlank.png" alt="좋아요">
+								</a>
+								</c:when>
+								</c:choose> 
+		
 								</td>
 							</tr>
 							<tr>
+								<td>평점
+									<small style="width:150px" class="text-muted ${r.score}" style="font-size:20px;"></small>
+								</td>
+								<td align="right" style="width:180px"> ${r.regdate}</td>
 							</tr>
-						</table>
-					</c:forEach>
+							<tr></tr>
+							<tr>
+								<td></td>
+								<td style="width:300px" colspan="3">${r.contents}</td>
+								<td></td>
+								<td style="width:50px;margin-left: 20px"><a href="#none">신고</a></td>
+							</tr>
+						</tbody>
+			</table>
+		</c:forEach>
 				</div>
 				<div class="cmt_foot" style="margin-top: 50px"></div>
 			</div>
-		</div>
-		<!--       small을 호출해서, 점수를 받아서 별로 표시 -->
-		<script type="text/javascript">
-      $(".1").html("&#9733; &#9734; &#9734; &#9734; &#9734;");
-      $(".2").html("&#9733; &#9733; &#9734; &#9734; &#9734;");
-      $(".3").html("&#9733; &#9733; &#9733; &#9734; &#9734;");
-      $(".4").html("&#9733; &#9733; &#9733; &#9733; &#9734;");
-      $(".5").html("&#9733; &#9733; &#9733; &#9733; &#9733;"); 
-   </script>
-
+		
+<!-- 		small을 호출해서, 점수를 받아서 별로 표시 -->
+	<script type="text/javascript">
+		$(".1").html("&#9733; &#9734; &#9734; &#9734; &#9734;");
+		$(".2").html("&#9733; &#9733; &#9734; &#9734; &#9734;");
+		$(".3").html("&#9733; &#9733; &#9733; &#9734; &#9734;");
+		$(".4").html("&#9733; &#9733; &#9733; &#9733; &#9734;");
+		$(".5").html("&#9733; &#9733; &#9733; &#9733; &#9733;"); 
+	</script>
 
 	</section>
 </body>
