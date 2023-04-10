@@ -12,10 +12,11 @@ public class GuestReviewBean {
 	private String name;
 	private String contents;
 	private int score;
-	private Date regdate;
+	private Object regdate;
 	private int good_cnt;
 	private int ref;
 	private int pnum;
 	private int lev;
 	private int step;
+	private String profile_img;
 }

@@ -562,13 +562,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!--select hr.name as name, hr.regdate as regdate, hr.contents as contents, 
 			hr.score as score from hostreview hr where hr.writer_id = #{VALUE} -->
 
-		select hr.name as name, hr.regdate as regdate, hr.contents
+		select hr.name as name, TO_CHAR(hr.regdate, 'YYYY/MM/DD HH24:MI') as regdate, hr.contents
 		as contents,
-		hr.score as score, m.members_id as members_id
+		hr.score as score, m.members_id as members_id, m.profile_img as profile_img
 		from hostreview hr,
 		members m
 		where m.members_id = hr.host_id and hr.host_id = #{VALUE}
-
 	</select>
 
 	<select id="getReviewInfo"
@@ -604,7 +603,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="com.bit.web.play.vo.membersBean">
 		select members_id, nickname, profile_img,
 		grade,
-		follow_cnt
+		follow_cnt, aboutme
 		from members
 		where members_id = #{VALUE}
 
@@ -685,8 +684,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 주로 하는 게임(마이페이지) -->
 	<select id="mainGamePlay" parameterType="java.lang.String" resultType="com.bit.web.play.vo.gamegenreBean">
-	select * from members mb, gamegenre gg where mb.genre1 = gg.name or mb.genre2 = gg.name
+	select sb.gamegenre_no, gg.name, gg.game_img
+	from squadboard sb, gamegenre gg
+	where members_id = #{value} and sb.gamegenre_no = gg.gamegenre_no
+	group by sb.gamegenre_no, gg.name, gg.game_img
+	order by count(sb.gamegenre_no) desc	
+	</select>
 	
+	<update id="followCntUpdate" parameterType="java.lang.String">
+    	update members set follow_cnt = follow_cnt + 1 where members_id = #{VALUE}
+	</update>
+	<select id="followTableSequence" resultType="java.lang.Integer">
+	select followermembers_seq.nextval from dual
+	</select>
+	<select id="followCheck" parameterType="java.lang.String" resultType="map">
+	select followingmembers_id from followermembers where mymembers_id = #{my_id}
+	</select>
+	<!-- mymembers_id = 팔로워, followingmembers_id = 팔로우할 호스트 -->
+	<insert id="followTableInsert" parameterType="HashMap">
+		INSERT INTO followermembers(followermembers_no, mymembers_id, followingmembers_id) 
+		VALUES(#{followermembers_no}, #{my_id}, #{host_id})
+	</insert>
+	<update id="followCntDown" parameterType="java.lang.String">
+		update members set follow_cnt = follow_cnt - 1 where members_id = #{VALUE}
+	</update>
+	<delete id="followDelete" parameterType="HashMap">
+	delete from followermembers where mymembers_id = #{my_id} and followermembers.followingmembers_id = #{host_id} 
+	</delete>
+	<select id="selectFollowCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select follow_cnt from members where members_id = #{host_id}
 	</select>
 	
 	

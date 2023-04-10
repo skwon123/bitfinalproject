@@ -10,11 +10,13 @@ import com.bit.web.play.vo.hostreviewBean;
 import com.bit.web.play.vo.membersBean;
 import com.bit.web.play.vo.squadboardBean;
 import com.bit.web.play.vo.squadhistoryBean;
+import com.mongodb.util.Hash;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.SqlReturnUpdateCount;
 import org.springframework.stereotype.Service;
@@ -438,21 +440,35 @@ public class PlayServiceImpl implements PlayService {
 	public int getUserNo(String writerId) {
 		return dao.getUserNo(writerId);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	@Override
+	public int followTableSequence() {
+		return dao.followTableSequence();
+	}
+	@Override
+	public List<Map<String, Object>> followCheck(String my_id){
+		return dao.followCheck(my_id);
+	}
+	@Override
+	public void followTableInsert(HashMap<String, Object>map) {
+		dao.followTableInsert(map);
+	}
+	@Override
+	public void followCntDown(String host_id) {
+		dao.followCntDown(host_id);
+	}
+	@Override
+	public void followDelete(HashMap<String, Object>map) {
+		dao.followDelete(map);
+	}
+	@Override
+	public void followCntUpdate(String host_id) {
+		dao.followCntUpdate(host_id);
+	}
+	@Override
+	public int selectFollowCnt(String id) {
+		return dao.selectFollowCnt(id);
+	}
+	
 
 
 }

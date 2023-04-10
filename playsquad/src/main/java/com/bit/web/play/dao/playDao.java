@@ -2,6 +2,7 @@ package com.bit.web.play.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -383,8 +384,38 @@ public class playDao extends SqlSessionDaoSupport{
 	public List<gamegenreBean> mainGamePlay(String userId){
 		return this.getSqlSession().selectList("mainGamePlay", userId);
 	}
+	
 
+	public int followTableSequence() {
+		return this.getSqlSession().selectOne("followTableSequence");
+	}
+	
+	//팔로우 체크
+	public List<Map<String, Object>> followCheck(String my_id){
+		return this.getSqlSession().selectList("followCheck", my_id);
+	}
+	//팔로우 버튼 클릭 시 수 증가(팔로우가 안되어 있을 때)
+	public void followCntUpdate(String host_id) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().update("followCntUpdate", host_id);
+	}
+	
+	public void followTableInsert(HashMap<String, Object> map) {
+		this.getSqlSession().insert("followTableInsert", map);
+	}
+	//팔로우가 되어 있을 때 팔로우 버튼을 누르면 팔로우 수 감소
+	public void followCntDown(String host_id) {
+		this.getSqlSession().update("followCntDown", host_id);
+	}
+	
+	public void followDelete(HashMap<String, Object>map) {
+		this.getSqlSession().delete("followDelete", map);
+	}
+	public int selectFollowCnt(String id) {
+		return this.getSqlSession().selectOne("selectFollowCnt", id);
+	}
 
+	
 }
 
 

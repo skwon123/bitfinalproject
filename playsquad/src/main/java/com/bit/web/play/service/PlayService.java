@@ -2,6 +2,7 @@ package com.bit.web.play.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bit.web.play.vo.GuestReviewBean;
 import com.bit.web.play.vo.NoticeBoardBean;
@@ -254,11 +255,16 @@ public interface PlayService {
 	 * ??±‚≈∏?
 	 */	
 	int getUserNo(String writerId);
-
-
-
-
-
-
+	
+	//int follow(String host_id);
+	int followTableSequence();
+	List<Map<String, Object>> followCheck(String my_id);
+	void followTableInsert(HashMap<String, Object>map);
+	void followCntDown(String host_id);
+	void followDelete(HashMap<String, Object>map);
+	void followCntUpdate(String host_id);
+	
+	int selectFollowCnt(String id);
+	
 
 }

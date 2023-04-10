@@ -32,8 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 
@@ -564,13 +566,13 @@ public class playController {
 		bean.setHostreview_no(playService.getGuestReviewSequence()); // hostreview_no, 정상 출력
 		bean.setWriter_id(userId); //writer_id 콘솔에 나오는 거 확인
 		bean.setName(playService.getNicknameById(userId));
-		bean.setScore(5);
+		bean.setScore(Integer.parseInt(req.getParameter("score")));
 		bean.setGood_cnt(0);
 		bean.setRef(0);
 		bean.setPnum(0);
 		bean.setLev(0);
 		bean.setStep(0);
-
+		
 		// 콘솔에 뿌려서 확인
 		System.out.println(bean); 
 		// insert
@@ -580,12 +582,6 @@ public class playController {
 		return "redirect:play/reviewInsertSuccess.jsp";
 
 	}
-	//	@RequestMapping(value = "GuestReviewInsert")
-	//	public String GuestReviewInsert(GuestReviewBean bean) {
-	//		log.debug("게스트 후기 {}", bean);
-	//		playService.insertGuestReview(bean); 
-	//		return "redirect:play/reviewInsertSuccess.jsp";
-	//	};
 	/*
 	 * 게스트 후기 select
 	 */	
@@ -606,7 +602,7 @@ public class playController {
 		return "play/mypage";
 	}
 	/*
-	 * 마이페이지 - 평점, 팔로워 수 
+	 * 마이페이지 - 유저 정보
 	 */		
 	@RequestMapping(value="selectMyInfo", method=RequestMethod.GET)
 	public String selectMyInfo(Model model, String id) {
@@ -645,6 +641,9 @@ public class playController {
 	};
 	
 	
+	/* 
+	 * 주로 하는 게임 (마이페이지)
+	 */
 	@GetMapping(value = "mainGamePlay")
 	@ResponseBody
 	public List<gamegenreBean> mainGamePlay(String userId) {
@@ -652,9 +651,58 @@ public class playController {
 		return playService.mainGamePlay(userId);
 	};
 	
-	
-	
-	
-	
+	/* 
+	 * 팔로우 기능 (마이페이지)
+	 */
+	@RequestMapping(value="follow", method=RequestMethod.POST)
+	@ResponseBody
+	public int follow(Model model, HttpSession session, HttpServletRequest req, @RequestParam("host_id") String host_id) {
+	    int followermembers_no = playService.followTableSequence();
+	    String my_id = (String) req.getSession().getAttribute("userId");
+	    List<Map<String, Object>> followList = playService.followCheck(my_id);
+	    List<String> followingList = new ArrayList<String>();
+	    for (Map<String, Object> map : followList) {
+	        String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
+	        followingList.add(following_id);
+	    }
+	    HashMap<String, Object>map = new HashMap<String, Object>();
+		map.put("followermembers_no", followermembers_no);
+		map.put("my_id", my_id);
+		map.put("host_id", host_id);
+		System.out.println(followList);
+	    if(followingList.contains(host_id)==true) {
+	    	playService.followDelete(map);
+	    	playService.followCntDown(host_id);
+	    	return playService.selectFollowCnt(host_id);
+	    }else if(followingList.contains(host_id)==false) {
+	    	playService.followTableInsert(map);
+	    	playService.followCntUpdate(host_id);
+	    	return playService.selectFollowCnt(host_id);
+	    }
+	    else {
+	    	System.out.println("error");
+	    	return playService.selectFollowCnt(host_id);
+	    }
 
+	}
+	@RequestMapping(value="followBtnAction")
+	@ResponseBody
+	public int followBtnActionProcess(@RequestParam("host_id") String host_id, HttpServletRequest req){
+		String my_id = (String) req.getSession().getAttribute("userId");
+		List<Map<String, Object>> followList = playService.followCheck(my_id);
+		List<String> followingList = new ArrayList<String>();
+	    for (Map<String, Object> map : followList) {
+	        String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
+	        followingList.add(following_id);
+	    }
+	    if(followingList.contains(host_id)==true) {
+	    	return 1;
+	    }else if(followingList.contains(host_id)==false) {
+	    	return 2;
+	    }
+	    else {
+	    	System.out.println("error");
+	    	return 3;
+	    }
+	}
 }

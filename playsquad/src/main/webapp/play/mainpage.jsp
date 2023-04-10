@@ -72,7 +72,7 @@
 						   		<img src="/web/resources/img/play/upload/board/\${eachFilename}" style="height:330px;width:600px;border-radius:5%"></a>
 						   	</td>
 						   	<td rowspan="2"style="width:100px;padding:5px;text-align:center;">
-						   		<img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;">
+						   	<a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;"></a>
 						   	</td>
 						   	<td style="width:120px;height:50px;">
 						   	<b>\${eachTitle}<b>
@@ -201,7 +201,7 @@
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
 	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
@@ -218,7 +218,7 @@
 					    	  <thead>
 					    	  </thead>
 					    	  <tbody>
-					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
@@ -306,7 +306,7 @@
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
 	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>

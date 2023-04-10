@@ -156,7 +156,7 @@ $(function(){
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/${i.members_profile_img}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=${i.members_id}"><img src="/web/resources/img/play/upload/profile/${i.members_profile_img}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
 	 					    	  <tr><td style="text-align:left;"><b>${i.title}</b></td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">${i.hostname}</td></tr>
 	 					    	  <tr><td style="color:gray;text-align:left;">${i.gamegenre_name}</td></tr>
