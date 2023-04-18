@@ -18,9 +18,7 @@ $(function(){
 	$("button#submitPost").click(function(){
 		$("form").submit();
 	});
-});
-	
-});
+});	
 </script>
 <title>Start Simple Web</title>
 
@@ -331,23 +329,12 @@ p {
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
 				<input type="hidden" id="writer_id" name="writer_id"
-					value="${param.user_id}" />
+					value="${param.writer_id}" />
 				<table>
-					<!--<tr>
-					<td class="td1">카테고리</td>
-					<td class="td2"><select name="category" id="category" class="form-control"
-						style="display: inline-block; background-color:#141414">
-							<option value="">&nbsp;+ </option>
-							<option value="">----------------------</option>
-							<option value="">공지사항</option>
-							
-					</select></td>
-				</tr>-->
-
 					<tr>
 						<td class="td1">제목</td>
 						<td class="td2" valign="middle"><input type="text"
-							name="title" id="title" value=""
+							name="title" id="title"
 							class="form-control input-sm bskr-font subject"
 							style="background-color: #141414" /></td>
 					</tr>
@@ -369,50 +356,13 @@ p {
 					<input type="button" value="취소" class="btn btn-default btn-sm"
 						onclick="history.back();"
 						style="background-color: #B40404; color: white;" />&nbsp;
-					<button id="submitPost" type="button"
-						class="btn btn-primary btn-sm">
-						<i class="glyphicon glyphicon-ok">확인</i>
+					<button id="submitPost" type="button" 
+						class="btn btn-primary btn-sm" style="background: #035AA6; background-color:blue;">확인
 					</button>
 				</div>
 			</div>
 		</div>
 	</form>
-	<!-- Footer -->
-	<!-- <footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-					<ul class="list-inline text-center">
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-home fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-github fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-					</ul>
-					<p class="copyright text-muted">Copyright &copy;2016 SIST. All
-						rights reserved | code by milib</p>
-				</div>
-			</div>
-		</div>
-	</footer>-->
-	<!-- jQuery -->
-	<script src="js/jquery.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="js/clean-blog.min.js"></script>
 
 </body>
 

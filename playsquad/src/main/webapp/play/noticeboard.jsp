@@ -28,14 +28,7 @@
    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+   
 </head>
 <body>
 
@@ -64,7 +57,8 @@
 		<c:choose>
 		<c:when test="${userAuthority == 'Admin_Permissions'}"> <%-- 권한이 있는 경우 --%>
 			<div class="board-toolbar" 	style="text-align: right; margin-bottom: 0px">
-				<a href="/web/play/noticeboardwrite.jsp?job=new&writer_id=${param.writer_id}" class="btn btn-primary btn-sm">
+				<!--<a href="/web/play/noticeboardwrite.jsp?writer_id=${param.writer_id}" class="btn btn-primary btn-sm">-->
+				<a href="/web/play/noticeboardwrite.jsp" class="btn btn-primary btn-sm">
 				<i class="glyphicon glyphicon-pencil" style="margin-right: 15px;" ></i>쓰기</a>
 			</div>
 		</c:when>
@@ -77,7 +71,7 @@
 			
 				<div class="title">
 						<a href="/web/selectNoticeBoard?no=${i.noticeboard_no}" style="color:white;">
-							${i.title}<span class="badge">New</span>
+							${i.title}<span class="badge"></span>
 						</a>
 					</div>
 					
@@ -104,41 +98,6 @@
 			</div>			
 		</div>
 	</div>
-	<!-- Footer -->
-	<!-- <footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-					<ul class="list-inline text-center">
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-home fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-						<li><a href="#"> <span class="fa-stack fa-lg"> <i
-									class="fa fa-circle fa-stack-2x"></i> <i
-									class="fa fa-github fa-stack-1x fa-inverse"></i>
-							</span>
-						</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>-->
-	<!-- jQuery -->
-	<script src="js/jquery.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="js/clean-blog.min.js"></script>
-
 </body>
 
 </html>

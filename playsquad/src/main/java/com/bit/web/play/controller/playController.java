@@ -512,11 +512,12 @@ public class playController {
 	 * 공지사항
 	 */	
 	@RequestMapping(value="NoticeBoardInsert", method = RequestMethod.POST)
-	public String NoticeBoardInsert(NoticeBoardBean bean, Model model, @RequestParam String writer_id) {
+	public String NoticeBoardInsert(NoticeBoardBean bean, @RequestParam String writer_id) {
 		bean.setNoticeboard_no(playService.getSequence2());
-		//bean.setWriter_id(writer_id);
+		bean.setWriter_id(writer_id);
 		System.out.println(bean);
 		playService.insertNoticeBoard(bean);
+				
 		return "play/noticeboard";
 
 	}
