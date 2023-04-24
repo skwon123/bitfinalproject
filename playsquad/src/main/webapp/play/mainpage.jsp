@@ -31,13 +31,95 @@
 </style>
 <script>
 
-    var index = 0;   //이미지에 접근하는 인덱스
+    var index = 0;
+    var userId = "${userId}";
     window.onload = function(){
-        slideShowSelectAction();
-/*         slideShow(); */
+       if(userId){
+    	   slideShowRecommendationSelectAction();
+       }else{
+    	   slideShowPopularSelectAction();
+       }
+    };
+    function slideShow(){
+	    var j = 0;
+        var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
+        for (j = 0; j < x.length; j++) {
+           x[j].style.display = "none";   //처음에 전부 display를 none으로 한다.
+        }
+        index++;
+        if (index > x.length) {
+            index = 1;  //인덱스가 초과되면 1로 변경
+        } 
+        x[index-1].style.display = "block";  //해당 인덱스는 block으로
+        setTimeout(slideShow, 3000);   //함수를 3초마다 호출
+   };
+    function slideShowRecommendationSelectAction(){
+    	$.ajax({
+    		url:'/web/recommendationSelect',
+			type:'GET',
+			data:{'userId':userId},
+			dataType:'json',
+			contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			success:function(s){
+				if(s.length>0){					
+				console.log(s);
+				var i = 0;
+				   for(i; i<s.length; i++){
+					   var eachTitle = s[i].title;
+					   var eachFilename = s[i].filename;
+					   var eachSquadboardNo = s[i].squadboard_no;
+					   var eachHostId = s[i].members_id;
+					   var eachProfile = s[i].members_profile_img;
+					   var eachWriter = s[i].hostname;
+					   var eachGenre = s[i].gamegenre_name;
+					   var eachGameImg = s[i].gamegenre_game_img;
+					   var eachMax = s[i].user_maxcnt;
+					   var eachAcp = s[i].user_acceptcnt;
+					   var reservedateString = s[i].reservedate;
+					   var reservedateDate = new Date(reservedateString);
+					   var options = {month:'long', day:'numeric'};
+					   var date = reservedateDate.toLocaleDateString('ko-KR', options);
+					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
+					   var div = document.createElement('div');
+					   div.className = 'slide1';
+					   div.style.height = '400px';
+					   div.style.display = 'none';
+					   div.innerHTML = `<table>
+						   <tbody>
+						   <tr>
+						   	<td rowspan="5">
+							   	<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
+						   		<img src="/web/resources/img/play/upload/board/\${eachFilename}" style="height:330px;width:600px;border-radius:7%"></a>
+						   	</td>
+						   	<td rowspan="2"style="width:100px;padding:5px;text-align:center;">
+						   		<img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;">
+						   	</td>
+						   	<td style="width:120px;height:50px;">
+						   	<b>\${eachTitle}<b>
+						   	</td>
+						   </tr>
+						   <tr><td style="width:120px;height:42px;">\${eachHostId}</td></tr>
+						   <tr><td colspan="2" style="height:100px;width:230px;text-align:center;"><img src="/web/resources/img/play/\${eachGameImg}"style="height:100px;width:200px;"></td></tr>
+						   <tr><td colspan="2" style="height:50px;"><span style="margin-left:20px;color:gray;">게임</span><br><span style="margin-left:20px;"><b>\${eachGenre}</b></span></td></tr>
+						   <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+						   		<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
+						   </tbody>
+						   </table>`;
+					   document.querySelector('div#gif').appendChild(div);
+				   }
+				   slideShow();
+				   
+				}else{
+					slideShowPopularSelectAction();
+				}
+			},
+			error:function(e){
+				console.log('recom error');
+			}
+    	});
     }
     
-    function slideShowSelectAction(){
+    function slideShowPopularSelectAction(){
     	$.ajax({
 			   url:'/web/squadPopularSelectAction',
 			   type:'GET',
@@ -58,7 +140,8 @@
 					   var eachAcp = s[i].user_acceptcnt;
 					   var reservedateString = s[i].reservedate;
 					   var reservedateDate = new Date(reservedateString);
-					   var date = reservedateDate.toLocaleDateString();
+					   var options = {month:'long', day:'numeric'};
+					   var date = reservedateDate.toLocaleDateString('ko-KR', options);
 					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
 					   var div = document.createElement('div');
 					   div.className = 'slide1';
@@ -69,10 +152,10 @@
 						   <tr>
 						   	<td rowspan="5">
 							   	<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
-						   		<img src="/web/resources/img/play/upload/board/\${eachFilename}" style="height:330px;width:600px;border-radius:5%"></a>
+						   		<img src="/web/resources/img/play/upload/board/\${eachFilename}" style="height:330px;width:600px;border-radius:7%"></a>
 						   	</td>
 						   	<td rowspan="2"style="width:100px;padding:5px;text-align:center;">
-						   	<a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;"></a>
+						   		<img src="/web/resources/img/play/upload/profile/\${eachProfile}"style="height:75px;width:75px;border-radius:50%;">
 						   	</td>
 						   	<td style="width:120px;height:50px;">
 						   	<b>\${eachTitle}<b>
@@ -81,29 +164,16 @@
 						   <tr><td style="width:120px;height:42px;">\${eachHostId}</td></tr>
 						   <tr><td colspan="2" style="height:100px;width:230px;text-align:center;"><img src="/web/resources/img/play/\${eachGameImg}"style="height:100px;width:200px;"></td></tr>
 						   <tr><td colspan="2" style="height:50px;"><span style="margin-left:20px;color:gray;">게임</span><br><span style="margin-left:20px;"><b>\${eachGenre}</b></span></td></tr>
-						   <tr><td style="width:123px;height:60px;text-align:center;">\${date}<br>\${time}</td>
-						   		<td style="width:100px;height:60px;text-align:center;">모집인원<br>\${eachAcp}/\${eachMax}</td></tr>
+						   <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+						   		<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
 						   </tbody>
 						   </table>`;
 					   document.querySelector('div#gif').appendChild(div);
 				   }
 				   slideShow();
-				   function slideShow(){
-					    var j = 0;
-				        var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
-				        for (j = 0; j < x.length; j++) {
-				           x[j].style.display = "none";   //처음에 전부 display를 none으로 한다.
-				        }
-				        index++;
-				        if (index > x.length) {
-				            index = 1;  //인덱스가 초과되면 1로 변경
-				        } 
-				        x[index-1].style.display = "block";  //해당 인덱스는 block으로
-				        setTimeout(slideShow, 3000);   //함수를 3초마다 호출
-				   }
 				   },
 			   error:function(e){
-				   console.log('error'+e);
+				   console.log('popul error');
 			   	   }
 			   });
     }
@@ -134,15 +204,16 @@
 	</main>
 	
 	<section>
+	<div style="margin-left:2%;margin-right:2%;">
 		<!-- 인기스쿼드 리스트 -->
 		<div class="content-list">
-			<h1>인기 스쿼드</h1>
+			<h1 style="margin-left:2%;">인기 스쿼드</h1>
        
 			<div class="prev" id="prevPopularSquad">
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-			<div class="slider" align="center" id="sliderPopularSquad" style="height:300px;margin-right:1.8%;margin-left:1.8%;">
+			<div class="slider" align="center" id="sliderPopularSquad" style="height:320px;margin-right:2%;margin-left:2%;">
 <!-- 				<img src="/web/resources/img/play/overwatch2.jpg" style="max-width: 15%; height: auto; "/>
              	<img src="/web/resources/img/play/lol.jpg" style="max-width: 15%; height: auto; "/>   -->
 			</div>
@@ -190,42 +261,41 @@
 					   var eachAcp = s[j].user_acceptcnt;
 					   var reservedateString = s[j].reservedate;
 					   var reservedateDate = new Date(reservedateString);
-					   var date = reservedateDate.toLocaleDateString();
+					   var options = {month:'long', day:'numeric'};
+					   var date = reservedateDate.toLocaleDateString('ko-KR', options);
 					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
 					   var div = document.createElement('div');
 					   div.className='item';
 					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
 	 					    div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
-	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}"></a><br>
+	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}" style="border-radius:7%"></a><br>
 	 					    	<table style="text-align:center; width:250px;">
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
-	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
-	 					    	  <tr>
-	 					    	  <td>\${date}<br>\${time}</td>
-	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
+	 					    	 <tr><td rowspan="4" style="height:70px;"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;height:42px;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;height:21px;font-size:14px;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style=" width:115px;text-align:center;">\${eachGenre}</td></tr>
+	 					    	 <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+	 					    	<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
 	 					    	  </tr>
 	 					    	  </tbody>`;
 	 					    slider.appendChild(div); 						   
 					    }else{
 					    	div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
-					    	<img src="\${eachFilename}"></a><br>
+					    	<img src="\${eachFilename}" style="border-radius:7%"></a><br>
  					    	<table style="text-align:center; width:250px;">
 					    	  <thead>
 					    	  </thead>
 					    	  <tbody>
-					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
-					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
-					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
-					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
-					    	  <tr>
-					    	  <td>\${date}<br>\${time}</td>
-					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
-					    	  </tr>
+					    	  <tr><td rowspan="4" style="height:70px;"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+ 					    	  <tr><td style="text-align:left;height:42px;"><b>\${eachTitle}</b></td></tr>
+ 					    	  <tr><td style="color:gray;text-align:left;height:21px;font-size:14px;">\${eachWriter}</td></tr>
+ 					    	  <tr><td style=" width:115px;text-align:center;">\${eachGenre}</td></tr>
+ 					    	 <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+ 					    	<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
+ 					    	  </tr>
 					    	  </tbody>`;
 	 					    slider.appendChild(div);
 					    }
@@ -240,13 +310,13 @@
 		
 		<!-- 모집중인 스쿼드 리스트 -->
 		<div class="content-list">
-			<h1>모집 중인 스쿼드</h1>
+			<h1 style="margin-left:2%;">모집 중인 스쿼드</h1>
        
 			<div class="prev" id="prevRecruit">
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
-		<div class="slider" align="center" id="sliderRecruit" style="height:300px;margin-right:1.8%;margin-left:1.8%;">
+		<div class="slider" align="center" id="sliderRecruit" style="height:320px;margin-right:1.8%;margin-left:1.8%;">
 				
 		</div>
 			
@@ -295,41 +365,40 @@
 					   var eachAcp = s[j].user_acceptcnt;
 					   var reservedateString = s[j].reservedate;
 					   var reservedateDate = new Date(reservedateString);
-					   var date = reservedateDate.toLocaleDateString();
+					   var options = {month:'long', day:'numeric'};
+					   var date = reservedateDate.toLocaleDateString('ko-KR', options);
 					   var time = reservedateDate.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' });
  					   var div = document.createElement('div');
  					   div.className='item';
  					   if(ext == 'jpg' || ext == 'png' || ext == 'gif'){
 	 					    div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
-	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}"></a><br>
+	 					    <img src="/web/resources/img/play/upload/board/\${eachFilename}" style="border-radius:7%"></a><br>
 	 					    	<table style="text-align:center; width:250px;">
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=\${eachHostId}"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
-	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
-	 					    	  <tr>
-	 					    	  <td>\${date}<br>\${time}</td>
-	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
+	 					    	  <tr><td rowspan="4" style="height:70px;"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;height:42px;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;height:21px;font-size:14px;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style=" width:115px;text-align:center;">\${eachGenre}</td></tr>
+	 					    	 <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+	 					    	<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
 	 					    	  </tr>
 	 					    	  </tbody>`;
 	 					    slider.appendChild(div); 						   
 					    }else{
 					    	div.innerHTML = `<a href="/web/squadBoardInfoSelect?no=\${eachSquadboardNo}&hostId=\${eachHostId}">
-					    	<img src="\${eachFilename}"></a><br>
+					    	<img src="\${eachFilename}" style="border-radius:7%"></a><br>
 	 					    	<table style="text-align:center; width:250px;">
 	 					    	  <thead>
 	 					    	  </thead>
 	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
-	 					    	  <tr><td style="text-align:left;"><b>\${eachTitle}</b></td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachWriter}</td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">\${eachGenre}</td></tr>
-	 					    	  <tr>
-	 					    	  <td>\${date}<br>\${time}</td>
-	 					    	  <td>모집인원<br>\${eachAcp}/\${eachMax}</td>
+	 					    	  <tr><td rowspan="4" style="height:70px;"><img src="/web/resources/img/play/upload/profile/\${eachProfile}" style="width:60px; height:60px; border-radius:50%;"></td></tr>
+	 					    	  <tr><td style="text-align:left;height:42px;"><b>\${eachTitle}</b></td></tr>
+	 					    	  <tr><td style="color:gray;text-align:left;height:21px;font-size:14px;">\${eachWriter}</td></tr>
+	 					    	  <tr><td style=" width:115px;text-align:center;">\${eachGenre}</td></tr>
+	 					    	 <tr><td style="width:123px;height:60px;text-align:center;"><div style="margin-left:20px;width:90px;background-color: #424242; border-radius:7%;"><span>\${date}</span><br><span style="color:#f4ae23;">\${time}</span></div></td>
+	 					    	<td style="width:100px;height:60px;text-align:center;"><span style="color:#ffffffb3;">모집인원</span><br>\${eachAcp}/\${eachMax}</td></tr>
 	 					    	  </tr>
 	 					    	  </tbody>`;
 	 					    slider.appendChild(div);
@@ -346,7 +415,7 @@
 		
 		<!-- 인기 게임 리스트 -->
  		<div class="content-list">
-			<h1>인기 게임</h1>
+			<h1 style="margin-left:2%;">인기 게임</h1>
        
 			<div class="prev" id="prevPopularGame">
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
@@ -404,6 +473,7 @@
  		});
         }      
     	</script>
+    </div>
 	</section> 
 
 <footer>

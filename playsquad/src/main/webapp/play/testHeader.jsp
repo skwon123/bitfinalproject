@@ -108,7 +108,7 @@ $(function(){
 
 <c:choose>
 <c:when test="${userId == null}"> <%-- 로그인 안 한 경 우 --%>
-<nav class="topFixBanner" style="background:transparent; display:flex; flez-wrap:wrap; justify-content:space-between; align-items:center;">
+<nav class="topFixBanner" style="background:linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)); display:flex; flez-wrap:wrap; justify-content:space-between; align-items:center;">
 	<a align="right"   href="/web/play/mainpage.jsp" style="width: 45px; height: auto; margin-left:0px;">
 	<img src="/web/resources/img/play/technology.png" style="width:60px; height: auto; margin-left:50px;">
 	</a>
@@ -149,7 +149,7 @@ $(function(){
 
 <c:otherwise> <%-- 로그인 한 경 우 --%>
 
-<nav class="topFixBanner" style="background:transparent; display:flex; flez-wrap:wrap; justify-content:space-between; align-items:center;">
+<nav class="topFixBanner" style="background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); display:flex; flez-wrap:wrap; justify-content:space-between; align-items:center;">
 	<div class="banner_left" style="flex-grow:1; float:left; text-align:left;"><a href="/web/play/mainpage.jsp"><img src="/web/resources/img/play/technology.png" style="width:60px; height: auto; margin-left:50px;"></a></div>
 	<div class="banner_middle" style="flex-grow:1; text-align:left;">
  		<span class="accordion" id="new_squad" style="display:inline-block">
@@ -171,7 +171,7 @@ $(function(){
 		
 		
 	</div>
-	<div class="banner_right" style="flex-grow:2; float:right; text-align:right;">	
+	<div class="banner_right" style="flex-grow:2; float:right; text-align:right;margin-right:3%;">	
 		<span class="search">
 
 					

@@ -375,7 +375,7 @@ public class playDao extends SqlSessionDaoSupport{
 		// TODO Auto-generated method stub
 		return this.getSqlSession().selectOne("getTotalRow",map);
 	}
-	
+
 	// 신청 가능한 스쿼드	
 	public List<squadboardBean> registerSquadInfoSelect(String userId){
 		return this.getSqlSession().selectList("registerSquadInfoSelect", userId);
@@ -384,12 +384,12 @@ public class playDao extends SqlSessionDaoSupport{
 	public List<gamegenreBean> mainGamePlay(String userId){
 		return this.getSqlSession().selectList("mainGamePlay", userId);
 	}
-	
+
 
 	public int followTableSequence() {
 		return this.getSqlSession().selectOne("followTableSequence");
 	}
-	
+
 	//팔로우 체크
 	public List<Map<String, Object>> followCheck(String my_id){
 		return this.getSqlSession().selectList("followCheck", my_id);
@@ -399,7 +399,7 @@ public class playDao extends SqlSessionDaoSupport{
 		// TODO Auto-generated method stub
 		this.getSqlSession().update("followCntUpdate", host_id);
 	}
-	
+
 	public void followTableInsert(HashMap<String, Object> map) {
 		this.getSqlSession().insert("followTableInsert", map);
 	}
@@ -407,15 +407,31 @@ public class playDao extends SqlSessionDaoSupport{
 	public void followCntDown(String host_id) {
 		this.getSqlSession().update("followCntDown", host_id);
 	}
-	
+
 	public void followDelete(HashMap<String, Object>map) {
 		this.getSqlSession().delete("followDelete", map);
 	}
 	public int selectFollowCnt(String id) {
 		return this.getSqlSession().selectOne("selectFollowCnt", id);
 	}
+	public String selectCm_id(String members_id) {
+		return this.getSqlSession().selectOne("selectCm_id", members_id);
+	}
+	public List<squadboardBean> recSquadSelect(List<String> recIdList){
+		return this.getSqlSession().selectList("recSquadSelect", recIdList);
+	}
+	public void membersTableFollowCntSync(String members_id) {
+		this.getSqlSession().update("membersTableFollowCntSync", members_id);
+	}
+	// 호스트 평점 업데이트
+	public void hostGradeUpdate(String hostId) {
+		this.getSqlSession().update("hostGradeUpdate", hostId);
+	}
+	// 호스트 리뷰수 업데이트
+	public void hostReviewCntUpdate(String hostId) {
+		this.getSqlSession().update("hostReviewCntUpdate", hostId);
+	}
 
-	
 }
 
 

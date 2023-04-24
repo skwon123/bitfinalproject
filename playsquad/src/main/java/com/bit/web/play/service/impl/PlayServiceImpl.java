@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.jdbc.core.SqlReturnUpdateCount;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class PlayServiceImpl implements PlayService {
 
 	private final playDao dao;
+	
 
 	/* 
 	 * 로그인 페이지 > 로그인 > 아이디찾기 
@@ -427,7 +430,7 @@ public class PlayServiceImpl implements PlayService {
 	public List<squadboardBean> registerSquadInfoSelect(String userId){
 		return dao.registerSquadInfoSelect(userId);
 	}
-	
+
 	@Override
 	public List<gamegenreBean> mainGamePlay(String userId){
 		return dao.mainGamePlay(userId);
@@ -468,7 +471,27 @@ public class PlayServiceImpl implements PlayService {
 	public int selectFollowCnt(String id) {
 		return dao.selectFollowCnt(id);
 	}
-	
+	@Override
+	public   String selectCm_id(String members_id) {
+		return dao.selectCm_id(members_id);
+	}
+	@Override
+	public List<squadboardBean> recSquadSelect(List<String> recIdList){
+		return dao.recSquadSelect(recIdList);
+	}
+	@Override
+	public void membersTableFollowCntSync(String members_id) {
+		dao.membersTableFollowCntSync(members_id);
+	}
+	/* 호스트 평점 업데이트 */
+	@Override
+	public void hostGradeUpdate(String hostId){
+		dao.hostGradeUpdate(hostId);
+	}
+	@Override
+	public void hostReviewCntUpdate(String hostId) {
+		dao.hostReviewCntUpdate(hostId);
+	}
 
 
 }

@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,12 +76,8 @@ public class playController {
 	@ResponseBody
 	public String loginCheck(@RequestParam(value = "id", required = false)String inputId, @RequestParam(value = "password", required = false)String inputPassword,
 			HttpServletRequest req) {
-
 		String loginPass = playService.loginPass(inputId);
 		String authority = playService.selectAuthority(inputId);
-		System.out.println(inputId);
-		System.out.println(inputPassword);
-		System.out.println(loginPass);
 		if(loginPass.equals(inputPassword)) {
 			req.getSession().setAttribute("userId", inputId);
 			req.getSession().setAttribute("userAuthority", authority);
@@ -106,9 +103,9 @@ public class playController {
 	 * 로그인시 mainpage로
 	 */
 	@RequestMapping(value = "playsquadListAction", method = RequestMethod.POST)
-	public String playsquadListAction() {
+	public String playsquadListAction(HttpServletRequest req, Model model) {
 		System.out.println("List Action In Process..");
-
+		model.addAttribute("userId", req.getAttribute("userId"));
 		return "play/mainpage";
 	};
 	/*
@@ -128,38 +125,15 @@ public class playController {
 			, @RequestParam(value = "userId", required=false)String writerId
 			, @RequestParam(value = "filename", required=false, defaultValue = "defaultImg.jpg")String filename
 			, @RequestParam(value = "thumbnail_file", required=false)MultipartFile file) {
-		System.out.println("Board Insert In Process..");
-		// 테스트용 작성자 아이디 blue로 임시 설정. 로그인부터 연결시 parameter에서 가져와야 함.
-		// 구현시 아래 코드 수정해야
-		//String writerId = "blue";
-		System.out.println(writerId);
-		// squadboard_no
 		bean.setSquadboard_no(playService.getSquadBoardSequence());
-		// gamegenre_no - view에서 가져옴
-		// members_no - db에서 작성자 아이디로 가져온다
-		// bean.setMembers_no(playService.getUserNo(writerId));
 		bean.setMembers_id(writerId);
-		// hostname - db에서 작성자 아이디로 가져온다
 		bean.setHostname(playService.getUserName(writerId));
-		// user_acceptcnt - 신규 모집글 작성이므로 insert시 무조건 0
 		bean.setUser_acceptcnt(0);
-		// user_maxcnt - view에서 가져옴
-		// recruitoption - view에서 가져옴
-		// playtime - view에서 가져옴
-		// regdate - mapper에서 sysdate로
-		// reservedate - view에서 가져오지만 형변환 필요. parsing 후 insert
-		System.out.println(reservedate_input);
 		String newReservedate = reservedate_input.replace("T", " ");
-		System.out.println(reservedate_input + newReservedate);
 		LocalDateTime reservedate = LocalDateTime.parse(newReservedate,
 				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-		System.out.println(reservedate);
 		bean.setReservedate(reservedate);
-		// squadstate - insert시 무조건 0(모집중)
 		bean.setSquadstate(0);
-		// price - view에서 가져옴
-		// payedstate - view에서 가져옴
-		// filename
 		String uploadLoc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//board//";
 		FileOutputStream fos = null;
 		String originFileName = file.getOriginalFilename();
@@ -177,15 +151,8 @@ public class playController {
 		}else {
 			return "redirect:play/insertFailed.jsp";
 		}
-
-		// tags 미구현. 임시로 기본태그 설정
 		bean.setTags("defaultHashtag");
-
-		// db에 넣기 전 콘솔에 뿌려서 체크
-		System.out.println(bean);
-		// insert
 		playService.insertSquadBoard(bean);
-		System.out.println("Board Insert Success!");
 		return "redirect:play/insertSuccess.jsp";
 	}
 	/*
@@ -194,9 +161,6 @@ public class playController {
 	@GetMapping(value = "squadstate0ListAction")
 	@ResponseBody
 	public List<squadboardBean> mainPageListAction(Model model) {
-		//model.addAttribute("mojib", playService.squadstate0Select());
-		//System.out.println(model);
-		System.out.println(playService.squadstate0Select());
 		return  playService.squadstate0Select();
 	};
 	/*
@@ -205,7 +169,6 @@ public class playController {
 	@GetMapping(value = "popularGameListAction")
 	@ResponseBody
 	public List<gamegenreBean> popularGameListAction(){
-		System.out.println(playService.popularGameListSelect());
 		return playService.popularGameListSelect();
 	};
 	/*
@@ -231,8 +194,6 @@ public class playController {
 	@PostMapping(value = "ajaxFindID")
 	@ResponseBody
 	public String findId(@RequestParam(value = "id",required = false,defaultValue = "BLUE")String id) {	 
-		System.out.println(playService);
-		//return "Test";
 		return playService.ajaxGetId(id)!=null?String.valueOf(true):String.valueOf(false);
 	}
 	/*
@@ -241,8 +202,6 @@ public class playController {
 	@PostMapping(value = "ajaxFindNickname")
 	@ResponseBody
 	public String findNickname(@RequestParam(value = "Nickname",required = false,defaultValue = "BLUE")String ninckname) {	 
-		System.out.println(playService);
-		//return "Test";
 		return playService.ajaxGetNickname(ninckname)!=null?String.valueOf(true):String.valueOf(false);
 	}    
 	/*
@@ -252,20 +211,9 @@ public class playController {
 	public String getView(membersBean bean, String id ,Model model) throws Exception {
 		membersBean vo = playService.getViewProfile(id);
 		model.addAttribute("view", vo);
-		//	    	bean.setMembers_id(id);
-		System.out.println(vo);
 		return "play/profile";
 	}
-	/*
-	 * 프로필 수정
-	 * 
-	 * @RequestMapping(value = "/play/updateProfile", method = RequestMethod.POST)
-	 * public String postView(membersBean bean) {
-	 * 
-	 * playService.postViewProfile(bean);
-	 * 
-	 * System.out.println(bean); return "play/mypage"; }
-	 */
+	
 	/*
 	 * 프로필 - 수정
 	 */	
@@ -277,7 +225,6 @@ public class playController {
 		String loc = "C://Users//BIT//git//bitfinalproject//playsquad//src//main//webapp//resources//img//play//upload//profile//";
 		FileOutputStream fos = null;
 		String orginFile = file.getOriginalFilename();
-		System.out.println(orginFile);
 		if (orginFile.length() > 0) {
 			try {
 				fos = new FileOutputStream(loc + orginFile);
@@ -290,8 +237,6 @@ public class playController {
 
 		}
 		playService.postViewProfile(bean);
-		System.out.println(orginFile);
-		System.out.println(bean);
 		return "redirect:/GuestReviewSelect?id="+userId;
 
 	}
@@ -303,23 +248,16 @@ public class playController {
 
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
-		//System.out.println(no);
-		//System.out.println(hostId);
-		//System.out.println(userId);
 		HashMap<String, Object>map1 = new HashMap<String, Object>();
 		map1.put("members_id", hostId);
 		map1.put("squadboard_no", no);
 		HashMap<String, Object>map2 = new HashMap<String, Object>();
 		map2.put("squadboard_no", no);
 		map2.put("members_id", userId);
-		// 스쿼드 게시판 상세 내용
 		model.addAttribute("squad", playService.selectSquadBoardInfo(no));
 		model.addAttribute("squadCnt", playService.selectSquadCnt(hostId));
-		// 호스트기준 스쿼드 정보
 		model.addAttribute("squadList", playService.selectSquadBoardHost(map1));
-		// 호스트기준 호스트리뷰
 		model.addAttribute("reviewList", playService.selectHostReviewHost(hostId));
-		//참가나 신청 중인지 여부 확인
 		if(userId != null) {
 			model.addAttribute("attendSH", playService.selectIdSquadHistory(map2));
 			model.addAttribute("attendAW", playService.selectIdAcceptWaitting(map2));				
@@ -372,9 +310,6 @@ public class playController {
 	@ResponseBody
 	public String squadBoardAjaxSelectProcess(String newSquadboardNo) {
 		//Integer new_no = Integer.parseInt(no);
-		System.out.println(newSquadboardNo);
-		System.out.println(playService.selectReserveDate(Integer.parseInt(newSquadboardNo)));
-
 		return playService.selectReserveDate(Integer.parseInt(newSquadboardNo));
 	}
 	/*
@@ -395,15 +330,10 @@ public class playController {
 	 */
 	@RequestMapping(value="mysquadInfoSelect")
 	public String mysquadInfoSelectProcess(Model model, String hostId) {
-		//게스트 기준 진행 전 스쿼드 검색
 		model.addAttribute("GSquadList", playService.selectParticipationSquad(hostId));
-		//게스트 기준 참가 기록 
 		model.addAttribute("GHistoryList", playService.selectGuestHistory(hostId));
-		//호스트 기준 종료 전 스쿼드 검색
 		model.addAttribute("HSquadList", playService.selectHostingSquad(hostId));
-		//호스트 기준 호스팅 기록
 		model.addAttribute("HHistoryList", playService.selectHostingHistory(hostId));
-
 		return "play/mysquad";
 	}
 
@@ -412,13 +342,10 @@ public class playController {
 	 */
 	@RequestMapping("squadDeleteOrCancel")
 	public String squadDeleteProcess(HttpServletRequest request,@RequestParam("no") int no, String job, int rc, String work) {
-		System.out.println(no);
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
-
 		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("squadboard_no", no);
-
 		if(job.equals("host")) {			
 			if(work.equals("delete")) {
 				System.out.println("delete");
@@ -446,7 +373,6 @@ public class playController {
 					map2.put("squadstate", 0);
 					playService.updateSquadState(map2);
 				}
-
 			}else if(rc == 1) {
 				playService.deleteAcceptWaittingGuest(map);
 			}
@@ -471,11 +397,9 @@ public class playController {
 		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("squadboard_no", no);
 		map.put("members_id", acId);
-
 		shBean.setSquadhistory_no(playService.getSequence_SquadHistory());
 		shBean.setSquadboard_no(no);
 		shBean.setMembers_id(acId);
-		System.out.println(shBean);
 		if(ac.equals("yes")) {
 			String result = playService.selelctCompareUserCnt(no);
 			playService.deleteAcceptWaittingGuest(map);
@@ -487,13 +411,11 @@ public class playController {
 				map2.put("squadboard_no", no);
 				map2.put("squadstate", 1);
 				playService.updateSquadState(map2);
-				System.out.println("fullYes");
 			}
 
 		}else if(ac.equals("no")){
 			playService.deleteAcceptWaittingGuest(map);
 		}
-
 		return "redirect:/squadHostingSelect?no="+no;
 	}
 
@@ -504,7 +426,6 @@ public class playController {
 		map.put("members_id", acId);
 		playService.deleteSquadHistoryGuest(map);
 		playService.updateSB_acceptcnt_decrease(no);
-
 		return "redirect:/squadHostingSelect?no="+no;
 	}
 
@@ -515,17 +436,13 @@ public class playController {
 	public String NoticeBoardInsert(NoticeBoardBean bean, @RequestParam String writer_id) {
 		bean.setNoticeboard_no(playService.getSequence2());
 		bean.setWriter_id(writer_id);
-		System.out.println(bean);
 		playService.insertNoticeBoard(bean);
-				
 		return "play/noticeboard";
-
 	}
 
 	@RequestMapping(value="selectNoticeBoard", method=RequestMethod.GET)
 	public String selectNoticeBoard(Model model) {
 		model.addAttribute("notice", playService.selectNoticeBoard());
-		System.out.println(model);
 		return "play/noticeboard";
 	}		
 	/*
@@ -533,39 +450,26 @@ public class playController {
 	 */		
 	@RequestMapping(value="/play/listPageSearch")
 	public String selectBoardList(ModelMap model, HttpServletRequest request) {
-		//검색 맵 생성
 		HashMap<String, Object>map  = new HashMap<String, Object>();
 		map.put("query", request.getParameter("query"));
 		map.put("data", request.getParameter("data"));
-		//페이징 맵 생성
 		pageBean pageBean = pageAction.paging(request, map);
 		map.put("start",  pageBean.getStart());
 		map.put("end",  pageBean.getEnd());
-		//모델 생성
 		model.addAttribute("pageBean", pageBean);
 		model.addAttribute("list", playService.selectBoardList(map));
-		//System.out.println(playService.selectBoardList(map));
-		System.out.println(map);
 		return "play/search";
 	}
 
 	/*
 	 * 게스트 후기 insert
 	 */	
-
-	/*@GetMapping(value="ReviewInfo")
-	public String ReviewInfo(GuestReviewBean bean, String host_id, Model model) {
-
-	}*/
-
 	@RequestMapping(value="GuestReviewInsert")
 	public String GuestReviewInsert(GuestReviewBean bean,
 			HttpServletRequest req) {
 		String userId = (String) req.getSession().getAttribute("userId");
-		System.out.println("Review Insert in process"); // 정상 출력
-		System.out.println(userId); // 정상 출력
-		bean.setHostreview_no(playService.getGuestReviewSequence()); // hostreview_no, 정상 출력
-		bean.setWriter_id(userId); //writer_id 콘솔에 나오는 거 확인
+		bean.setHostreview_no(playService.getGuestReviewSequence());
+		bean.setWriter_id(userId);
 		bean.setName(playService.getNicknameById(userId));
 		bean.setScore(Integer.parseInt(req.getParameter("score")));
 		bean.setGood_cnt(0);
@@ -573,13 +477,10 @@ public class playController {
 		bean.setPnum(0);
 		bean.setLev(0);
 		bean.setStep(0);
-		
-		// 콘솔에 뿌려서 확인
-		System.out.println(bean); 
-		// insert
-		playService.insertGuestReview(bean); 
-		System.out.println("Review Insert Success!");
-		//return "play/mypage";
+		playService.insertGuestReview(bean);
+		String hostId = bean.getHost_id();
+	    playService.hostGradeUpdate(hostId);
+		playService.hostReviewCntUpdate(hostId);
 		return "redirect:play/reviewInsertSuccess.jsp";
 
 	}
@@ -590,16 +491,14 @@ public class playController {
 	public String GuestReviewSelect(Model model, String id) {
 		model.addAttribute("review", playService.selectGuestReview1(id));
 		model.addAttribute("info", playService.selectMyInfo(id));
-		//model.addAttribute("reviewList", playService.selectGuestReview1(writer_id));
-		System.out.println(model);
+	    model.addAttribute("squadCnt", playService.selectSquadCnt(id)); 
 		return "play/mypage";
 	}
 
 	@RequestMapping(value="insertMyInfo", method = RequestMethod.POST)
 	public String insertMyInfo(membersBean bean, Model model, @RequestParam String members_id) {
 		bean.setMembers_id(members_id);
-		System.out.println(bean); //콘솔에 뿌림
-		playService.insertMyInfo(bean); //insert
+		playService.insertMyInfo(bean);
 		return "play/mypage";
 	}
 	/*
@@ -607,9 +506,8 @@ public class playController {
 	 */		
 	@RequestMapping(value="selectMyInfo", method=RequestMethod.GET)
 	public String selectMyInfo(Model model, String id) {
-		model.addAttribute("info", playService.selectMyInfo(id));
-		System.out.println(model);
-		return "play/mypage";
+	    model.addAttribute("info", playService.selectMyInfo(id));
+	    return "play/mypage";
 	}
 
 	/* 
@@ -630,60 +528,54 @@ public class playController {
 	public List<membersBean> hostListForEachGameSelectPro(int ggno){
 		return playService.hostListForEachGameSelect(ggno);
 	}
-	
+
 	/* 
 	 * 신청 가능한 스쿼드 (마이페이지)
 	 */
 	@GetMapping(value = "registerSquadInfoSelect")
 	@ResponseBody
 	public List<squadboardBean> registerSquadInfoSelect(String userId) {
-		System.out.println(playService.registerSquadInfoSelect(userId));
 		return playService.registerSquadInfoSelect(userId);
 	};
-	
-	
+
 	/* 
 	 * 주로 하는 게임 (마이페이지)
 	 */
 	@GetMapping(value = "mainGamePlay")
 	@ResponseBody
 	public List<gamegenreBean> mainGamePlay(String userId) {
-		System.out.println(playService.mainGamePlay(userId));
 		return playService.mainGamePlay(userId);
 	};
-	
+
 	/* 
 	 * 팔로우 기능 (마이페이지)
 	 */
 	@RequestMapping(value="follow", method=RequestMethod.POST)
 	@ResponseBody
 	public int follow(Model model, HttpSession session, HttpServletRequest req, @RequestParam("host_id") String host_id) {
-	    int followermembers_no = playService.followTableSequence();
-	    String my_id = (String) req.getSession().getAttribute("userId");
-	    List<Map<String, Object>> followList = playService.followCheck(my_id);
-	    List<String> followingList = new ArrayList<String>();
-	    for (Map<String, Object> map : followList) {
-	        String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
-	        followingList.add(following_id);
-	    }
-	    HashMap<String, Object>map = new HashMap<String, Object>();
+		int followermembers_no = playService.followTableSequence();
+		String my_id = (String) req.getSession().getAttribute("userId");
+		List<Map<String, Object>> followList = playService.followCheck(my_id);
+		List<String> followingList = new ArrayList<String>();
+		for (Map<String, Object> map : followList) {
+			String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
+			followingList.add(following_id);
+		}
+		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("followermembers_no", followermembers_no);
 		map.put("my_id", my_id);
 		map.put("host_id", host_id);
-		System.out.println(followList);
-	    if(followingList.contains(host_id)==true) {
-	    	playService.followDelete(map);
-	    	playService.followCntDown(host_id);
-	    	return playService.selectFollowCnt(host_id);
-	    }else if(followingList.contains(host_id)==false) {
-	    	playService.followTableInsert(map);
-	    	playService.followCntUpdate(host_id);
-	    	return playService.selectFollowCnt(host_id);
-	    }
-	    else {
-	    	System.out.println("error");
-	    	return playService.selectFollowCnt(host_id);
-	    }
+		if(followingList.contains(host_id)) {
+			playService.followDelete(map);
+			playService.followCntDown(host_id);
+			playService.membersTableFollowCntSync(host_id);
+			return playService.selectFollowCnt(host_id);
+		}else{
+			playService.followTableInsert(map);
+			playService.followCntUpdate(host_id);
+			playService.membersTableFollowCntSync(host_id);
+			return playService.selectFollowCnt(host_id);
+		}
 
 	}
 	@RequestMapping(value="followBtnAction")
@@ -692,23 +584,29 @@ public class playController {
 		String my_id = (String) req.getSession().getAttribute("userId");
 		List<Map<String, Object>> followList = playService.followCheck(my_id);
 		List<String> followingList = new ArrayList<String>();
-		System.out.println(my_id+host_id);
-	    for (Map<String, Object> map : followList) {
-	        String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
-	        followingList.add(following_id);
-	    }
-	    if(host_id.equals(my_id)) {
-	    	return 3;
-	    }else {
-	    	if(followingList.contains(host_id)==true) {
-	    		return 1;
-	    	}else if(followingList.contains(host_id)==false) {
-	    		return 2;
-	    	}
-	    	else {
-	    		System.out.println("error");
-	    		return 4;
-	    	}
-	    }
+		for (Map<String, Object> map : followList) {
+			String following_id = ((String) map.get("FOLLOWINGMEMBERS_ID")).replaceAll("followingmembers_id=", "");
+			followingList.add(following_id);
+		}
+		if(host_id.equals(my_id)) {
+			return 3;
+		}else {
+			if(followingList.contains(host_id)==true) {
+				return 1;
+			}else if(followingList.contains(host_id)==false) {
+				return 2;
+			}
+			else {
+				System.out.println("error");
+				return 4;
+			}
+		}
+	}
+	@RequestMapping(value="recommendationSelect", method = RequestMethod.GET)
+	@ResponseBody
+	public List<squadboardBean> recommendationSelect(@RequestParam(value = "userId", required=false)String userId){
+		String[] recIdArr = playService.selectCm_id(userId).split(",");
+		List<String> recIdList = Arrays.asList(recIdArr);
+		return playService.recSquadSelect(recIdList);
 	}
 }

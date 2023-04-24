@@ -243,19 +243,19 @@ public interface PlayService {
 	 * 아이디로 닉네임 구해오기 
 	 */
 	String getNicknameById(String inputId);
-	
+
 	/*
 	 * 신청 가능한 스쿼드(마이페이지)
 	 */
 	List<squadboardBean> registerSquadInfoSelect(String userId);
-	
+
 	List<gamegenreBean> mainGamePlay(String userId);
 
 	/*
 	 * ??기타?
 	 */	
 	int getUserNo(String writerId);
-	
+
 	//int follow(String host_id);
 	int followTableSequence();
 	List<Map<String, Object>> followCheck(String my_id);
@@ -263,8 +263,13 @@ public interface PlayService {
 	void followCntDown(String host_id);
 	void followDelete(HashMap<String, Object>map);
 	void followCntUpdate(String host_id);
-	
-	int selectFollowCnt(String id);
-	
 
+	int selectFollowCnt(String id);
+	String selectCm_id(String members_id);
+
+	List<squadboardBean> recSquadSelect(List<String> recIdList);
+	void membersTableFollowCntSync(String members_id);
+	/* 호스트 평점 업데이트 */
+	void hostGradeUpdate(String hostId);
+	void hostReviewCntUpdate(String hostId);
 }

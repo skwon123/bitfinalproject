@@ -145,28 +145,63 @@ $(function(){
     	
     	
 		<!-- 인기스쿼드 리스트 -->
-		<div class="content-list" style="margin-right:1.8%;margin-left:1.8%;">
-			<h1>모집 중인 스쿼드</h1>
+		<h1 style="margin-right:3%;margin-left:3%;margin-bottom:10px;">모집 중인 스쿼드</h1>
+		<div class="content-list" style="margin-left:2%;">
 			<c:forEach var="i" items="${list}" varStatus="cnt">
-			
-			<div id="eachItems" style="width:250px;height:300px;display:inline-block;">
-				<a href="/web/squadBoardInfoSelect?no=${i.squadboard_no}&hostId=${i.members_id}">
-	 					    <img src="/web/resources/img/play/upload/board/${i.filename}" style="width:250px;height:150px;"></a>
-	 					    	<table style="text-align:center; width:250px;">
-	 					    	  <thead>
-	 					    	  </thead>
-	 					    	  <tbody>
-	 					    	  <tr><td rowspan="4"><a href="/web/GuestReviewSelect?id=${i.members_id}"><img src="/web/resources/img/play/upload/profile/${i.members_profile_img}" style="width:60px; height:60px; border-radius:50%;"></a></td></tr>
-	 					    	  <tr><td style="text-align:left;"><b>${i.title}</b></td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">${i.hostname}</td></tr>
-	 					    	  <tr><td style="color:gray;text-align:left;">${i.gamegenre_name}</td></tr>
-	 					    	  <tr>
-	 					    	  <td>${fn:substring(i.reservedate, 0, 10)}<br>${fn:substring(i.reservedate, 11, 16)}</td>
-	 					    	  <td>${i.user_acceptcnt}/${i.user_maxcnt}</td>
-	 					    	  </tr>
-	 					    	  </tbody>
-	 					    	  </table>
-			</div>
+				<c:set var="month" value="${fn:substring(i.reservedate, 5, 7)}" />
+				<c:set var="monthcheck" value="${fn:substring(i.reservedate, 5, 6)}" />
+				<c:set var="day" value="${fn:substring(i.reservedate, 8, 10)}" />
+				<c:choose>
+					<c:when test="${monthcheck eq '0'}">
+						<c:set var="month" value="${fn:substring(i.reservedate, 6, 7)}" />
+					</c:when>
+				</c:choose>
+	 					    	  
+				<c:set var="hour" value="${fn:substring(i.reservedate, 11, 13)}" />
+				<c:set var="minute" value="${fn:substring(i.reservedate, 14, 16)}" />
+				<c:choose>
+					<c:when test="${hour le 12}">
+						<c:set var="ampm" value="오전" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="ampm" value="오후" />
+						<c:set var="hour" value="${hour - 12}" />
+					</c:otherwise>
+				</c:choose>
+
+				<div id="eachItems"
+					style="width: 260px; height: 300px; margin: 10px; margin-bottom:15px;display: inline-block;">
+					<a href="/web/squadBoardInfoSelect?no=${i.squadboard_no}&hostId=${i.members_id}">
+						<img src="/web/resources/img/play/upload/board/${i.filename}"style="width: 260px; height: 150px; border-radius: 5%">
+					</a>
+					<table style="text-align: center; width: 250px;">
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<td rowspan="4"><a href="/web/GuestReviewSelect?id=${i.members_id}">
+									<img src="/web/resources/img/play/upload/profile/${i.members_profile_img}" style="width: 60px; height: 60px; border-radius: 50%;"></a>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:100px;text-align:left; height: 42px;"><b>${i.title}</b></td>
+							</tr>
+							<tr>
+								<td style="color: gray; text-align: left;font-size:14px;">${i.hostname}</td>
+							</tr>
+							<tr>
+								<td style="text-align: center;">${i.gamegenre_name}</td>
+							</tr>
+							<tr>
+								<td style=width:123px;height:60px;text-align:center;">
+									<div style="margin-left:10px;height:45px;width:115px;background-color: #424242; border-radius:5%;">
+										<span>${month }월 ${day }일</span><br>
+										<span style="color:#f4ae23;">${ampm} ${hour}시 ${minute}분</span></div></td>
+								<td>모집인원<br>${i.user_acceptcnt}/${i.user_maxcnt}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</c:forEach>
 		</div>	
 		

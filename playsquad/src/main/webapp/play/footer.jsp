@@ -19,14 +19,15 @@ $(function(){
 </script>
 </head>
 <body>
-
-<div style="position:fixed; bottom:5px; left:5px;">
-	<img src="/web/resources/img/play/chat.png" width="70" height="70" title="QnA">
-</div>
-
-<div style="position:fixed; bottom:5px; right:5px;">
-	<a href="#"><img src="/web/resources/img/play/top.png" width="40" height="40"  title="맨 위로"></a>
-</div>
+<nav style="position:fixed; height:150px;width:100%; bottom:0px; justify-content:space-between; display:flex; flez-wrap:wrap;background:linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));">
+    <div style="position:fixed; bottom:5px; left:5px;">
+        <img src="/web/resources/img/play/chat.png" width="70" height="70" title="QnA">
+    </div>
+    
+    <div style="position:fixed; bottom:5px; right:10px;">
+        <a href="#"><img src="/web/resources/img/play/top.png" width="40" height="40"  title="맨 위로"></a>
+    </div>
+</nav>
 
 
 
