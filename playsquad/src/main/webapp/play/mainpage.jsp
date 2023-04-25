@@ -414,17 +414,17 @@
 		
 		
 		<!-- 인기 게임 리스트 -->
- 		<div class="content-list">
+ 		<div class="content-list" style="margin-bottom: 120px;">
 			<h1 style="margin-left:2%;">인기 게임</h1>
        
-			<div class="prev" id="prevPopularGame">
+			<div class="prev" id="prevPopularGame" style="z-index:1">
 				<i class="fa-solid fa-angle-right prev-arrow"></i>
 			</div>
 			
 			<div class="slider" align="center" id="sliderPopularGame" style="height:180px;margin-right:1.8%;margin-left:1.8%;">
 				
 			</div>
-			<div class="next" id="nextPopularGame">
+			<div class="next" id="nextPopularGame" style="z-index:1">
 				<i class="fa-solid fa-angle-right"></i>
 			</div>
 		</div>
